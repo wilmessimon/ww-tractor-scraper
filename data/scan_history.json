@@ -1,0 +1,114 @@
+[
+  {
+    "scan_date": "2026-02-05T07:27:25.892788",
+    "platforms_scanned": 5,
+    "new_listings": 0,
+    "total_listings": 0,
+    "duration_seconds": 2.525848865509033
+  },
+  {
+    "scan_date": "2026-02-05T08:29:30.837959",
+    "platforms_scanned": 63,
+    "new_listings": 58,
+    "total_listings": 81,
+    "duration_seconds": 38.6723690032959
+  },
+  {
+    "scan_date": "2026-02-05T08:33:06.288736",
+    "platforms_scanned": 84,
+    "new_listings": 6,
+    "total_listings": 88,
+    "duration_seconds": 45.77898192405701
+  },
+  {
+    "scan_date": "2026-02-05T09:01:29.423230",
+    "platforms_scanned": 84,
+    "new_listings": 9,
+    "total_listings": 71,
+    "duration_seconds": 47.167243003845215
+  },
+  {
+    "scan_date": "2026-02-05T09:16:16.451517",
+    "platforms_scanned": 85,
+    "new_listings": 35,
+    "total_listings": 92,
+    "duration_seconds": 47.23161292076111
+  },
+  {
+    "scan_date": "2026-02-05T09:22:24.951789",
+    "platforms_scanned": 85,
+    "new_listings": 39,
+    "total_listings": 104,
+    "duration_seconds": 75.02032589912415
+  },
+  {
+    "scan_date": "2026-02-05T09:28:06.688781",
+    "platforms_scanned": 85,
+    "new_listings": 0,
+    "total_listings": 104,
+    "duration_seconds": 78.67863702774048
+  },
+  {
+    "scan_date": "2026-02-05T09:44:40.978303",
+    "platforms_scanned": 85,
+    "new_listings": 795,
+    "total_listings": 896,
+    "duration_seconds": 83.3009831905365
+  },
+  {
+    "scan_date": "2026-02-05T09:52:05.631043",
+    "platforms_scanned": 85,
+    "new_listings": 0,
+    "total_listings": 896,
+    "duration_seconds": 80.01802706718445
+  },
+  {
+    "scan_date": "2026-02-05T09:59:05.021448",
+    "platforms_scanned": 85,
+    "new_listings": 4,
+    "total_listings": 896,
+    "duration_seconds": 76.6254472732544
+  },
+  {
+    "scan_date": "2026-02-05T10:03:44.947917",
+    "platforms_scanned": 85,
+    "new_listings": 1,
+    "total_listings": 894,
+    "duration_seconds": 84.38663291931152
+  },
+  {
+    "scan_date": "2026-02-05T14:54:01.358777",
+    "platforms_scanned": 85,
+    "new_listings": 26,
+    "total_listings": 890,
+    "duration_seconds": 84.28365302085876
+  },
+  {
+    "scan_date": "2026-02-05T15:03:35.030715",
+    "platforms_scanned": 103,
+    "new_listings": 1,
+    "total_listings": 890,
+    "duration_seconds": 96.04423999786377
+  },
+  {
+    "scan_date": "2026-02-05T15:21:12.327656",
+    "platforms_scanned": 103,
+    "new_listings": 7,
+    "total_listings": 893,
+    "duration_seconds": 98.47002291679382
+  },
+  {
+    "scan_date": "2026-02-05T16:00:08.307606",
+    "platforms_scanned": 103,
+    "new_listings": 6,
+    "total_listings": 871,
+    "duration_seconds": 94.58531975746155
+  },
+  {
+    "scan_date": "2026-02-05T20:20:57.186002",
+    "platforms_scanned": 103,
+    "new_listings": 26,
+    "total_listings": 871,
+    "duration_seconds": 99.348149061203
+  }
+]

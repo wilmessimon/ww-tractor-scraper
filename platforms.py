@@ -564,7 +564,17 @@ PLATFORMS = {
                 "search_url": "https://www.subito.it/annunci-italia/vendita/usato/?q=mb+trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "trattore Mercedes"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.subito.it/annunci-italia/vendita/usato/?q=fendt+trattore",
+                    "john_deere": "https://www.subito.it/annunci-italia/vendita/usato/?q=john+deere+trattore",
+                    "deutz": "https://www.subito.it/annunci-italia/vendita/usato/?q=deutz+trattore",
+                    "ihc": "https://www.subito.it/annunci-italia/vendita/usato/?q=ihc+trattore",
+                    "case_ih": "https://www.subito.it/annunci-italia/vendita/usato/?q=case+ih+trattore",
+                    "fiat": "https://www.subito.it/annunci-italia/vendita/usato/?q=fiat+trattore",
+                    "new_holland": "https://www.subito.it/annunci-italia/vendita/usato/?q=new+holland+trattore",
+                    "claas_xerion": "https://www.subito.it/annunci-italia/vendita/usato/?q=claas+xerion",
+                }
             },
             {
                 "name": "Mascus.it",

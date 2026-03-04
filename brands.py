@@ -69,12 +69,12 @@ BRANDS = {
             {"range": (509, 515), "suffixes": ["", "C"]},
             # 611-615 LS/LSA
             {"range": (611, 615), "suffixes": ["", "LS", "LSA"]},
-            # Vario 712-718
-            {"prefix": "Vario", "range": (712, 718), "suffixes": [""]},
+            # Vario 712-718 (Vario optional — Leute schreiben "Fendt 714")
+            {"prefix": "Vario", "prefix_optional": True, "range": (712, 718), "suffixes": ["", "Vario"]},
             # Vario 815-820
-            {"prefix": "Vario", "range": (815, 820), "suffixes": [""]},
+            {"prefix": "Vario", "prefix_optional": True, "range": (815, 820), "suffixes": ["", "Vario"]},
             # Vario 916-930
-            {"prefix": "Vario", "range": (916, 930), "suffixes": [""]},
+            {"prefix": "Vario", "prefix_optional": True, "range": (916, 930), "suffixes": ["", "Vario"]},
         ],
         "search_terms": [
             "Fendt 309", "Fendt 311", "Fendt Vario 714",
@@ -121,14 +121,14 @@ BRANDS = {
             {"exact": [8006, 10006, 13006]},
             # 6005, 8005, 9005
             {"exact": [6005, 8005, 9005]},
-            # DX Agrostar 4.61-6.61
-            {"prefix": "DX", "exact_str": [
+            # DX Agrostar 4.61-6.61 (Prefixe optional — Leute schreiben "Deutz 6.61")
+            {"prefix": "DX", "prefix_optional": True, "exact_str": [
                 "4.61", "4.71", "6.01", "6.06", "6.11", "6.21", "6.31", "6.61"
             ]},
-            {"prefix": "Agrostar", "exact_str": [
+            {"prefix": "Agrostar", "prefix_optional": True, "exact_str": [
                 "4.61", "4.71", "6.01", "6.06", "6.11", "6.21", "6.31", "6.61"
             ]},
-            {"prefix": "DX Agrostar", "exact_str": [
+            {"prefix": "DX Agrostar", "prefix_optional": True, "exact_str": [
                 "4.61", "4.71", "6.01", "6.06", "6.11", "6.21", "6.31", "6.61"
             ]},
         ],
@@ -210,8 +210,8 @@ BRANDS = {
         "extra_keywords": [],
         "match_brand_only": False,
         "models": [
-            # TM 120, TM 125, TM 130, TM 135, TM 140
-            {"prefix": "TM", "exact": [120, 125, 130, 135, 140]},
+            # TM 120-140 (TM optional — Leute schreiben "New Holland 130")
+            {"prefix": "TM", "prefix_optional": True, "exact": [120, 125, 130, 135, 140]},
         ],
         "search_terms": [
             "New Holland TM 130", "New Holland TM 135",
@@ -250,6 +250,41 @@ def _normalize(text: str) -> str:
     return text
 
 
+def _build_patterns(prefix: str, num_str: str, suffix: str, prefix_optional: bool) -> List[str]:
+    """
+    Baut alle Pattern-Varianten für eine Modellnummer.
+    Wenn prefix_optional=True, werden zusätzlich Patterns OHNE Prefix generiert.
+    z.B. Fendt Vario 930 → matcht auch "Fendt 930" oder "Fendt 930 Vario"
+    """
+    patterns = []
+    pl = prefix.lower() if prefix else ""
+    sl = suffix.lower() if suffix else ""
+
+    if pl:
+        # MIT Prefix: "vario 930", "vario930"
+        patterns.append(f"{pl} {num_str}")
+        patterns.append(f"{pl}{num_str}")
+        if sl:
+            patterns.append(f"{pl} {num_str} {sl}")
+            patterns.append(f"{pl} {num_str}{sl}")
+            patterns.append(f"{pl}{num_str} {sl}")
+
+        if prefix_optional:
+            # OHNE Prefix: "930" (nur die Nummer)
+            patterns.append(num_str)
+            if sl:
+                patterns.append(f"{num_str} {sl}")
+                patterns.append(f"{num_str}{sl}")
+    else:
+        # Kein Prefix definiert: "309", "309 ls", "309ls"
+        patterns.append(num_str)
+        if sl:
+            patterns.append(f"{num_str} {sl}")
+            patterns.append(f"{num_str}{sl}")
+
+    return patterns
+
+
 def _check_model_match(title_lower: str, brand_config: dict) -> bool:
     """
     Prüft ob der Titel ein gültiges Modell für die gegebene Marke enthält.
@@ -259,35 +294,17 @@ def _check_model_match(title_lower: str, brand_config: dict) -> bool:
         return True  # Keine Modelle definiert = Marke allein reicht
 
     for model_def in models:
+        prefix = model_def.get("prefix", "")
+        prefix_optional = model_def.get("prefix_optional", False)
+
         # Typ 1: Nummern-Range (z.B. 304-312)
         if "range" in model_def:
             start, end = model_def["range"]
-            prefix = model_def.get("prefix", "")
             suffixes = model_def.get("suffixes", [""])
 
             for num in range(start, end + 1):
                 for suffix in suffixes:
-                    if prefix:
-                        # z.B. "vario 712", "vario 712 "
-                        patterns = [
-                            f"{prefix.lower()} {num}",
-                            f"{prefix.lower()}{num}",
-                        ]
-                        if suffix:
-                            patterns.extend([
-                                f"{prefix.lower()} {num} {suffix.lower()}",
-                                f"{prefix.lower()} {num}{suffix.lower()}",
-                                f"{prefix.lower()}{num} {suffix.lower()}",
-                            ])
-                    else:
-                        # z.B. "309", "309 ls", "309ls"
-                        patterns = [str(num)]
-                        if suffix:
-                            patterns.extend([
-                                f"{num} {suffix.lower()}",
-                                f"{num}{suffix.lower()}",
-                            ])
-
+                    patterns = _build_patterns(prefix, str(num), suffix, prefix_optional)
                     for pattern in patterns:
                         if pattern in title_lower:
                             return True
@@ -295,45 +312,19 @@ def _check_model_match(title_lower: str, brand_config: dict) -> bool:
         # Typ 2: Exakte Nummern (z.B. [844, 856, 956])
         elif "exact" in model_def and isinstance(model_def["exact"], list):
             if isinstance(model_def["exact"][0], int):
-                prefix = model_def.get("prefix", "")
                 suffixes = model_def.get("suffixes", [""])
 
                 for num in model_def["exact"]:
                     for suffix in suffixes:
-                        if prefix:
-                            patterns = [
-                                f"{prefix.lower()} {num}",
-                                f"{prefix.lower()}{num}",
-                            ]
-                            if suffix:
-                                patterns.extend([
-                                    f"{prefix.lower()} {num} {suffix.lower()}",
-                                    f"{prefix.lower()} {num}{suffix.lower()}",
-                                ])
-                        else:
-                            patterns = [str(num)]
-                            if suffix:
-                                patterns.extend([
-                                    f"{num} {suffix.lower()}",
-                                    f"{num}{suffix.lower()}",
-                                ])
-
+                        patterns = _build_patterns(prefix, str(num), suffix, prefix_optional)
                         for pattern in patterns:
                             if pattern in title_lower:
                                 return True
 
         # Typ 3: Exakte Strings (z.B. ["4.61", "6.61"] oder ["70-90", "80-90"])
         elif "exact_str" in model_def:
-            prefix = model_def.get("prefix", "")
             for s in model_def["exact_str"]:
-                if prefix:
-                    patterns = [
-                        f"{prefix.lower()} {s.lower()}",
-                        f"{prefix.lower()}{s.lower()}",
-                    ]
-                else:
-                    patterns = [s.lower()]
-
+                patterns = _build_patterns(prefix, s, "", prefix_optional)
                 for pattern in patterns:
                     if pattern in title_lower:
                         return True
@@ -432,6 +423,11 @@ if __name__ == "__main__":
         ("Fendt Vario 714 Traktor", "fendt"),
         ("Fendt Vario 916 Profi", "fendt"),
         ("Fent 510 C", "fendt"),
+        # Fendt OHNE Vario-Prefix (Leute vergessen "Vario")
+        ("Fendt 930 Traktor", "fendt"),
+        ("Fendt 718 zu verkaufen", "fendt"),
+        ("Fent 815 Schlepper", "fendt"),
+        ("Fendt 920 Vario", "fendt"),  # Nummer + Vario als Suffix
 
         # Fendt (soll NICHT matchen — Modell nicht in Liste)
         ("Fendt 936 Vario", None),
@@ -448,6 +444,8 @@ if __name__ == "__main__":
         ("Deutz 8006 Traktor", "deutz"),
         ("Deutz DX 6.61 Agrostar", "deutz"),
         ("Deutz-Fahr Agrostar 6.31", "deutz"),
+        ("Deutz 6.61 Traktor", "deutz"),  # Ohne DX/Agrostar
+        ("Deutz 4.71 zu verkaufen", "deutz"),  # Ohne Prefix
         ("Deutz 6206", None),  # Nicht in Liste
 
         # IHC
@@ -468,6 +466,8 @@ if __name__ == "__main__":
         # New Holland
         ("New Holland TM 135 Traktor", "new_holland"),
         ("New Holland TM 140", "new_holland"),
+        ("New Holland 130 Traktor", "new_holland"),  # Ohne TM
+        ("New Holland 140", "new_holland"),  # Ohne TM
         ("New Holland T7", None),  # Nicht in Liste
 
         # Claas Xerion

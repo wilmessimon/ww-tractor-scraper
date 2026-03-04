@@ -1,179 +1,40 @@
 #!/usr/bin/env python3
 """
-Modernes Dashboard Generator für MB-trac Scraper
-Erstellt ein schönes React-ähnliches UI mit Tailwind CSS
+Dashboard Generator für Traktor Finder
+Erstellt ein HTML-Dashboard das Daten live von GitHub Raw lädt.
+Keine Neudeploys nötig wenn der Scraper neue Daten pusht.
 """
 
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List
 from brands import BRANDS, get_brand_display_name
 
-def generate_modern_dashboard(db_path: Path, output_path: Path):
-    """Generiert ein modernes HTML-Dashboard"""
 
-    # Lade Daten
-    with open(db_path, 'r', encoding='utf-8') as f:
-        listings = json.load(f)
+# GitHub Raw URL für die Daten
+GITHUB_RAW_BASE = "https://raw.githubusercontent.com/wilmessimon/ww-tractor-scraper/main"
+DATA_URL = f"{GITHUB_RAW_BASE}/data/mbtrac.json"
 
-    today = datetime.now().strftime("%Y-%m-%d")
-    all_listings = sorted(
-        [l for l in listings.values() if l.get('is_active', True)],
-        key=lambda x: x.get('first_seen', ''),
-        reverse=True
-    )
 
-    # Statistiken
-    new_today = [l for l in all_listings if l.get('first_seen', '').startswith(today)]
+def generate_modern_dashboard(output_path: Path):
+    """Generiert ein HTML-Dashboard das Daten live von GitHub lädt"""
 
-    # Kategorien, Länder und Marken zählen
-    categories = {}
-    countries = {}
-    brand_counts = {}
-    for l in all_listings:
-        cat = l.get('category', 'sonstiges')
-        categories[cat] = categories.get(cat, 0) + 1
+    # Brand-Config für JS aufbereiten
+    brand_js_config = {}
+    for key, cfg in BRANDS.items():
+        brand_js_config[key] = cfg.get("display_name", key)
 
-        country = l.get('country', 'XX')
-        countries[country] = countries.get(country, 0) + 1
-
-        brand = l.get('brand', 'mb_trac')
-        brand_counts[brand] = brand_counts.get(brand, 0) + 1
-
-    # Fahrzeuge mit Preis
-    vehicles = [l for l in all_listings
-                if l.get('category') == 'fahrzeug'
-                and l.get('price_numeric') and l.get('price_numeric') > 1000]
-    vehicles.sort(key=lambda x: x.get('price_numeric', 0))
-
-    # Preisstatistiken für Fahrzeuge
-    if vehicles:
-        prices = [v.get('price_numeric', 0) for v in vehicles if v.get('price_numeric')]
-        avg_price = sum(prices) / len(prices) if prices else 0
-        min_price = min(prices) if prices else 0
-        max_price = max(prices) if prices else 0
-    else:
-        avg_price = min_price = max_price = 0
-
-    # Berechne Zeitfenster
-    from datetime import timedelta
-    now = datetime.now()
-    yesterday = (now - timedelta(days=1)).strftime("%Y-%m-%d")
-    week_ago = (now - timedelta(days=7)).strftime("%Y-%m-%d")
-
-    new_yesterday = [l for l in all_listings if l.get('first_seen', '') >= yesterday]
-    new_this_week = [l for l in all_listings if l.get('first_seen', '') >= week_ago]
-
-    # Listing Cards HTML generieren
-    def generate_listing_card(listing: Dict, is_new: bool = False) -> str:
-        cat = listing.get('category', 'sonstiges')
-        cat_colors = {
-            'fahrzeug': 'bg-red-500',
-            'ersatzteil': 'bg-blue-500',
-            'modell': 'bg-purple-500',
-            'suchgesuch': 'bg-amber-500',
-            'sonstiges': 'bg-slate-500'
-        }
-        cat_icons = {
-            'fahrzeug': '🚜',
-            'ersatzteil': '🔧',
-            'modell': '🎮',
-            'suchgesuch': '🔍',
-            'sonstiges': '📦'
-        }
-
-        img_url = listing.get('image_url', '')
-        fallback_div = '<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'
-        if img_url:
-            img_html = f'<img src="{img_url}" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML=\'{fallback_div}\'">'
-        else:
-            img_html = '<div class="w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl">🚜</div>'
-
-        price = listing.get('price_numeric')
-        if price:
-            price_html = f'<span class="text-lg font-bold text-emerald-400">{price:,.0f} €</span>'.replace(',', '.')
-        elif listing.get('price'):
-            price_html = f'<span class="text-lg font-bold text-emerald-400">{listing["price"]}</span>'
-        else:
-            price_html = '<span class="text-slate-400">Preis auf Anfrage</span>'
-
-        location = listing.get('location', '')
-        location_html = f'<span class="text-slate-400 text-sm">📍 {location}</span>' if location else ''
-
-        new_badge = '<span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>' if is_new else ''
-
-        title = listing.get('title', '')[:80]
-        if len(listing.get('title', '')) > 80:
-            title += '...'
-
-        first_seen = listing.get('first_seen', '')[:10]
-        new_ring = 'ring-2 ring-emerald-500/50' if is_new else ''
-
-        brand_key = listing.get('brand', 'mb_trac')
-        brand_display = get_brand_display_name(brand_key)
-        brand_colors = {
-            'mb_trac': 'bg-red-600',
-            'fendt': 'bg-green-600',
-            'john_deere': 'bg-yellow-600',
-            'deutz': 'bg-cyan-600',
-            'ihc': 'bg-orange-600',
-            'case_ih': 'bg-rose-600',
-            'fiat': 'bg-indigo-600',
-            'new_holland': 'bg-sky-600',
-            'claas_xerion': 'bg-lime-600',
-        }
-        brand_color = brand_colors.get(brand_key, 'bg-slate-600')
-
-        return f'''
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 {new_ring}"
-             data-category="{cat}"
-             data-country="{listing.get('country', 'XX')}"
-             data-price="{listing.get('price_numeric', 0)}"
-             data-first-seen="{first_seen}"
-             data-brand="{brand_key}">
-            <div class="relative">
-                {img_html}
-                {new_badge}
-                <span class="absolute top-2 right-2 {cat_colors.get(cat, 'bg-slate-500')} text-white text-xs font-medium px-2 py-1 rounded-full">
-                    {cat_icons.get(cat, '📦')} {cat.title()}
-                </span>
-                <span class="absolute bottom-2 left-2 {brand_color} text-white text-xs font-bold px-2 py-1 rounded-full">
-                    {brand_display}
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="{listing.get('url', '#')}" target="_blank" rel="noopener">{title}</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    {price_html}
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        {listing.get('country', 'XX')} · {listing.get('platform', '')}
-                    </span>
-                </div>
-                {location_html}
-            </div>
-        </div>
-        '''
-
-    # Alle Listing Cards
-    listing_cards = '\n'.join([
-        generate_listing_card(l, l.get('first_seen', '').startswith(today))
-        for l in all_listings[:300]
-    ])
-
-    # Country options für Filter
-    country_options = '\n'.join([
-        f'<option value="{code}">{code} ({count})</option>'
-        for code, count in sorted(countries.items(), key=lambda x: -x[1])
-    ])
-
-    # Brand options für Filter
-    brand_options = '\n'.join([
-        f'<option value="{key}">{get_brand_display_name(key)} ({count})</option>'
-        for key, count in sorted(brand_counts.items(), key=lambda x: -x[1])
-    ])
+    brand_colors_js = {
+        'mb_trac': 'bg-red-600',
+        'fendt': 'bg-green-600',
+        'john_deere': 'bg-yellow-600',
+        'deutz': 'bg-cyan-600',
+        'ihc': 'bg-orange-600',
+        'case_ih': 'bg-rose-600',
+        'fiat': 'bg-indigo-600',
+        'new_holland': 'bg-sky-600',
+        'claas_xerion': 'bg-lime-600',
+    }
 
     html = f'''<!DOCTYPE html>
 <html lang="de" class="dark">
@@ -205,6 +66,15 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         ::-webkit-scrollbar-track {{ background: #1e293b; }}
         ::-webkit-scrollbar-thumb {{ background: #475569; border-radius: 4px; }}
         ::-webkit-scrollbar-thumb:hover {{ background: #64748b; }}
+        .loading-spinner {{
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+        }}
+        @keyframes spin {{ to {{ transform: rotate(360deg); }} }}
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen">
@@ -220,10 +90,8 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <span class="text-sm text-slate-400">
-                        Aktualisiert: {datetime.now().strftime('%d.%m.%Y %H:%M')}
-                    </span>
-                    <button onclick="location.reload()" class="p-2 hover:bg-slate-700 rounded-lg transition-colors" title="Aktualisieren">
+                    <span id="last-updated" class="text-sm text-slate-400"></span>
+                    <button onclick="loadData()" class="p-2 hover:bg-slate-700 rounded-lg transition-colors" title="Aktualisieren">
                         🔄
                     </button>
                 </div>
@@ -232,140 +100,131 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-            <div class="stat-card rounded-xl p-4 border border-slate-700">
-                <p class="text-slate-400 text-sm mb-1">Gesamt</p>
-                <p class="text-2xl font-bold text-white">{len(all_listings)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-emerald-500/30 bg-emerald-500/10">
-                <p class="text-emerald-400 text-sm mb-1">Neu heute</p>
-                <p class="text-2xl font-bold text-emerald-400">{len(new_today)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-amber-500/30 bg-amber-500/10">
-                <p class="text-amber-400 text-sm mb-1">Letzte 24h</p>
-                <p class="text-2xl font-bold text-amber-400">{len(new_yesterday)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-red-500/30 bg-red-500/10">
-                <p class="text-red-400 text-sm mb-1">🚜 Fahrzeuge</p>
-                <p class="text-2xl font-bold text-red-400">{categories.get('fahrzeug', 0)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-blue-500/30 bg-blue-500/10">
-                <p class="text-blue-400 text-sm mb-1">🔧 Ersatzteile</p>
-                <p class="text-2xl font-bold text-blue-400">{categories.get('ersatzteil', 0)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-slate-600">
-                <p class="text-slate-400 text-sm mb-1">Ø Preis</p>
-                <p class="text-2xl font-bold text-white">{avg_price:,.0f}€</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-slate-600">
-                <p class="text-slate-400 text-sm mb-1">Länder</p>
-                <p class="text-2xl font-bold text-white">{len(countries)}</p>
-            </div>
-            <div class="stat-card rounded-xl p-4 border border-slate-600">
-                <p class="text-slate-400 text-sm mb-1">Marken</p>
-                <p class="text-2xl font-bold text-white">{len(brand_counts)}</p>
-            </div>
+        <!-- Loading State -->
+        <div id="loading-state" class="flex flex-col items-center justify-center py-24">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-slate-400">Lade Inserate...</p>
         </div>
 
-        <!-- Filters -->
-        <div class="glass rounded-xl p-4 mb-8 border border-slate-700">
-            <div class="flex flex-wrap items-center gap-4">
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-slate-400">Kategorie:</span>
-                    <div class="flex gap-1">
-                        <button class="filter-btn active px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="all">
-                            Alle
-                        </button>
-                        <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="fahrzeug">
-                            🚜 Fahrzeuge
-                        </button>
-                        <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="ersatzteil">
-                            🔧 Teile
-                        </button>
-                        <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="modell">
-                            🎮 Modelle
-                        </button>
+        <!-- Error State -->
+        <div id="error-state" class="hidden text-center py-24">
+            <span class="text-6xl mb-4 block">⚠️</span>
+            <p class="text-xl text-red-400" id="error-message">Fehler beim Laden</p>
+            <button onclick="loadData()" class="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-sm">Erneut versuchen</button>
+        </div>
+
+        <!-- Content (hidden until data loads) -->
+        <div id="content" class="hidden">
+            <!-- Stats Grid -->
+            <div id="stats-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8"></div>
+
+            <!-- Filters -->
+            <div class="glass rounded-xl p-4 mb-8 border border-slate-700">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-400">Kategorie:</span>
+                        <div id="category-buttons" class="flex gap-1">
+                            <button class="filter-btn active bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="all">Alle</button>
+                            <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="fahrzeug">🚜 Fahrzeuge</button>
+                            <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="ersatzteil">🔧 Teile</button>
+                            <button class="filter-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all" data-filter="modell">🎮 Modelle</button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-400">Zeitraum:</span>
+                        <select id="time-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                            <option value="all">Alle</option>
+                            <option value="today">Heute</option>
+                            <option value="24h">Letzte 24h</option>
+                            <option value="7d">Letzte 7 Tage</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-400">Land:</span>
+                        <select id="country-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                            <option value="all">Alle Länder</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-400">Marke:</span>
+                        <select id="brand-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                            <option value="all">Alle Marken</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-400">Preis:</span>
+                        <select id="price-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                            <option value="all">Alle Preise</option>
+                            <option value="0-5000">Bis 5.000€</option>
+                            <option value="5000-15000">5.000 - 15.000€</option>
+                            <option value="15000-30000">15.000 - 30.000€</option>
+                            <option value="30000-999999">Über 30.000€</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2 ml-auto">
+                        <span class="text-sm text-slate-400">Sortieren:</span>
+                        <select id="sort-select" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                            <option value="newest">Neueste zuerst</option>
+                            <option value="price-asc">Preis aufsteigend</option>
+                            <option value="price-desc">Preis absteigend</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-slate-400">Zeitraum:</span>
-                    <select id="time-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="all">Alle</option>
-                        <option value="today">Heute</option>
-                        <option value="24h">Letzte 24h</option>
-                        <option value="7d">Letzte 7 Tage</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-slate-400">Land:</span>
-                    <select id="country-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="all">Alle Länder</option>
-                        {country_options}
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-slate-400">Marke:</span>
-                    <select id="brand-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="all">Alle Marken</option>
-                        {brand_options}
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-slate-400">Preis:</span>
-                    <select id="price-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="all">Alle Preise</option>
-                        <option value="0-5000">Bis 5.000€</option>
-                        <option value="5000-15000">5.000 - 15.000€</option>
-                        <option value="15000-30000">15.000 - 30.000€</option>
-                        <option value="30000-999999">Über 30.000€</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-2 ml-auto">
-                    <span class="text-sm text-slate-400">Sortieren:</span>
-                    <select id="sort-select" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
-                        <option value="newest">Neueste zuerst</option>
-                        <option value="price-asc">Preis aufsteigend</option>
-                        <option value="price-desc">Preis absteigend</option>
-                    </select>
+                <div class="mt-3 flex items-center gap-2">
+                    <input type="text" id="search-input" placeholder="Suche nach Titel..."
+                           class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 placeholder-slate-400">
+                    <span id="result-count" class="text-sm text-slate-400"></span>
                 </div>
             </div>
 
-            <div class="mt-3 flex items-center gap-2">
-                <input type="text" id="search-input" placeholder="Suche nach Titel..."
-                       class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 placeholder-slate-400">
-                <span id="result-count" class="text-sm text-slate-400">{len(all_listings)} Ergebnisse</span>
+            <!-- Listings Grid -->
+            <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden text-center py-16">
+                <span class="text-6xl mb-4 block">🔍</span>
+                <p class="text-xl text-slate-400">Keine Inserate gefunden</p>
+                <p class="text-sm text-slate-500 mt-2">Versuche andere Filtereinstellungen</p>
             </div>
-        </div>
-
-        <!-- Listings Grid -->
-        <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {listing_cards}
-        </div>
-
-        <!-- Empty State -->
-        <div id="empty-state" class="hidden text-center py-16">
-            <span class="text-6xl mb-4 block">🔍</span>
-            <p class="text-xl text-slate-400">Keine Inserate gefunden</p>
-            <p class="text-sm text-slate-500 mt-2">Versuche andere Filtereinstellungen</p>
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="border-t border-slate-800 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500 text-sm">
-            <p>Traktor Finder • {len(all_listings)} Inserate aus {len(countries)} Ländern • {len(brand_counts)} Marken</p>
-            <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
+            <p id="footer-text">Traktor Finder</p>
+            <p class="mt-1" id="footer-update">Automatisch aktualisiert</p>
         </div>
     </footer>
 
     <script>
-        // Filter State
+        // ==================== CONFIG ====================
+        const DATA_URL = "{DATA_URL}";
+        const BRAND_NAMES = {json.dumps(brand_js_config)};
+        const BRAND_COLORS = {json.dumps(brand_colors_js)};
+        const CAT_COLORS = {{
+            'fahrzeug': 'bg-red-500',
+            'ersatzteil': 'bg-blue-500',
+            'modell': 'bg-purple-500',
+            'suchgesuch': 'bg-amber-500',
+            'sonstiges': 'bg-slate-500'
+        }};
+        const CAT_ICONS = {{
+            'fahrzeug': '🚜',
+            'ersatzteil': '🔧',
+            'modell': '🎮',
+            'suchgesuch': '🔍',
+            'sonstiges': '📦'
+        }};
+
+        // ==================== STATE ====================
+        let allListings = [];
         let currentCategory = 'all';
         let currentCountry = 'all';
         let currentBrand = 'all';
@@ -374,61 +233,224 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         let currentSort = 'newest';
         let searchQuery = '';
 
-        // Datums-Helfer
-        const today = new Date().toISOString().slice(0, 10);
-        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
-        const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+        // ==================== DATA LOADING ====================
+        async function loadData() {{
+            const loadingEl = document.getElementById('loading-state');
+            const errorEl = document.getElementById('error-state');
+            const contentEl = document.getElementById('content');
 
-        // Filter Buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {{
-            btn.addEventListener('click', function() {{
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'bg-emerald-500', 'text-white'));
-                this.classList.add('active', 'bg-emerald-500', 'text-white');
-                currentCategory = this.dataset.filter;
-                applyFilters();
+            loadingEl.classList.remove('hidden');
+            errorEl.classList.add('hidden');
+            contentEl.classList.add('hidden');
+
+            try {{
+                // Cache-Busting um immer aktuelle Daten zu bekommen
+                const url = DATA_URL + '?t=' + Date.now();
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const data = await resp.json();
+
+                // data ist ein Object {{id: listing, ...}} -> in Array umwandeln
+                allListings = Object.values(data)
+                    .filter(l => l.is_active !== false)
+                    .sort((a, b) => (b.first_seen || '').localeCompare(a.first_seen || ''));
+
+                loadingEl.classList.add('hidden');
+                contentEl.classList.remove('hidden');
+
+                buildStats();
+                buildFilterOptions();
+                renderListings();
+                updateFooter();
+
+                // Letzte Aktualisierung anzeigen
+                const lastSeen = allListings.length > 0 ? allListings[0].first_seen : '';
+                if (lastSeen) {{
+                    document.getElementById('last-updated').textContent = 'Daten: ' + lastSeen.slice(0, 10);
+                }}
+
+            }} catch (err) {{
+                loadingEl.classList.add('hidden');
+                errorEl.classList.remove('hidden');
+                document.getElementById('error-message').textContent = 'Fehler beim Laden: ' + err.message;
+                console.error('Fehler:', err);
+            }}
+        }}
+
+        // ==================== STATS ====================
+        function buildStats() {{
+            const today = new Date().toISOString().slice(0, 10);
+            const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+            const total = allListings.length;
+            const newToday = allListings.filter(l => (l.first_seen || '').startsWith(today)).length;
+            const new24h = allListings.filter(l => (l.first_seen || '') >= yesterday).length;
+
+            const categories = {{}};
+            const brands = {{}};
+            allListings.forEach(l => {{
+                const cat = l.category || 'sonstiges';
+                categories[cat] = (categories[cat] || 0) + 1;
+                const brand = l.brand || 'mb_trac';
+                brands[brand] = (brands[brand] || 0) + 1;
             }});
-        }});
 
-        // Set initial active state
-        document.querySelector('.filter-btn[data-filter="all"]').classList.add('bg-emerald-500', 'text-white');
+            const vehicles = allListings.filter(l => l.category === 'fahrzeug' && l.price_numeric > 1000);
+            const prices = vehicles.map(v => v.price_numeric).filter(Boolean);
+            const avgPrice = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+            const countries = new Set(allListings.map(l => l.country || 'XX'));
 
-        // Time Filter
-        document.getElementById('time-filter').addEventListener('change', function() {{
-            currentTime = this.value;
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card rounded-xl p-4 border border-slate-700">
+                    <p class="text-slate-400 text-sm mb-1">Gesamt</p>
+                    <p class="text-2xl font-bold text-white">${{total}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-emerald-500/30 bg-emerald-500/10">
+                    <p class="text-emerald-400 text-sm mb-1">Neu heute</p>
+                    <p class="text-2xl font-bold text-emerald-400">${{newToday}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-amber-500/30 bg-amber-500/10">
+                    <p class="text-amber-400 text-sm mb-1">Letzte 24h</p>
+                    <p class="text-2xl font-bold text-amber-400">${{new24h}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-red-500/30 bg-red-500/10">
+                    <p class="text-red-400 text-sm mb-1">🚜 Fahrzeuge</p>
+                    <p class="text-2xl font-bold text-red-400">${{categories['fahrzeug'] || 0}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-blue-500/30 bg-blue-500/10">
+                    <p class="text-blue-400 text-sm mb-1">🔧 Ersatzteile</p>
+                    <p class="text-2xl font-bold text-blue-400">${{categories['ersatzteil'] || 0}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-slate-600">
+                    <p class="text-slate-400 text-sm mb-1">Ø Preis</p>
+                    <p class="text-2xl font-bold text-white">${{avgPrice.toLocaleString('de-DE')}}€</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-slate-600">
+                    <p class="text-slate-400 text-sm mb-1">Länder</p>
+                    <p class="text-2xl font-bold text-white">${{countries.size}}</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 border border-slate-600">
+                    <p class="text-slate-400 text-sm mb-1">Marken</p>
+                    <p class="text-2xl font-bold text-white">${{Object.keys(brands).length}}</p>
+                </div>
+            `;
+        }}
+
+        // ==================== FILTER OPTIONS ====================
+        function buildFilterOptions() {{
+            // Country dropdown
+            const countryCounts = {{}};
+            allListings.forEach(l => {{
+                const c = l.country || 'XX';
+                countryCounts[c] = (countryCounts[c] || 0) + 1;
+            }});
+            const countrySelect = document.getElementById('country-filter');
+            countrySelect.innerHTML = '<option value="all">Alle Länder</option>';
+            Object.entries(countryCounts)
+                .sort((a, b) => b[1] - a[1])
+                .forEach(([code, count]) => {{
+                    countrySelect.innerHTML += `<option value="${{code}}">${{code}} (${{count}})</option>`;
+                }});
+
+            // Brand dropdown
+            const brandCounts = {{}};
+            allListings.forEach(l => {{
+                const b = l.brand || 'mb_trac';
+                brandCounts[b] = (brandCounts[b] || 0) + 1;
+            }});
+            const brandSelect = document.getElementById('brand-filter');
+            brandSelect.innerHTML = '<option value="all">Alle Marken</option>';
+            Object.entries(brandCounts)
+                .sort((a, b) => b[1] - a[1])
+                .forEach(([key, count]) => {{
+                    const name = BRAND_NAMES[key] || key;
+                    brandSelect.innerHTML += `<option value="${{key}}">${{name}} (${{count}})</option>`;
+                }});
+        }}
+
+        // ==================== RENDER LISTINGS ====================
+        function renderListings() {{
+            const today = new Date().toISOString().slice(0, 10);
+            const grid = document.getElementById('listings-grid');
+
+            // Max 300 Listings rendern
+            const toRender = allListings.slice(0, 300);
+
+            grid.innerHTML = toRender.map(listing => {{
+                const cat = listing.category || 'sonstiges';
+                const brand = listing.brand || 'mb_trac';
+                const brandName = BRAND_NAMES[brand] || brand;
+                const brandColor = BRAND_COLORS[brand] || 'bg-slate-600';
+                const catColor = CAT_COLORS[cat] || 'bg-slate-500';
+                const catIcon = CAT_ICONS[cat] || '📦';
+                const isNew = (listing.first_seen || '').startsWith(today);
+                const newRing = isNew ? 'ring-2 ring-emerald-500/50' : '';
+                const newBadge = isNew ? '<span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>' : '';
+
+                let title = (listing.title || '').substring(0, 80);
+                if ((listing.title || '').length > 80) title += '...';
+
+                const imgUrl = listing.image_url || '';
+                const fallback = '<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>';
+                const imgHtml = imgUrl
+                    ? `<img src="${{imgUrl}}" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='${{fallback}}'">`
+                    : '<div class="w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl">🚜</div>';
+
+                let priceHtml;
+                if (listing.price_numeric) {{
+                    priceHtml = `<span class="text-lg font-bold text-emerald-400">${{listing.price_numeric.toLocaleString('de-DE')}} €</span>`;
+                }} else if (listing.price) {{
+                    priceHtml = `<span class="text-lg font-bold text-emerald-400">${{listing.price}}</span>`;
+                }} else {{
+                    priceHtml = '<span class="text-slate-400">Preis auf Anfrage</span>';
+                }}
+
+                const location = listing.location || '';
+                const locationHtml = location ? `<span class="text-slate-400 text-sm">📍 ${{location}}</span>` : '';
+                const firstSeen = (listing.first_seen || '').slice(0, 10);
+
+                return `
+                <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ${{newRing}}"
+                     data-category="${{cat}}"
+                     data-country="${{listing.country || 'XX'}}"
+                     data-price="${{listing.price_numeric || 0}}"
+                     data-first-seen="${{firstSeen}}"
+                     data-brand="${{brand}}">
+                    <div class="relative">
+                        ${{imgHtml}}
+                        ${{newBadge}}
+                        <span class="absolute top-2 right-2 ${{catColor}} text-white text-xs font-medium px-2 py-1 rounded-full">
+                            ${{catIcon}} ${{cat.charAt(0).toUpperCase() + cat.slice(1)}}
+                        </span>
+                        <span class="absolute bottom-2 left-2 ${{brandColor}} text-white text-xs font-bold px-2 py-1 rounded-full">
+                            ${{brandName}}
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                            <a href="${{listing.url || '#'}}" target="_blank" rel="noopener">${{title}}</a>
+                        </h3>
+                        <div class="flex items-center justify-between mb-2">
+                            ${{priceHtml}}
+                            <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                                ${{listing.country || 'XX'}} · ${{listing.platform || ''}}
+                            </span>
+                        </div>
+                        ${{locationHtml}}
+                    </div>
+                </div>`;
+            }}).join('');
+
+            document.getElementById('result-count').textContent = allListings.length + ' Ergebnisse';
             applyFilters();
-        }});
+        }}
 
-        // Country Filter
-        document.getElementById('country-filter').addEventListener('change', function() {{
-            currentCountry = this.value;
-            applyFilters();
-        }});
-
-        // Brand Filter
-        document.getElementById('brand-filter').addEventListener('change', function() {{
-            currentBrand = this.value;
-            applyFilters();
-        }});
-
-        // Price Filter
-        document.getElementById('price-filter').addEventListener('change', function() {{
-            currentPrice = this.value;
-            applyFilters();
-        }});
-
-        // Sort
-        document.getElementById('sort-select').addEventListener('change', function() {{
-            currentSort = this.value;
-            applyFilters();
-        }});
-
-        // Search
-        document.getElementById('search-input').addEventListener('input', function() {{
-            searchQuery = this.value.toLowerCase();
-            applyFilters();
-        }});
-
+        // ==================== FILTERS ====================
         function applyFilters() {{
+            const today = new Date().toISOString().slice(0, 10);
+            const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+            const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+
             const cards = document.querySelectorAll('.listing-card');
             let visibleCount = 0;
             const cardsArray = Array.from(cards);
@@ -437,13 +459,11 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
             cardsArray.sort((a, b) => {{
                 const priceA = parseFloat(a.dataset.price) || 0;
                 const priceB = parseFloat(b.dataset.price) || 0;
-
                 if (currentSort === 'price-asc') return priceA - priceB;
                 if (currentSort === 'price-desc') return priceB - priceA;
-                return 0; // newest - keep original order
+                return 0;
             }});
 
-            // Re-append in sorted order
             const grid = document.getElementById('listings-grid');
             cardsArray.forEach(card => grid.appendChild(card));
 
@@ -458,54 +478,90 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
 
                 let visible = true;
 
-                // Time filter
                 if (currentTime === 'today' && firstSeen < today) visible = false;
                 if (currentTime === '24h' && firstSeen < yesterday) visible = false;
                 if (currentTime === '7d' && firstSeen < weekAgo) visible = false;
-
-                // Category filter
                 if (currentCategory !== 'all' && category !== currentCategory) visible = false;
-
-                // Country filter
                 if (currentCountry !== 'all' && country !== currentCountry) visible = false;
-
-                // Brand filter
                 if (currentBrand !== 'all' && brand !== currentBrand) visible = false;
-
-                // Price filter
                 if (currentPrice !== 'all') {{
                     const [min, max] = currentPrice.split('-').map(Number);
                     if (price < min || price > max) visible = false;
                 }}
-
-                // Search filter
                 if (searchQuery && !title.includes(searchQuery)) visible = false;
 
                 card.style.display = visible ? '' : 'none';
                 if (visible) visibleCount++;
             }});
 
-            // Update count
             document.getElementById('result-count').textContent = visibleCount + ' Ergebnisse';
-
-            // Empty state
             document.getElementById('empty-state').classList.toggle('hidden', visibleCount > 0);
             document.getElementById('listings-grid').classList.toggle('hidden', visibleCount === 0);
         }}
+
+        // ==================== FOOTER ====================
+        function updateFooter() {{
+            const countries = new Set(allListings.map(l => l.country || 'XX'));
+            const brands = new Set(allListings.map(l => l.brand || 'mb_trac'));
+            document.getElementById('footer-text').textContent =
+                `Traktor Finder • ${{allListings.length}} Inserate aus ${{countries.size}} Ländern • ${{brands.size}} Marken`;
+            document.getElementById('footer-update').textContent =
+                'Live-Daten von GitHub • Klicke 🔄 zum Aktualisieren';
+        }}
+
+        // ==================== EVENT LISTENERS ====================
+        document.querySelectorAll('.filter-btn').forEach(btn => {{
+            btn.addEventListener('click', function() {{
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'bg-emerald-500', 'text-white'));
+                this.classList.add('active', 'bg-emerald-500', 'text-white');
+                currentCategory = this.dataset.filter;
+                applyFilters();
+            }});
+        }});
+
+        document.getElementById('time-filter').addEventListener('change', function() {{
+            currentTime = this.value;
+            applyFilters();
+        }});
+
+        document.getElementById('country-filter').addEventListener('change', function() {{
+            currentCountry = this.value;
+            applyFilters();
+        }});
+
+        document.getElementById('brand-filter').addEventListener('change', function() {{
+            currentBrand = this.value;
+            applyFilters();
+        }});
+
+        document.getElementById('price-filter').addEventListener('change', function() {{
+            currentPrice = this.value;
+            applyFilters();
+        }});
+
+        document.getElementById('sort-select').addEventListener('change', function() {{
+            currentSort = this.value;
+            applyFilters();
+        }});
+
+        document.getElementById('search-input').addEventListener('input', function() {{
+            searchQuery = this.value.toLowerCase();
+            applyFilters();
+        }});
+
+        // ==================== INIT ====================
+        loadData();
     </script>
 </body>
 </html>
 '''
 
     output_path.write_text(html, encoding='utf-8')
-    print(f"✨ Modernes Dashboard generiert: {output_path}")
+    print(f"✨ Dashboard generiert: {output_path}")
+    print(f"   Daten werden live von {DATA_URL} geladen")
 
 
 if __name__ == "__main__":
-    from pathlib import Path
-
     BASE_DIR = Path(__file__).parent
-    DB_PATH = BASE_DIR / "data" / "mbtrac.json"
     OUTPUT_PATH = BASE_DIR / "dashboard.html"
-
-    generate_modern_dashboard(DB_PATH, OUTPUT_PATH)
+    generate_modern_dashboard(OUTPUT_PATH)

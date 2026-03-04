@@ -44,7 +44,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-slate-400">
-                        Aktualisiert: 04.03.2026 07:38
+                        Aktualisiert: 04.03.2026 07:47
                     </span>
                     <button onclick="location.reload()" class="p-2 hover:bg-slate-700 rounded-lg transition-colors" title="Aktualisieren">
                         🔄
@@ -59,15 +59,15 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
             <div class="stat-card rounded-xl p-4 border border-slate-700">
                 <p class="text-slate-400 text-sm mb-1">Gesamt</p>
-                <p class="text-2xl font-bold text-white">342</p>
+                <p class="text-2xl font-bold text-white">343</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-emerald-500/30 bg-emerald-500/10">
                 <p class="text-emerald-400 text-sm mb-1">Neu heute</p>
-                <p class="text-2xl font-bold text-emerald-400">87</p>
+                <p class="text-2xl font-bold text-emerald-400">88</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-amber-500/30 bg-amber-500/10">
                 <p class="text-amber-400 text-sm mb-1">Letzte 24h</p>
-                <p class="text-2xl font-bold text-amber-400">87</p>
+                <p class="text-2xl font-bold text-amber-400">88</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-red-500/30 bg-red-500/10">
                 <p class="text-red-400 text-sm mb-1">🚜 Fahrzeuge</p>
@@ -126,7 +126,7 @@
                     <span class="text-sm text-slate-400">Land:</span>
                     <select id="country-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
                         <option value="all">Alle Länder</option>
-                        <option value="DE">DE (232)</option>
+                        <option value="DE">DE (233)</option>
 <option value="NO">NO (34)</option>
 <option value="FR">FR (29)</option>
 <option value="NL">NL (13)</option>
@@ -149,7 +149,7 @@
                     <span class="text-sm text-slate-400">Marke:</span>
                     <select id="brand-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
                         <option value="all">Alle Marken</option>
-                        <option value="mb_trac">MB-trac (342)</option>
+                        <option value="mb_trac">MB-trac (343)</option>
                     </select>
                 </div>
 
@@ -177,13 +177,44 @@
             <div class="mt-3 flex items-center gap-2">
                 <input type="text" id="search-input" placeholder="Suche nach Titel..."
                        class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 placeholder-slate-400">
-                <span id="result-count" class="text-sm text-slate-400">342 Ergebnisse</span>
+                <span id="result-count" class="text-sm text-slate-400">343 Ergebnisse</span>
             </div>
         </div>
 
         <!-- Listings Grid -->
         <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="sonstiges"
+             data-country="DE"
+             data-price="None"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://img.kleinanzeigen.de/api/v1/prod-ads/images/ea/ea5732d2-9437-421f-bc22-8e00d0e82c4b?rule=$_2.AUTO" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-slate-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    📦 Sonstiges
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.kleinanzeigen.de/s-anzeige/john-deere-6310-premium-traktor-schlepper/3317395360-276-7452" target="_blank" rel="noopener">John Deere 6310 Premium Traktor Schlepper</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-lg font-bold text-emerald-400">VB</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        DE · eBay Kleinanzeigen (John Deere)
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
         <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
              data-category="sonstiges"
              data-country="HR"
@@ -9452,37 +9483,6 @@
             </div>
         </div>
         
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="fahrzeug"
-             data-country="DK"
-             data-price="None"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://images.dbastatic.dk/dynamic/480w/53/5365d69c-2c7e-497b-9f78-e01ecf3672ec" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    🚜 Fahrzeug
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.dba.dk/recommerce/forsale/item/8940088" target="_blank" rel="noopener">Brochure MB trac 65/70</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-slate-400">Preis auf Anfrage</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DK · DBA.dk
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
         </div>
 
         <!-- Empty State -->
@@ -9496,8 +9496,8 @@
     <!-- Footer -->
     <footer class="border-t border-slate-800 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500 text-sm">
-            <p>Traktor Finder • 342 Inserate aus 16 Ländern • 1 Marken</p>
-            <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: 04.03.2026 07:38</p>
+            <p>Traktor Finder • 343 Inserate aus 16 Ländern • 1 Marken</p>
+            <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: 04.03.2026 07:47</p>
         </div>
     </footer>
 

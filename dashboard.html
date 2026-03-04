@@ -44,7 +44,7 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-slate-400">
-                        Aktualisiert: 04.03.2026 07:47
+                        Aktualisiert: 04.03.2026 07:57
                     </span>
                     <button onclick="location.reload()" class="p-2 hover:bg-slate-700 rounded-lg transition-colors" title="Aktualisieren">
                         🔄
@@ -59,27 +59,27 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
             <div class="stat-card rounded-xl p-4 border border-slate-700">
                 <p class="text-slate-400 text-sm mb-1">Gesamt</p>
-                <p class="text-2xl font-bold text-white">343</p>
+                <p class="text-2xl font-bold text-white">348</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-emerald-500/30 bg-emerald-500/10">
                 <p class="text-emerald-400 text-sm mb-1">Neu heute</p>
-                <p class="text-2xl font-bold text-emerald-400">88</p>
+                <p class="text-2xl font-bold text-emerald-400">93</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-amber-500/30 bg-amber-500/10">
                 <p class="text-amber-400 text-sm mb-1">Letzte 24h</p>
-                <p class="text-2xl font-bold text-amber-400">88</p>
+                <p class="text-2xl font-bold text-amber-400">93</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-red-500/30 bg-red-500/10">
                 <p class="text-red-400 text-sm mb-1">🚜 Fahrzeuge</p>
-                <p class="text-2xl font-bold text-red-400">107</p>
+                <p class="text-2xl font-bold text-red-400">109</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-blue-500/30 bg-blue-500/10">
                 <p class="text-blue-400 text-sm mb-1">🔧 Ersatzteile</p>
-                <p class="text-2xl font-bold text-blue-400">164</p>
+                <p class="text-2xl font-bold text-blue-400">165</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-slate-600">
                 <p class="text-slate-400 text-sm mb-1">Ø Preis</p>
-                <p class="text-2xl font-bold text-white">41,803€</p>
+                <p class="text-2xl font-bold text-white">43,728€</p>
             </div>
             <div class="stat-card rounded-xl p-4 border border-slate-600">
                 <p class="text-slate-400 text-sm mb-1">Länder</p>
@@ -126,14 +126,14 @@
                     <span class="text-sm text-slate-400">Land:</span>
                     <select id="country-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
                         <option value="all">Alle Länder</option>
-                        <option value="DE">DE (233)</option>
+                        <option value="DE">DE (236)</option>
 <option value="NO">NO (34)</option>
 <option value="FR">FR (29)</option>
 <option value="NL">NL (13)</option>
-<option value="HR">HR (6)</option>
+<option value="HR">HR (7)</option>
 <option value="BE">BE (6)</option>
 <option value="DK">DK (5)</option>
-<option value="PL">PL (3)</option>
+<option value="PL">PL (4)</option>
 <option value="GR">GR (3)</option>
 <option value="FI">FI (3)</option>
 <option value="BG">BG (2)</option>
@@ -149,7 +149,7 @@
                     <span class="text-sm text-slate-400">Marke:</span>
                     <select id="brand-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
                         <option value="all">Alle Marken</option>
-                        <option value="mb_trac">MB-trac (343)</option>
+                        <option value="mb_trac">MB-trac (348)</option>
                     </select>
                 </div>
 
@@ -177,13 +177,168 @@
             <div class="mt-3 flex items-center gap-2">
                 <input type="text" id="search-input" placeholder="Suche nach Titel..."
                        class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-emerald-500 placeholder-slate-400">
-                <span id="result-count" class="text-sm text-slate-400">343 Ergebnisse</span>
+                <span id="result-count" class="text-sm text-slate-400">348 Ergebnisse</span>
             </div>
         </div>
 
         <!-- Listings Grid -->
         <div id="listings-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="sonstiges"
+             data-country="HR"
+             data-price="None"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://www.njuskalo.hr/logo-140x140/agronompozega-logo2-1817597.jpg?quality=100" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-slate-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    📦 Sonstiges
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.njuskalo.hr/tvrtka/agronom-doo" target="_blank" rel="noopener">TRAKTOR NEW HOLLAND T6.120 - RABLJENI - POVOLJNO !!!!!!</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-400">Preis auf Anfrage</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        HR · Njuskalo.hr
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="sonstiges"
+             data-country="PL"
+             data-price="None"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://ireland.apollo.olxcdn.com/v1/files/2nocoi1wigqc1-OTOMOTOPL/image;s=644x461" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-slate-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    📦 Sonstiges
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.otomoto.pl/maszyny-rolnicze/oferta/fendt-720-vario-tms-tuz-wom-power-722-724-718-ID6HWWV4.html" target="_blank" rel="noopener">Fendt 720 Vario TMS TUZ WOM Power  722 724 718</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-400">Preis auf Anfrage</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        PL · Otomoto.pl
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="fahrzeug"
+             data-country="DE"
+             data-price="89400.0"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://img.kleinanzeigen.de/api/v1/prod-ads/images/aa/aaa5bee3-f79a-44c5-a300-07b9b89306c3?rule=$_2.AUTO" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    🚜 Fahrzeug
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.kleinanzeigen.de/s-anzeige/fendt-traktor-718/3342196132-276-7446" target="_blank" rel="noopener">Fendt Traktor 718</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-lg font-bold text-emerald-400">89.400 €</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        DE · eBay Kleinanzeigen (Fendt)
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="fahrzeug"
+             data-country="DE"
+             data-price="130900.0"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://img.kleinanzeigen.de/api/v1/prod-ads/images/a5/a50cef98-2dfc-4461-ae10-39d44ea5194c?rule=$_2.AUTO" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    🚜 Fahrzeug
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.kleinanzeigen.de/s-anzeige/fendt-718-vario-s4-profi-plus-traktor/3342212994-276-7445" target="_blank" rel="noopener">Fendt 718 VARIO S4 PROFI PLUS Traktor</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-lg font-bold text-emerald-400">130.900 €</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        DE · eBay Kleinanzeigen (Fendt)
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
+        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
+             data-category="ersatzteil"
+             data-country="DE"
+             data-price="4000.0"
+             data-first-seen="2026-03-04"
+             data-brand="mb_trac">
+            <div class="relative">
+                <img src="https://img.kleinanzeigen.de/api/v1/prod-ads/images/2c/2c9d8e8c-5e8f-4f85-9f50-272f2b50718c?rule=$_2.AUTO" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
+                <span class="absolute top-2 left-2 bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEU</span>
+                <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full">
+                    🔧 Ersatzteil
+                </span>
+                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    MB-trac
+                </span>
+            </div>
+            <div class="p-4">
+                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
+                    <a href="https://www.kleinanzeigen.de/s-anzeige/fendt-traktor-reifen-718-800-serie-spur-225-profil-30-/3342224853-223-8045" target="_blank" rel="noopener">Fendt Traktor Reifen 718/800 Serie Spur 225 Profil 30%</a>
+                </h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-lg font-bold text-emerald-400">4.000 €</span>
+                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
+                        DE · eBay Kleinanzeigen (Fendt)
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+        
+
         <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 ring-2 ring-emerald-500/50"
              data-category="sonstiges"
              data-country="DE"
@@ -9328,161 +9483,6 @@
             </div>
         </div>
         
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="ersatzteil"
-             data-country="DE"
-             data-price="80.0"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://img.kleinanzeigen.de/api/v1/prod-ads/images/71/711443fb-43cc-433f-bfaf-d174dddb99b0?rule=$_2.AUTO" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    🔧 Ersatzteil
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.kleinanzeigen.de/s-anzeige/mb-trac-kabinenlager-satz-gebraucht/3318015446-276-1546" target="_blank" rel="noopener">Mb Trac Kabinenlager Satz gebraucht</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-lg font-bold text-emerald-400">80 €</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DE · eBay Kleinanzeigen
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="sonstiges"
-             data-country="DK"
-             data-price="None"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://images.dbastatic.dk/dynamic/480w/item/17184163/e4af1272-ffde-41df-99fe-3fe7bec7f9f3" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-slate-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    📦 Sonstiges
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.dba.dk/recommerce/forsale/item/17184163" target="_blank" rel="noopener">Unimog 406</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-slate-400">Preis auf Anfrage</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DK · DBA.dk
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="fahrzeug"
-             data-country="DK"
-             data-price="None"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://images.dbastatic.dk/dynamic/480w/4b/4bf8ca40-bb00-4074-8399-520f71ced413" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    🚜 Fahrzeug
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.dba.dk/recommerce/forsale/item/9034659" target="_blank" rel="noopener">SOLGT / Britains MB Trac 1500 Modeltraktor</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-slate-400">Preis auf Anfrage</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DK · DBA.dk
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="modell"
-             data-country="DK"
-             data-price="None"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://images.dbastatic.dk/dynamic/480w/2024/11/vertical-0/19/1/314/961_83991947-aebe-4f71-ad33-498cfdd23eb1.jpg" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-purple-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    🎮 Modell
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.dba.dk/recommerce/forsale/item/314961" target="_blank" rel="noopener">Modellastbil. Mercedes Benz. MB Trac 800. Siku.</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-slate-400">Preis auf Anfrage</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DK · DBA.dk
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
-
-        <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 "
-             data-category="fahrzeug"
-             data-country="DK"
-             data-price="None"
-             data-first-seen="2026-02-05"
-             data-brand="mb_trac">
-            <div class="relative">
-                <img src="https://images.dbastatic.dk/dynamic/480w/item/17692124/bed3db47-685a-44bd-8ee7-81d5e23c2c6e" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>'">
-                
-                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-full">
-                    🚜 Fahrzeug
-                </span>
-                <span class="absolute bottom-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    MB-trac
-                </span>
-            </div>
-            <div class="p-4">
-                <h3 class="font-semibold text-white mb-2 line-clamp-2 group-hover:text-emerald-400 transition-colors">
-                    <a href="https://www.dba.dk/recommerce/forsale/item/17692124" target="_blank" rel="noopener">MB TRAC 1300 MED CLAAS Balle Presser Fra GAMA</a>
-                </h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-slate-400">Preis auf Anfrage</span>
-                    <span class="text-xs bg-slate-700 px-2 py-1 rounded text-slate-300">
-                        DK · DBA.dk
-                    </span>
-                </div>
-                
-            </div>
-        </div>
-        
         </div>
 
         <!-- Empty State -->
@@ -9496,8 +9496,8 @@
     <!-- Footer -->
     <footer class="border-t border-slate-800 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500 text-sm">
-            <p>Traktor Finder • 343 Inserate aus 16 Ländern • 1 Marken</p>
-            <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: 04.03.2026 07:47</p>
+            <p>Traktor Finder • 348 Inserate aus 16 Ländern • 1 Marken</p>
+            <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: 04.03.2026 07:57</p>
         </div>
     </footer>
 

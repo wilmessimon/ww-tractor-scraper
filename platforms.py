@@ -74,6 +74,55 @@ EXTENDED_SEARCH_TERMS = DEFAULT_SEARCH_TERMS + MISSPELLED_SEARCH_TERMS + [
 # ==========================================
 ALL_BRAND_KEYS = [k for k in BRANDS.keys() if k != "mb_trac"]
 
+
+# ==========================================
+# HELPER: Brand-URLs automatisch generieren
+# ==========================================
+
+def _mascus_brand_urls(domain: str) -> dict:
+    """Generiert brand_search_urls für eine Mascus-Länderversion."""
+    base = f"https://www.mascus.{domain}"
+    return {
+        "fendt": f"{base}/fendt/+/1,relevance,search.html",
+        "john_deere": f"{base}/john%20deere/+/1,relevance,search.html",
+        "deutz": f"{base}/deutz/+/1,relevance,search.html",
+        "ihc": f"{base}/ihc/+/1,relevance,search.html",
+        "case_ih": f"{base}/case%20ih/+/1,relevance,search.html",
+        "fiat": f"{base}/fiat%20traktor/+/1,relevance,search.html",
+        "new_holland": f"{base}/new%20holland/+/1,relevance,search.html",
+        "claas_xerion": f"{base}/claas%20xerion/+/1,relevance,search.html",
+    }
+
+
+def _kleinanzeigen_brand_urls(base_url: str, suffix: str = "") -> dict:
+    """Generiert brand_search_urls für Kleinanzeigen-ähnliche Plattformen."""
+    return {
+        "fendt": f"{base_url}/q/fendt+traktor/{suffix}",
+        "john_deere": f"{base_url}/q/john+deere+traktor/{suffix}",
+        "deutz": f"{base_url}/q/deutz+traktor/{suffix}",
+        "ihc": f"{base_url}/q/ihc+traktor/{suffix}",
+        "case_ih": f"{base_url}/q/case+ih+traktor/{suffix}",
+        "fiat": f"{base_url}/q/fiat+traktor/{suffix}",
+        "new_holland": f"{base_url}/q/new+holland+traktor/{suffix}",
+        "claas_xerion": f"{base_url}/q/claas+xerion/{suffix}",
+    }
+
+
+def _subito_brand_urls() -> dict:
+    """Brand-URLs für Subito.it."""
+    base = "https://www.subito.it/annunci-italia/vendita/usato/?q="
+    return {
+        "fendt": f"{base}fendt+trattore",
+        "john_deere": f"{base}john+deere+trattore",
+        "deutz": f"{base}deutz+trattore",
+        "ihc": f"{base}ihc+trattore",
+        "case_ih": f"{base}case+ih+trattore",
+        "fiat": f"{base}fiat+trattore",
+        "new_holland": f"{base}new+holland+trattore",
+        "claas_xerion": f"{base}claas+xerion",
+    }
+
+
 PLATFORMS = {
     # ==========================================
     # DACH + BENELUX
@@ -115,7 +164,17 @@ PLATFORMS = {
                 "search_url": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-MercedesBenz/337/model/MB+Trac/",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-Fendt/116/",
+                    "john_deere": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-JohnDeere/224/",
+                    "deutz": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-Deutz-Fahr/109/",
+                    "ihc": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-IHC/197/",
+                    "case_ih": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-CaseIH/92/",
+                    "fiat": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-Fiat/117/",
+                    "new_holland": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-NewHolland/349/",
+                    "claas_xerion": "https://www.traktorpool.de/gebraucht/a-Traktoren/24/b-Traktoren/95/c-Claas/97/model/Xerion/",
+                },
             },
             {
                 "name": "Technikboerse",
@@ -123,7 +182,17 @@ PLATFORMS = {
                 "search_url": "https://www.technikboerse.com/en/marke/mercedes-benz-791",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB-trac", "Mercedes-Benz"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.technikboerse.com/en/marke/fendt-117",
+                    "john_deere": "https://www.technikboerse.com/en/marke/john-deere-226",
+                    "deutz": "https://www.technikboerse.com/en/marke/deutz-fahr-110",
+                    "ihc": "https://www.technikboerse.com/en/marke/ihc-200",
+                    "case_ih": "https://www.technikboerse.com/en/marke/case-ih-93",
+                    "fiat": "https://www.technikboerse.com/en/marke/fiat-118",
+                    "new_holland": "https://www.technikboerse.com/en/marke/new-holland-351",
+                    "claas_xerion": "https://www.technikboerse.com/en/marke/claas-99",
+                },
             },
             {
                 "name": "Landwirt.com",
@@ -131,7 +200,17 @@ PLATFORMS = {
                 "search_url": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/mercedes",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB-trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/fendt",
+                    "john_deere": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/john-deere",
+                    "deutz": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/deutz-fahr",
+                    "ihc": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/case-ih",
+                    "case_ih": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/case-ih",
+                    "fiat": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/fiat",
+                    "new_holland": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/new-holland",
+                    "claas_xerion": "https://www.landwirt.com/en/classifieds/tractors/agricultural-tractors/claas",
+                },
             },
             {
                 "name": "Mascus.de",
@@ -140,16 +219,7 @@ PLATFORMS = {
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
                 "priority": "high",
-                "brand_search_urls": {
-                    "fendt": "https://www.mascus.de/fendt/+/1,relevance,search.html",
-                    "john_deere": "https://www.mascus.de/john%20deere/+/1,relevance,search.html",
-                    "deutz": "https://www.mascus.de/deutz/+/1,relevance,search.html",
-                    "ihc": "https://www.mascus.de/ihc/+/1,relevance,search.html",
-                    "case_ih": "https://www.mascus.de/case%20ih/+/1,relevance,search.html",
-                    "fiat": "https://www.mascus.de/fiat%20traktor/+/1,relevance,search.html",
-                    "new_holland": "https://www.mascus.de/new%20holland%20tm/+/1,relevance,search.html",
-                    "claas_xerion": "https://www.mascus.de/claas%20xerion/+/1,relevance,search.html",
-                }
+                "brand_search_urls": _mascus_brand_urls("de"),
             },
             {
                 "name": "TruckScout24",
@@ -193,6 +263,9 @@ PLATFORMS = {
                     "deutz": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=deutz+traktor",
                     "ihc": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=ihc+traktor",
                     "case_ih": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=case+ih+traktor",
+                    "fiat": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=fiat+traktor",
+                    "new_holland": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=new+holland+traktor",
+                    "claas_xerion": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=claas+xerion",
                 }
             },
             {
@@ -249,6 +322,10 @@ PLATFORMS = {
                     "john_deere": "https://www.marktplaats.nl/q/john+deere+traktor/",
                     "deutz": "https://www.marktplaats.nl/q/deutz+traktor/",
                     "ihc": "https://www.marktplaats.nl/q/ihc+traktor/",
+                    "case_ih": "https://www.marktplaats.nl/q/case+ih+traktor/",
+                    "fiat": "https://www.marktplaats.nl/q/fiat+traktor/",
+                    "new_holland": "https://www.marktplaats.nl/q/new+holland+traktor/",
+                    "claas_xerion": "https://www.marktplaats.nl/q/claas+xerion/",
                 }
             },
             {
@@ -257,7 +334,17 @@ PLATFORMS = {
                 "search_url": "https://www.trucksnl.com/farm-tractors/mb-trac",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": {
+                    "fendt": "https://www.trucksnl.com/farm-tractors/fendt",
+                    "john_deere": "https://www.trucksnl.com/farm-tractors/john-deere",
+                    "deutz": "https://www.trucksnl.com/farm-tractors/deutz-fahr",
+                    "ihc": "https://www.trucksnl.com/farm-tractors/case-ih",
+                    "case_ih": "https://www.trucksnl.com/farm-tractors/case-ih",
+                    "fiat": "https://www.trucksnl.com/farm-tractors/fiat",
+                    "new_holland": "https://www.trucksnl.com/farm-tractors/new-holland",
+                    "claas_xerion": "https://www.trucksnl.com/farm-tractors/claas",
+                },
             },
             {
                 "name": "Mascus.nl",
@@ -265,7 +352,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.nl/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("nl")
             }
         ]
     },
@@ -278,7 +366,17 @@ PLATFORMS = {
                 "search_url": "https://www.2dehands.be/q/mb+trac/",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.2dehands.be/q/fendt+traktor/",
+                    "john_deere": "https://www.2dehands.be/q/john+deere+traktor/",
+                    "deutz": "https://www.2dehands.be/q/deutz+traktor/",
+                    "ihc": "https://www.2dehands.be/q/ihc+traktor/",
+                    "case_ih": "https://www.2dehands.be/q/case+ih+traktor/",
+                    "fiat": "https://www.2dehands.be/q/fiat+traktor/",
+                    "new_holland": "https://www.2dehands.be/q/new+holland+traktor/",
+                    "claas_xerion": "https://www.2dehands.be/q/claas+xerion/",
+                },
             },
             {
                 "name": "Mascus.be",
@@ -286,7 +384,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.be/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("be")
             }
         ]
     },
@@ -311,7 +410,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.no/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac", "traktor"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("no")
             }
         ]
     },
@@ -340,7 +440,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.se/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": _mascus_brand_urls("se")
             }
         ]
     },
@@ -369,7 +470,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.fi/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": _mascus_brand_urls("fi")
             }
         ]
     },
@@ -398,7 +500,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.dk/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("dk")
             }
         ]
     },
@@ -423,7 +526,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.co.uk/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("co.uk")
             },
             {
                 "name": "Auto Trader Farm",
@@ -460,7 +564,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.ie/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("ie")
             },
             {
                 "name": "Farm And Plant",
@@ -497,7 +602,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.fr/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("fr")
             }
         ]
     },
@@ -530,7 +636,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.es/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("es")
             }
         ]
     },
@@ -582,7 +689,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.it/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("it")
             }
         ]
     },
@@ -603,7 +711,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.gr/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": _mascus_brand_urls("gr")
             }
         ]
     },
@@ -636,7 +745,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.pl/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("pl")
             },
             {
                 "name": "Otomoto.pl",
@@ -644,7 +754,17 @@ PLATFORMS = {
                 "search_url": "https://www.otomoto.pl/maszyny-rolnicze/traktory",
                 "type": "fahrzeug_portal",
                 "search_terms": ["MB trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": {
+                    "fendt": "https://www.otomoto.pl/maszyny-rolnicze/traktory/fendt",
+                    "john_deere": "https://www.otomoto.pl/maszyny-rolnicze/traktory/john-deere",
+                    "deutz": "https://www.otomoto.pl/maszyny-rolnicze/traktory/deutz-fahr",
+                    "ihc": "https://www.otomoto.pl/maszyny-rolnicze/traktory/case-ih",
+                    "case_ih": "https://www.otomoto.pl/maszyny-rolnicze/traktory/case-ih",
+                    "fiat": "https://www.otomoto.pl/maszyny-rolnicze/traktory/fiat",
+                    "new_holland": "https://www.otomoto.pl/maszyny-rolnicze/traktory/new-holland",
+                    "claas_xerion": "https://www.otomoto.pl/maszyny-rolnicze/traktory/claas",
+                },
             }
         ]
     },
@@ -665,7 +785,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.cz/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("cz")
             },
             {
                 "name": "Sbazar.cz",
@@ -694,7 +815,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.sk/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("sk")
             }
         ]
     },
@@ -715,7 +837,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.hu/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("hu")
             },
             {
                 "name": "Traktorpool.hu",
@@ -752,7 +875,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.ro/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("ro")
             }
         ]
     },
@@ -819,7 +943,17 @@ PLATFORMS = {
                 "search_url": "https://www.njuskalo.hr/traktori?keywords=mb+trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "traktor"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.njuskalo.hr/traktori?keywords=fendt",
+                    "john_deere": "https://www.njuskalo.hr/traktori?keywords=john+deere",
+                    "deutz": "https://www.njuskalo.hr/traktori?keywords=deutz",
+                    "ihc": "https://www.njuskalo.hr/traktori?keywords=ihc",
+                    "case_ih": "https://www.njuskalo.hr/traktori?keywords=case+ih",
+                    "fiat": "https://www.njuskalo.hr/traktori?keywords=fiat",
+                    "new_holland": "https://www.njuskalo.hr/traktori?keywords=new+holland",
+                    "claas_xerion": "https://www.njuskalo.hr/traktori?keywords=claas+xerion",
+                },
             },
             {
                 "name": "Mascus.hr",
@@ -827,7 +961,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.hr/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("hr")
             }
         ]
     },
@@ -856,7 +991,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.rs/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "brand_search_urls": _mascus_brand_urls("rs")
             }
         ]
     },
@@ -885,7 +1021,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.si/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("si")
             }
         ]
     },
@@ -910,7 +1047,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.ee/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("ee")
             },
             {
                 "name": "Auto24.ee",
@@ -939,7 +1077,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.lv/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("lv")
             }
         ]
     },
@@ -968,7 +1107,8 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.lt/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": _mascus_brand_urls("lt")
             }
         ]
     },

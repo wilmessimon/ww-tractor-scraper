@@ -864,6 +864,48 @@ class SubitoScraper(BaseScraper):
     __NEXT_DATA__ JSON statt im regulären HTML.
     """
 
+    def fetch_page(self, url: str, params: Dict = None, max_retries: int = 2) -> Optional[BeautifulSoup]:
+        """
+        Überschriebene fetch_page für Subito.it.
+        Subito liefert Brotli-komprimierte Responses, die requests ohne
+        das brotli-Paket nicht dekodieren kann. Wir fordern explizit nur
+        gzip/deflate an und setzen Subito-spezifische Headers.
+        """
+        for attempt in range(max_retries + 1):
+            try:
+                if attempt > 0:
+                    delay = random.uniform(1.0, 3.0)
+                    time.sleep(delay)
+
+                headers = get_random_headers()
+                # Kein Brotli akzeptieren - nur gzip/deflate
+                headers['Accept-Encoding'] = 'gzip, deflate'
+                headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                headers['Accept-Language'] = 'it-IT,it;q=0.9,en;q=0.8'
+                self.session.headers.update(headers)
+
+                response = self.session.get(url, params=params, timeout=30)
+
+                if response.status_code in [403, 429]:
+                    if attempt < max_retries:
+                        logger.debug(f"{self.name}: Status {response.status_code}, Retry {attempt + 1}...")
+                        continue
+                    else:
+                        response.raise_for_status()
+
+                response.raise_for_status()
+
+                # Sicherstellen dass der Content als Text dekodiert wird
+                response.encoding = response.apparent_encoding or 'utf-8'
+                return BeautifulSoup(response.text, 'html.parser')
+
+            except requests.RequestException as e:
+                if attempt == max_retries:
+                    logger.error(f"Fehler beim Laden von {url}: {e}")
+                    return None
+
+        return None
+
     def scrape(self) -> List[Listing]:
         listings = []
         soup = self.fetch_page(self.search_url)

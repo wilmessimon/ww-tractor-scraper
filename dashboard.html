@@ -355,7 +355,7 @@
                 const imgUrl = listing.image_url || '';
                 const fallback = '<div class=&quot;w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl&quot;>🚜</div>';
                 const imgHtml = imgUrl
-                    ? `<img src="${imgUrl}" alt="" class="w-full h-48 object-cover" loading="lazy" onerror="this.parentElement.innerHTML='${fallback}'">`
+                    ? `<img src="${imgUrl}" alt="" class="w-full h-48 object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='${fallback}'">`
                     : '<div class="w-full h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-4xl">🚜</div>';
 
                 let priceHtml;

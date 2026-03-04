@@ -1,7 +1,10 @@
 """
-MB-trac Scraper - Europäische Plattform-Datenbank
-Konsolidierte Liste aller Plattformen für gebrauchte Landmaschinen/Traktoren in Europa
+Traktor-Scraper - Europäische Plattform-Datenbank
+Konsolidierte Liste aller Plattformen für gebrauchte Landmaschinen/Traktoren in Europa.
+Unterstützt MB-trac und weitere Marken (definiert in brands.py).
 """
+
+from brands import BRANDS
 
 # ==========================================
 # ZENTRALE SUCHBEGRIFF-KONFIGURATION
@@ -66,6 +69,11 @@ EXTENDED_SEARCH_TERMS = DEFAULT_SEARCH_TERMS + MISSPELLED_SEARCH_TERMS + [
     "MB-trac 1600", "MB-trac 1800", "WF Trac", "Unimog"
 ]
 
+# ==========================================
+# ALLE VERFÜGBAREN MARKEN (aus brands.py)
+# ==========================================
+ALL_BRAND_KEYS = [k for k in BRANDS.keys() if k != "mb_trac"]
+
 PLATFORMS = {
     # ==========================================
     # DACH + BENELUX
@@ -80,7 +88,17 @@ PLATFORMS = {
                 "search_url": "https://www.kleinanzeigen.de/s-mb-trac/k0",
                 "type": "kleinanzeigen",
                 "search_terms": DEFAULT_SEARCH_TERMS,
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.kleinanzeigen.de/s-fendt-traktor/k0",
+                    "john_deere": "https://www.kleinanzeigen.de/s-john-deere-traktor/k0",
+                    "deutz": "https://www.kleinanzeigen.de/s-deutz-traktor/k0",
+                    "ihc": "https://www.kleinanzeigen.de/s-ihc-traktor/k0",
+                    "case_ih": "https://www.kleinanzeigen.de/s-case-ih-traktor/k0",
+                    "fiat": "https://www.kleinanzeigen.de/s-fiat-traktor/k0",
+                    "new_holland": "https://www.kleinanzeigen.de/s-new-holland-traktor/k0",
+                    "claas_xerion": "https://www.kleinanzeigen.de/s-claas-xerion/k0",
+                }
             },
             {
                 # Zweite Suche für Modell 1600 (oft separat gelistet)
@@ -121,7 +139,17 @@ PLATFORMS = {
                 "search_url": "https://www.mascus.de/mb%20trac/+/1,relevance,search.html",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB Trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.mascus.de/fendt/+/1,relevance,search.html",
+                    "john_deere": "https://www.mascus.de/john%20deere/+/1,relevance,search.html",
+                    "deutz": "https://www.mascus.de/deutz/+/1,relevance,search.html",
+                    "ihc": "https://www.mascus.de/ihc/+/1,relevance,search.html",
+                    "case_ih": "https://www.mascus.de/case%20ih/+/1,relevance,search.html",
+                    "fiat": "https://www.mascus.de/fiat%20traktor/+/1,relevance,search.html",
+                    "new_holland": "https://www.mascus.de/new%20holland%20tm/+/1,relevance,search.html",
+                    "claas_xerion": "https://www.mascus.de/claas%20xerion/+/1,relevance,search.html",
+                }
             },
             {
                 "name": "TruckScout24",
@@ -158,7 +186,14 @@ PLATFORMS = {
                 "search_url": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=mb+trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB Trac", "MB-trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=fendt+traktor",
+                    "john_deere": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=john+deere+traktor",
+                    "deutz": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=deutz+traktor",
+                    "ihc": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=ihc+traktor",
+                    "case_ih": "https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz?keyword=case+ih+traktor",
+                }
             },
             {
                 "name": "Maschinensucher.at",
@@ -208,7 +243,13 @@ PLATFORMS = {
                 "search_url": "https://www.marktplaats.nl/q/mb+trac/",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "Mercedes trac"],
-                "priority": "high"
+                "priority": "high",
+                "brand_search_urls": {
+                    "fendt": "https://www.marktplaats.nl/q/fendt+traktor/",
+                    "john_deere": "https://www.marktplaats.nl/q/john+deere+traktor/",
+                    "deutz": "https://www.marktplaats.nl/q/deutz+traktor/",
+                    "ihc": "https://www.marktplaats.nl/q/ihc+traktor/",
+                }
             },
             {
                 "name": "TrucksNL",

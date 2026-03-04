@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List
+from brands import BRANDS, get_brand_display_name
 
 def generate_modern_dashboard(db_path: Path, output_path: Path):
     """Generiert ein modernes HTML-Dashboard"""
@@ -26,15 +27,19 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
     # Statistiken
     new_today = [l for l in all_listings if l.get('first_seen', '').startswith(today)]
 
-    # Kategorien zählen
+    # Kategorien, Länder und Marken zählen
     categories = {}
     countries = {}
+    brand_counts = {}
     for l in all_listings:
         cat = l.get('category', 'sonstiges')
         categories[cat] = categories.get(cat, 0) + 1
 
         country = l.get('country', 'XX')
         countries[country] = countries.get(country, 0) + 1
+
+        brand = l.get('brand', 'mb_trac')
+        brand_counts[brand] = brand_counts.get(brand, 0) + 1
 
     # Fahrzeuge mit Preis
     vehicles = [l for l in all_listings
@@ -105,17 +110,36 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         first_seen = listing.get('first_seen', '')[:10]
         new_ring = 'ring-2 ring-emerald-500/50' if is_new else ''
 
+        brand_key = listing.get('brand', 'mb_trac')
+        brand_display = get_brand_display_name(brand_key)
+        brand_colors = {
+            'mb_trac': 'bg-red-600',
+            'fendt': 'bg-green-600',
+            'john_deere': 'bg-yellow-600',
+            'deutz': 'bg-cyan-600',
+            'ihc': 'bg-orange-600',
+            'case_ih': 'bg-rose-600',
+            'fiat': 'bg-indigo-600',
+            'new_holland': 'bg-sky-600',
+            'claas_xerion': 'bg-lime-600',
+        }
+        brand_color = brand_colors.get(brand_key, 'bg-slate-600')
+
         return f'''
         <div class="listing-card group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-slate-500 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/50 hover:-translate-y-1 {new_ring}"
              data-category="{cat}"
              data-country="{listing.get('country', 'XX')}"
              data-price="{listing.get('price_numeric', 0)}"
-             data-first-seen="{first_seen}">
+             data-first-seen="{first_seen}"
+             data-brand="{brand_key}">
             <div class="relative">
                 {img_html}
                 {new_badge}
                 <span class="absolute top-2 right-2 {cat_colors.get(cat, 'bg-slate-500')} text-white text-xs font-medium px-2 py-1 rounded-full">
                     {cat_icons.get(cat, '📦')} {cat.title()}
+                </span>
+                <span class="absolute bottom-2 left-2 {brand_color} text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {brand_display}
                 </span>
             </div>
             <div class="p-4">
@@ -145,12 +169,18 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         for code, count in sorted(countries.items(), key=lambda x: -x[1])
     ])
 
+    # Brand options für Filter
+    brand_options = '\n'.join([
+        f'<option value="{key}">{get_brand_display_name(key)} ({count})</option>'
+        for key, count in sorted(brand_counts.items(), key=lambda x: -x[1])
+    ])
+
     html = f'''<!DOCTYPE html>
 <html lang="de" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MB-trac Finder</title>
+    <title>Traktor Finder</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,7 +215,7 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
                 <div class="flex items-center gap-3">
                     <span class="text-3xl">🚜</span>
                     <div>
-                        <h1 class="text-xl font-bold text-white">MB-trac Finder</h1>
+                        <h1 class="text-xl font-bold text-white">Traktor Finder</h1>
                         <p class="text-xs text-slate-400">Europaweit Inserate finden</p>
                     </div>
                 </div>
@@ -232,6 +262,10 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
                 <p class="text-slate-400 text-sm mb-1">Länder</p>
                 <p class="text-2xl font-bold text-white">{len(countries)}</p>
             </div>
+            <div class="stat-card rounded-xl p-4 border border-slate-600">
+                <p class="text-slate-400 text-sm mb-1">Marken</p>
+                <p class="text-2xl font-bold text-white">{len(brand_counts)}</p>
+            </div>
         </div>
 
         <!-- Filters -->
@@ -270,6 +304,14 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
                     <select id="country-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
                         <option value="all">Alle Länder</option>
                         {country_options}
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-slate-400">Marke:</span>
+                    <select id="brand-filter" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-emerald-500">
+                        <option value="all">Alle Marken</option>
+                        {brand_options}
                     </select>
                 </div>
 
@@ -317,7 +359,7 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
     <!-- Footer -->
     <footer class="border-t border-slate-800 mt-16">
         <div class="max-w-7xl mx-auto px-4 py-8 text-center text-slate-500 text-sm">
-            <p>MB-trac Finder • {len(all_listings)} Inserate aus {len(countries)} Ländern</p>
+            <p>Traktor Finder • {len(all_listings)} Inserate aus {len(countries)} Ländern • {len(brand_counts)} Marken</p>
             <p class="mt-1">Automatisch aktualisiert • Letzte Aktualisierung: {datetime.now().strftime('%d.%m.%Y %H:%M')}</p>
         </div>
     </footer>
@@ -326,6 +368,7 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         // Filter State
         let currentCategory = 'all';
         let currentCountry = 'all';
+        let currentBrand = 'all';
         let currentPrice = 'all';
         let currentTime = 'all';
         let currentSort = 'newest';
@@ -358,6 +401,12 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
         // Country Filter
         document.getElementById('country-filter').addEventListener('change', function() {{
             currentCountry = this.value;
+            applyFilters();
+        }});
+
+        // Brand Filter
+        document.getElementById('brand-filter').addEventListener('change', function() {{
+            currentBrand = this.value;
             applyFilters();
         }});
 
@@ -402,6 +451,7 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
             cards.forEach(card => {{
                 const category = card.dataset.category;
                 const country = card.dataset.country;
+                const brand = card.dataset.brand || 'mb_trac';
                 const price = parseFloat(card.dataset.price) || 0;
                 const firstSeen = card.dataset.firstSeen || '';
                 const title = card.querySelector('h3').textContent.toLowerCase();
@@ -418,6 +468,9 @@ def generate_modern_dashboard(db_path: Path, output_path: Path):
 
                 // Country filter
                 if (currentCountry !== 'all' && country !== currentCountry) visible = false;
+
+                // Brand filter
+                if (currentBrand !== 'all' && brand !== currentBrand) visible = false;
 
                 // Price filter
                 if (currentPrice !== 'all') {{

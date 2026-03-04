@@ -33,6 +33,7 @@ import random
 
 # Lokale Module
 from filters import filter_listing, Category
+from brands import get_matching_brand, get_brand_display_name, BRANDS
 from mascus_scraper import MascusScraper as SpecializedMascusScraper
 from cargr_scraper import CarGrScraper as SpecializedCarGrScraper
 from dashboard_generator import generate_modern_dashboard
@@ -118,6 +119,7 @@ class Listing:
     category: str = "sonstiges" # Kategorie: fahrzeug, ersatzteil, modell, suchgesuch, sonstiges
     price_numeric: Optional[float] = None  # Numerischer Preis
     is_negotiable: bool = False # Preis verhandelbar?
+    brand: str = "mb_trac"     # Erkannte Marke (z.B. "fendt", "john_deere")
 
     @staticmethod
     def generate_id(url: str) -> str:
@@ -426,25 +428,9 @@ class GenericScraper(BaseScraper):
         if not title or len(title) < 3:
             return None
 
-        # Prüfen ob MB-trac relevant (verschiedene Schreibweisen)
-        title_lower = title.lower()
-        mb_trac_patterns = [
-            'mb-trac', 'mb trac', 'mbtrac', 'mb_trac',  # Verschiedene Schreibweisen
-            'mercedes trac', 'mercedes-benz trac',      # Mit Markenname
-            'wf trac', 'werner trac',                   # Werner Forstmaschinen (übernahm MB-trac)
-        ]
-        # Auch Modellnummern prüfen wenn "trac" im Titel
-        model_numbers = ['65', '70', '700', '800', '900', '1000', '1100', '1300', '1400', '1500', '1600', '1800']
-
-        is_relevant = any(pattern in title_lower for pattern in mb_trac_patterns)
-        if not is_relevant and 'trac' in title_lower:
-            # Wenn "trac" vorkommt, prüfe auf Modellnummern
-            is_relevant = any(num in title for num in model_numbers)
-        if not is_relevant and ('mb' in title_lower or 'mercedes' in title_lower) and 'unimog' in title_lower:
-            # MB/Mercedes + Unimog ist oft relevant (gleiche Teile)
-            is_relevant = True
-
-        if not is_relevant:
+        # Prüfen ob relevante Marke+Modell Kombination (via brands.py)
+        matched_brand = get_matching_brand(title)
+        if not matched_brand:
             return None
 
         # Preis extrahieren
@@ -491,7 +477,8 @@ class GenericScraper(BaseScraper):
             last_seen=now,
             category=filter_result.category.value,
             price_numeric=filter_result.price_numeric,
-            is_negotiable=filter_result.is_negotiable
+            is_negotiable=filter_result.is_negotiable,
+            brand=filter_result.brand or matched_brand or "mb_trac"
         )
 
 
@@ -538,7 +525,8 @@ class MascusScraper(BaseScraper):
                     last_seen=now,
                     category=filter_result.category.value,
                     price_numeric=ml.price_numeric or filter_result.price_numeric,
-                    is_negotiable=filter_result.is_negotiable
+                    is_negotiable=filter_result.is_negotiable,
+                    brand=filter_result.brand or "mb_trac"
                 )
                 listings.append(listing)
 
@@ -585,7 +573,8 @@ class CarGrScraperIntegrated(BaseScraper):
                     last_seen=now,
                     category=cl.get('category', filter_result.category.value),
                     price_numeric=cl.get('price_numeric') or filter_result.price_numeric,
-                    is_negotiable=filter_result.is_negotiable
+                    is_negotiable=filter_result.is_negotiable,
+                    brand=filter_result.brand or "mb_trac"
                 )
                 listings.append(listing)
 
@@ -662,7 +651,8 @@ class TraktorpoolScraper(BaseScraper):
             last_seen=now,
             category=filter_result.category.value,
             price_numeric=filter_result.price_numeric,
-            is_negotiable=filter_result.is_negotiable
+            is_negotiable=filter_result.is_negotiable,
+            brand=filter_result.brand or "mb_trac"
         )
 
 
@@ -762,7 +752,8 @@ class FinnNoScraper(BaseScraper):
             last_seen=now,
             category=filter_result.category.value,
             price_numeric=filter_result.price_numeric,
-            is_negotiable=filter_result.is_negotiable
+            is_negotiable=filter_result.is_negotiable,
+            brand=filter_result.brand or "mb_trac"
         )
 
 
@@ -860,7 +851,8 @@ class DBADkScraper(BaseScraper):
             last_seen=now,
             category=filter_result.category.value,
             price_numeric=filter_result.price_numeric,
-            is_negotiable=filter_result.is_negotiable
+            is_negotiable=filter_result.is_negotiable,
+            brand=filter_result.brand or "mb_trac"
         )
 
 
@@ -901,7 +893,8 @@ class MBTracScraper:
             logger.error(f"Fehler beim Scrapen von {platform_config['name']}: {e}")
             return []
 
-    def run(self, countries: List[str] = None, priority: str = None, max_workers: int = 5) -> Dict:
+    def run(self, countries: List[str] = None, priority: str = None,
+            max_workers: int = 5, brands: List[str] = None) -> Dict:
         """
         Führt den Scraper aus.
 
@@ -909,6 +902,7 @@ class MBTracScraper:
             countries: Liste der Ländercodes (z.B. ['DE', 'AT']). None = alle
             priority: Filter nach Priorität ('high', 'medium', 'low'). None = alle
             max_workers: Anzahl paralleler Threads
+            brands: Liste der Marken-Keys (z.B. ['fendt', 'john_deere']). None = nur MB-trac
 
         Returns:
             Statistiken über den Scan-Durchlauf
@@ -918,7 +912,7 @@ class MBTracScraper:
         total_listings = 0
         platforms_scanned = 0
 
-        # Plattformen sammeln
+        # Plattformen sammeln (Haupt-URLs für MB-trac)
         tasks = []
         for country_code, country_data in self.platforms.items():
             if countries and country_code not in countries:
@@ -927,7 +921,18 @@ class MBTracScraper:
             for platform in country_data['platforms']:
                 if priority and platform.get('priority') != priority:
                     continue
+                # Haupt-URL (MB-trac) immer mit aufnehmen
                 tasks.append((country_code, platform))
+
+                # Zusätzliche Brand-URLs wenn Marken aktiviert sind
+                if brands and 'brand_search_urls' in platform:
+                    for brand_key in brands:
+                        if brand_key in platform['brand_search_urls']:
+                            # Erstelle eine Kopie der Platform-Config mit der Brand-URL
+                            brand_config = {**platform}
+                            brand_config['search_url'] = platform['brand_search_urls'][brand_key]
+                            brand_config['name'] = f"{platform['name']} ({get_brand_display_name(brand_key)})"
+                            tasks.append((country_code, brand_config))
 
         logger.info(f"Starte Scan von {len(tasks)} Plattformen...")
 
@@ -1301,7 +1306,10 @@ def generate_dashboard(db: Database, output_path: Path):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='MB-trac European Scraper')
+    from brands import get_all_brand_keys
+    all_brands = [k for k in get_all_brand_keys() if k != "mb_trac"]
+
+    parser = argparse.ArgumentParser(description='Traktor European Scraper (MB-trac + weitere Marken)')
     parser.add_argument('--countries', '-c', nargs='+', help='Länder zum Scrapen (z.B. DE AT CH)')
     parser.add_argument('--priority', '-p', choices=['high', 'medium', 'low'],
                         help='Nur Plattformen mit dieser Priorität')
@@ -1311,6 +1319,10 @@ def main():
                         help='Nur Dashboard generieren, nicht scrapen')
     parser.add_argument('--stats', '-s', action='store_true',
                         help='Nur Statistiken anzeigen')
+    parser.add_argument('--brands', '-b', nargs='+', choices=all_brands,
+                        help=f'Zusätzliche Marken scrapen: {", ".join(all_brands)}')
+    parser.add_argument('--all-brands', action='store_true',
+                        help='Alle verfügbaren Marken scrapen (inkl. MB-trac)')
 
     args = parser.parse_args()
 
@@ -1337,12 +1349,23 @@ def main():
         generate_modern_dashboard(db.db_path, BASE_DIR / "dashboard.html")
         return
 
+    # Marken bestimmen
+    enabled_brands = None
+    if args.all_brands:
+        enabled_brands = all_brands
+    elif args.brands:
+        enabled_brands = args.brands
+
+    if enabled_brands:
+        logger.info(f"Zusätzliche Marken aktiviert: {', '.join(enabled_brands)}")
+
     # Scraper ausführen
     scraper = MBTracScraper(db)
     stats = scraper.run(
         countries=args.countries,
         priority=args.priority,
-        max_workers=args.workers
+        max_workers=args.workers,
+        brands=enabled_brands
     )
 
     # Dashboard generieren (modernes Tailwind-Design)

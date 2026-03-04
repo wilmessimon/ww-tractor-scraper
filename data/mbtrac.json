@@ -14,7 +14,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 1400.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "23e65b7cef295c59": {
     "id": "23e65b7cef295c59",
@@ -31,7 +32,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 350.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "69632d370bb6df70": {
     "id": "69632d370bb6df70",
@@ -48,7 +50,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 25.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6dc0129470b0fa54": {
     "id": "6dc0129470b0fa54",
@@ -65,7 +68,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 320.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "9a17c758714e0514": {
     "id": "9a17c758714e0514",
@@ -82,7 +86,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": 123.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "3770e297c4afeaae": {
     "id": "3770e297c4afeaae",
@@ -99,7 +104,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 50.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f77a84afd8e4d85c": {
     "id": "f77a84afd8e4d85c",
@@ -116,7 +122,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "8fd5bc6ebf5763d0": {
     "id": "8fd5bc6ebf5763d0",
@@ -133,7 +140,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "a54fdaac78b867b8": {
     "id": "a54fdaac78b867b8",
@@ -150,7 +158,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "61d1616a33150f78": {
     "id": "61d1616a33150f78",
@@ -167,7 +176,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "c74c72e36e4ed49b": {
     "id": "c74c72e36e4ed49b",
@@ -184,7 +194,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "8dd67bf2b6948c30": {
     "id": "8dd67bf2b6948c30",
@@ -201,7 +212,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 49000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "03493507c470b0c2": {
     "id": "03493507c470b0c2",
@@ -218,7 +230,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 70.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "c0750c65ef5b8252": {
     "id": "c0750c65ef5b8252",
@@ -235,7 +248,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 14990.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "5037f9ec82739a2f": {
     "id": "5037f9ec82739a2f",
@@ -252,7 +266,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 1.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "2f888a12d8619678": {
     "id": "2f888a12d8619678",
@@ -269,7 +284,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "bb7c8679af2fcea4": {
     "id": "bb7c8679af2fcea4",
@@ -286,7 +302,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 20.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "39c0b7c377256a9a": {
     "id": "39c0b7c377256a9a",
@@ -303,7 +320,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "2368ac2fc61a2bab": {
     "id": "2368ac2fc61a2bab",
@@ -320,7 +338,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "a3d356ee17bfdb5b": {
     "id": "a3d356ee17bfdb5b",
@@ -337,7 +356,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "06c2562f7b80a316": {
     "id": "06c2562f7b80a316",
@@ -354,7 +374,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 3900.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "16669b1316e12df9": {
     "id": "16669b1316e12df9",
@@ -371,7 +392,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 20.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "d0e8f9d7e2d21a34": {
     "id": "d0e8f9d7e2d21a34",
@@ -388,7 +410,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 100.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6d9d4d664d3ace22": {
     "id": "6d9d4d664d3ace22",
@@ -405,7 +428,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 330.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "09197495286b2156": {
     "id": "09197495286b2156",
@@ -422,7 +446,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "f39e9c38d2a11041": {
     "id": "f39e9c38d2a11041",
@@ -439,7 +464,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "ac54ef7e080a953f": {
     "id": "ac54ef7e080a953f",
@@ -459,7 +485,8 @@
     "is_negotiable": false,
     "alt_urls": [
       "https://www.2dehands.be/v/zakelijke-goederen/landbouw-tractoren/a158998989-veiling-tractor-mb-trac-800-diesel-54kw-1980-marge"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "3a8f3ba5451ab531": {
     "id": "3a8f3ba5451ab531",
@@ -476,7 +503,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "3993fe1c8f86e527": {
     "id": "3993fe1c8f86e527",
@@ -493,7 +521,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 27750.002,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "960d4f52d95791e8": {
     "id": "960d4f52d95791e8",
@@ -510,7 +539,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 31.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a0941869d2b7c047": {
     "id": "a0941869d2b7c047",
@@ -527,7 +557,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "658cbc6d81f010f8": {
     "id": "658cbc6d81f010f8",
@@ -544,7 +575,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a101d8470380be02": {
     "id": "a101d8470380be02",
@@ -561,7 +593,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "e75ea60e548e76a7": {
     "id": "e75ea60e548e76a7",
@@ -578,7 +611,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "3ebea0322f55b3aa": {
     "id": "3ebea0322f55b3aa",
@@ -595,7 +629,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f5840bdc88b94f0e": {
     "id": "f5840bdc88b94f0e",
@@ -612,7 +647,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0343a1da721bb17a": {
     "id": "0343a1da721bb17a",
@@ -629,7 +665,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0c943923fba8fd4a": {
     "id": "0c943923fba8fd4a",
@@ -646,7 +683,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "795e58b208f312b2": {
     "id": "795e58b208f312b2",
@@ -663,7 +701,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "eb8bca592de3df10": {
     "id": "eb8bca592de3df10",
@@ -680,7 +719,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "05402cd206e9c7e7": {
     "id": "05402cd206e9c7e7",
@@ -697,7 +737,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "1d580b08cb2a7fd8": {
     "id": "1d580b08cb2a7fd8",
@@ -714,7 +755,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "14388bae31232856": {
     "id": "14388bae31232856",
@@ -731,7 +773,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "3ee305bfa69921a0": {
     "id": "3ee305bfa69921a0",
@@ -748,7 +791,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a517eb4c131f8716": {
     "id": "a517eb4c131f8716",
@@ -765,7 +809,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "afb6b4377b6d625a": {
     "id": "afb6b4377b6d625a",
@@ -782,7 +827,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "313eb9ca1e5315a7": {
     "id": "313eb9ca1e5315a7",
@@ -799,7 +845,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f02d460d6726e789": {
     "id": "f02d460d6726e789",
@@ -816,7 +863,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 80.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "30d48afc0c9b1373": {
     "id": "30d48afc0c9b1373",
@@ -833,7 +881,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 6.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "07e0b45e132b280b": {
     "id": "07e0b45e132b280b",
@@ -850,7 +899,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 54000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6ca241d66eaea28b": {
     "id": "6ca241d66eaea28b",
@@ -867,7 +917,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 2990.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "47c81fe9424cf2cc": {
     "id": "47c81fe9424cf2cc",
@@ -884,7 +935,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 990.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "140c65be4adc7293": {
     "id": "140c65be4adc7293",
@@ -901,7 +953,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 63.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "76156c40009617f2": {
     "id": "76156c40009617f2",
@@ -918,7 +971,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 58.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "5693f9be2ad810c7": {
     "id": "5693f9be2ad810c7",
@@ -935,7 +989,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 200.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "053f87fbef6923ce": {
     "id": "053f87fbef6923ce",
@@ -952,7 +1007,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 69.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "c99c364402758a52": {
     "id": "c99c364402758a52",
@@ -969,7 +1025,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 1250.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "561f11563b3d9a58": {
     "id": "561f11563b3d9a58",
@@ -986,7 +1043,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 59.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "58aa943b728c5520": {
     "id": "58aa943b728c5520",
@@ -1003,7 +1061,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 35.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "b64b03d89a9edded": {
     "id": "b64b03d89a9edded",
@@ -1020,7 +1079,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 795.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "15d186b2d04d171e": {
     "id": "15d186b2d04d171e",
@@ -1037,7 +1097,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "36644b484665b215": {
     "id": "36644b484665b215",
@@ -1054,7 +1115,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 395.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "db2662110012bac3": {
     "id": "db2662110012bac3",
@@ -1071,7 +1133,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 75.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "630ef55c55fdf6c4": {
     "id": "630ef55c55fdf6c4",
@@ -1091,7 +1154,8 @@
     "is_negotiable": true,
     "alt_urls": [
       "https://www.kleinanzeigen.de/s-anzeige/mercedes-benz-mb-trac-1600-turbo-oldtimer-h-gutachten-schlepper/1857567455-276-1552"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "394360f13e23c60d": {
     "id": "394360f13e23c60d",
@@ -1108,7 +1172,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 50.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4cc90bc8ff3dbddf": {
     "id": "4cc90bc8ff3dbddf",
@@ -1125,7 +1190,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 106.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "bafc3711c2e01671": {
     "id": "bafc3711c2e01671",
@@ -1145,7 +1211,8 @@
     "is_negotiable": false,
     "alt_urls": [
       "https://www.kleinanzeigen.de/s-anzeige/mb-trac-unterlegkeil-1100-1300-443-1400-1500-1600-halter-kabine/3000112390-276-9277"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "e5ecebb475ba766a": {
     "id": "e5ecebb475ba766a",
@@ -1162,7 +1229,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "daa3cce1893765ff": {
     "id": "daa3cce1893765ff",
@@ -1179,7 +1247,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 690.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "a79523544e263ad4": {
     "id": "a79523544e263ad4",
@@ -1196,7 +1265,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 50.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "30396a7d3aa5187c": {
     "id": "30396a7d3aa5187c",
@@ -1213,7 +1283,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 50.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "b7b8641dd29f31c3": {
     "id": "b7b8641dd29f31c3",
@@ -1230,7 +1301,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "4f43adea25baf06c": {
     "id": "4f43adea25baf06c",
@@ -1247,7 +1319,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 50.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "3a04729943ecf89e": {
     "id": "3a04729943ecf89e",
@@ -1264,7 +1337,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 650.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "f6a9cdb8be3be259": {
     "id": "f6a9cdb8be3be259",
@@ -1281,7 +1355,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 30.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6de017a1ca49e577": {
     "id": "6de017a1ca49e577",
@@ -1298,7 +1373,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 350.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6027ded7691e90bc": {
     "id": "6027ded7691e90bc",
@@ -1315,7 +1391,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 200.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4879d0ef6e6707e5": {
     "id": "4879d0ef6e6707e5",
@@ -1332,7 +1409,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 600.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d4c2e33b16339409": {
     "id": "d4c2e33b16339409",
@@ -1349,7 +1427,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "728e076b40bd10b1": {
     "id": "728e076b40bd10b1",
@@ -1366,7 +1445,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "ec1f06d12ab2ac31": {
     "id": "ec1f06d12ab2ac31",
@@ -1383,7 +1463,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "ab0257e45def96d8": {
     "id": "ab0257e45def96d8",
@@ -1400,7 +1481,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "a7667a90d052f3d0": {
     "id": "a7667a90d052f3d0",
@@ -1417,7 +1499,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "d4bf49a21638ff41": {
     "id": "d4bf49a21638ff41",
@@ -1434,7 +1517,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 2249.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "f2b5f19d9a0f21b0": {
     "id": "f2b5f19d9a0f21b0",
@@ -1451,7 +1535,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 225.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "06595d4a702e8dbc": {
     "id": "06595d4a702e8dbc",
@@ -1471,7 +1556,8 @@
     "is_negotiable": false,
     "alt_urls": [
       "https://www.leboncoin.fr/ad/tracteurs/3137764193"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "1a9fdfb6b249b697": {
     "id": "1a9fdfb6b249b697",
@@ -1488,7 +1574,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "2923bf719a1ab09c": {
     "id": "2923bf719a1ab09c",
@@ -1505,7 +1592,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "b01281b7ec29eeaf": {
     "id": "b01281b7ec29eeaf",
@@ -1522,7 +1610,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "50a0689353a67c0e": {
     "id": "50a0689353a67c0e",
@@ -1539,7 +1628,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "9613834f3f66a31a": {
     "id": "9613834f3f66a31a",
@@ -1556,7 +1646,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a4f65f9e7b669dcb": {
     "id": "a4f65f9e7b669dcb",
@@ -1606,7 +1697,8 @@
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1500/injyfrrx.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500/lmrznmnk.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500/iljwfprv.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "d5a98def39660149": {
     "id": "d5a98def39660149",
@@ -1623,7 +1715,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "583ae48dd04ee797": {
     "id": "583ae48dd04ee797",
@@ -1640,7 +1733,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "ca3f74b213d69459": {
     "id": "ca3f74b213d69459",
@@ -1657,7 +1751,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0466f674540de8dd": {
     "id": "0466f674540de8dd",
@@ -1674,7 +1769,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a5ec3913dc460180": {
     "id": "a5ec3913dc460180",
@@ -1691,7 +1787,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "21d3bde1415badda": {
     "id": "21d3bde1415badda",
@@ -1712,7 +1809,8 @@
     "alt_urls": [
       "https://www.leboncoin.fr/ad/tracteurs/3127455085",
       "https://www.leboncoin.fr/ad/materiel_agricole/3115189359"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "f8e869148fb8d7a9": {
     "id": "f8e869148fb8d7a9",
@@ -1732,7 +1830,8 @@
     "is_negotiable": false,
     "alt_urls": [
       "https://www.leboncoin.fr/ad/materiel_agricole/3123847726"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "f02c528c172f587a": {
     "id": "f02c528c172f587a",
@@ -1749,7 +1848,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "b816593a4bb0472f": {
     "id": "b816593a4bb0472f",
@@ -1766,7 +1866,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0e9ee04eac7ac276": {
     "id": "0e9ee04eac7ac276",
@@ -1783,7 +1884,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "688d80b8af4787a4": {
     "id": "688d80b8af4787a4",
@@ -1800,7 +1902,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "7e09498d64eb95ad": {
     "id": "7e09498d64eb95ad",
@@ -1817,7 +1920,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "74d5616b4ed9ff81": {
     "id": "74d5616b4ed9ff81",
@@ -1834,7 +1938,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "fc488d19a7f19451": {
     "id": "fc488d19a7f19451",
@@ -1851,7 +1956,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "8bc6471529c34c2f": {
     "id": "8bc6471529c34c2f",
@@ -1868,7 +1974,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "440392d7a95fb7d5": {
     "id": "440392d7a95fb7d5",
@@ -1885,7 +1992,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d6889ff437f69ed2": {
     "id": "d6889ff437f69ed2",
@@ -1902,7 +2010,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0d1fe44b55dc060d": {
     "id": "0d1fe44b55dc060d",
@@ -1919,7 +2028,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "907099affe1f5599": {
     "id": "907099affe1f5599",
@@ -1936,7 +2046,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d02b578a362cabd2": {
     "id": "d02b578a362cabd2",
@@ -1953,7 +2064,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d4700e955a4b0b1b": {
     "id": "d4700e955a4b0b1b",
@@ -1970,7 +2082,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "ac1d8e7fe70b253d": {
     "id": "ac1d8e7fe70b253d",
@@ -1987,7 +2100,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4b01a00dfc3ec79e": {
     "id": "4b01a00dfc3ec79e",
@@ -2004,7 +2118,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "965e9ebddb5b1c7b": {
     "id": "965e9ebddb5b1c7b",
@@ -2021,7 +2136,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 9000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "cb0af27ec0484413": {
     "id": "cb0af27ec0484413",
@@ -2038,7 +2154,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 38000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "39cb9d2924549f87": {
     "id": "39cb9d2924549f87",
@@ -2055,7 +2172,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 40.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f97c2568318c3135": {
     "id": "f97c2568318c3135",
@@ -2072,7 +2190,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 65000.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "aac01282c1e7add2": {
     "id": "aac01282c1e7add2",
@@ -2089,7 +2208,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 120.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "bc0a201b5c0e3160": {
     "id": "bc0a201b5c0e3160",
@@ -2131,7 +2251,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u421/gb96i9ec.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u421/nsgnpqlt.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u421/nqglpolr.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "a30f34f6eb927d19": {
     "id": "a30f34f6eb927d19",
@@ -2172,7 +2293,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-gebr-unimog-u1200/ah897kha.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-gebr-unimog-u1200/hyfqe1or.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-gebr-unimog-u1200/hwfoezop.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "b9c5b6c3cf2a5156": {
     "id": "b9c5b6c3cf2a5156",
@@ -2213,7 +2335,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u90/7hbj876i.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u90/eyi0fodz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u90/ewiyfmdx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "960ed10c18b9b822": {
     "id": "960ed10c18b9b822",
@@ -2279,7 +2402,8 @@
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u1200/pwj0iqnz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u1200/omfplvmn.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u1200/pujyionx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "da86e3b6ad6f61f1": {
     "id": "da86e3b6ad6f61f1",
@@ -2320,7 +2444,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-u1450/76fa85ei.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-u1450/enmrfmlz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-u1450/elmpfklx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "aebe5cd255978331": {
     "id": "aebe5cd255978331",
@@ -2362,7 +2487,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-om-366/aj58j75i.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-om-366/h0cpqocz.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-om-366/hycnqmcx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "23e6092e882da30c": {
     "id": "23e6092e882da30c",
@@ -2404,7 +2530,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-om-422-a-motor/ah7bb59e.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-om-422-a-motor/hyesimgv.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-om-422-a-motor/hweqikgt.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7877dfa0f77a756d": {
     "id": "7877dfa0f77a756d",
@@ -2445,7 +2572,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-unimog-u318-mit-schild-streuer/gk5f6jj8.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-unimog-u318-mit-schild-streuer/n1cwd0qp.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-unimog-u318-mit-schild-streuer/nzcudyqn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "1647ae7368b22088": {
     "id": "1647ae7368b22088",
@@ -2486,7 +2614,8 @@
       "https://www.mascus.hu/mezogazdasagi-gepek/egyeb-mezogazdasagi-gepek/mb-trac-radlader-reifen-mit-felge-neu-lagernd/m0kpcnfo.html",
       "https://www.mascus.ro/utilaje-agricole/utilaje-agricole---altele/mb-trac-radlader-reifen-mit-felge-neu-lagernd/wuujmhpi.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-radlader-reifen-mit-felge-neu-lagernd/qzoogmjn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "12b9b92274c970ce": {
     "id": "12b9b92274c970ce",
@@ -2528,7 +2657,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-1400/8hah6cfk.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-1400/fyhydtm1.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-1400/fwhwdrmz.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "17ada154396575aa": {
     "id": "17ada154396575aa",
@@ -2569,7 +2699,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-400/9kg89deg.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-400/g1npgulx.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-400/gznngslv.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "d44b9b499df709be": {
     "id": "d44b9b499df709be",
@@ -2609,7 +2740,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-527/cj687ibf.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-527/j0dpeziw.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-527/jydnexiu.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7be4fa4dd8d76c41": {
     "id": "7be4fa4dd8d76c41",
@@ -2650,7 +2782,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1000/ebjgi5eh.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1000/lsqxpmly.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1000/lqqvpklw.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "fa21c6689461d45c": {
     "id": "fa21c6689461d45c",
@@ -2667,7 +2800,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 1851.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "86897246623c25a8": {
     "id": "86897246623c25a8",
@@ -2684,7 +2818,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 1859.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "36ba211a18acb40a": {
     "id": "36ba211a18acb40a",
@@ -2725,7 +2860,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800-traktor/fjf5kgi7.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800-traktor/m0mmrxpo.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800-traktor/mymkrvpm.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "35c3eb6c6df8232e": {
     "id": "35c3eb6c6df8232e",
@@ -2766,7 +2902,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-700-k/k7k7ecbi.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-700-k/roroltiz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-700-k/rmrmlrix.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "bb8143e1d5fe8331": {
     "id": "bb8143e1d5fe8331",
@@ -2806,7 +2943,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-440/h9fech6h.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-440/oqmvjydy.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-440/oomtjwdw.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "b88247faed82a7bb": {
     "id": "b88247faed82a7bb",
@@ -2847,7 +2985,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-1000-32-883km-snow-plow/66c76gi9.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-1000-32-883km-snow-plow/dnjodxpq.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-1000-32-883km-snow-plow/dljmdvpo.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7662a4a4092f1b74": {
     "id": "7662a4a4092f1b74",
@@ -2887,7 +3026,8 @@
       "https://www.mascus.ee/pollumajandus/lumekoristusmasinad/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/5egih8k9.html",
       "https://www.mascus.lv/lauksaimnieciba/sniega-traktori/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/cvnzoprq.html",
       "https://www.mascus.lt/zemes-ukis/sniego-valytuvai/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/ctnxonro.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7e94e595b70d09e9": {
     "id": "7e94e595b70d09e9",
@@ -2929,7 +3069,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1500/e7kkg7g5.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1500/lor1nonm.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500/lmrznmnk.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "e173b51a3cb6a49b": {
     "id": "e173b51a3cb6a49b",
@@ -2969,7 +3110,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1600-turbo/fj9kjikd.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1600-turbo/m0g1qzru.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1600-turbo/mygzqxrs.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "4a6617996557b62f": {
     "id": "4a6617996557b62f",
@@ -3010,7 +3152,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-900-turbo/ga6dd86b.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-900-turbo/nrdukpds.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-900-turbo/npdskndq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "b82c93b41962363a": {
     "id": "b82c93b41962363a",
@@ -3051,7 +3194,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800-nieuwe-toestand-nouvelle-condition/9k6ece8k.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800-nieuwe-toestand-nouvelle-condition/g1dvjvf1.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800-nieuwe-toestand-nouvelle-condition/gzdtjtfz.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "4f197e4fb27db4ec": {
     "id": "4f197e4fb27db4ec",
@@ -3093,7 +3237,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-walk-behind-39-in-sweeper/7bekc56g.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-walk-behind-39-in-sweeper/esl1jmdx.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-walk-behind-39-in-sweeper/eqlzjkdv.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "3fac8fff24268a7f": {
     "id": "3fac8fff24268a7f",
@@ -3119,7 +3264,8 @@
       "https://www.mascus.rs/poljoprivreda/traktori/mb-trac-1500-tractor-low-hours/vrtmmxls.html",
       "https://www.mascus.si/kmetijstvo/traktorji/mb-trac-1500-tractor-low-hours/whucnnmi.html",
       "https://www.mascus.hr/poljoprivreda/traktori/mb-trac-1500-tractor-low-hours/lqjlcwbr.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "3ec7b2c0cdb56c91": {
     "id": "3ec7b2c0cdb56c91",
@@ -3160,7 +3306,8 @@
       "https://www.mascus.hu/mezogazdasagi-gepek/egyeb-mezogazdasagi-gepek/mb-trac-sprinter-314-cdi/aqjxkpiq.html",
       "https://www.mascus.ro/utilaje-agricole/utilaje-agricole---altele/mb-trac-sprinter-314-cdi/kktrujsk.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-sprinter-314-cdi/epnwoomp.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "09ba72143573cb04": {
     "id": "09ba72143573cb04",
@@ -3189,7 +3336,8 @@
       "https://www.mascus.si/kmetijstvo/traktorji/mb-trac-800/onpgjcnc.html",
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800/ajbc5898.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800/h0itcpgp.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "716e4418bf9f872a": {
     "id": "716e4418bf9f872a",
@@ -3231,7 +3379,8 @@
       "https://www.mascus.ee/metsandus/metsatooks-kohandatud-traktorid/mb-trac-900/bed6g8ih.html",
       "https://www.mascus.lv/mezizstrade/mezizstrades-traktori/mb-trac-900/ivknnppy.html",
       "https://www.mascus.lt/misko-technika/misko-traktoriai/mb-trac-900/itklnnpw.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "4535013449254742": {
     "id": "4535013449254742",
@@ -3272,7 +3421,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-mb-trac-1500/kfbkhffb.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-mb-trac-1500/rwi1owms.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-mb-trac-1500/ruizoumq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "64c72cc4b7eb55cc": {
     "id": "64c72cc4b7eb55cc",
@@ -3298,7 +3448,8 @@
       "https://www.mascus.rs/poljoprivreda/ostale-poljoprivredne-masine/mb-trac-r800-unused-drum-cutter-st19873/uwmlxulp.html",
       "https://www.mascus.si/kmetijstvo/kmetijstvo---drugo/mb-trac-r800-unused-drum-cutter-st19873/vmnbykmf.html",
       "https://www.mascus.hr/poljoprivreda/poljoprivreda-–-ostalo/mb-trac-r800-unused-drum-cutter-st19873/kvckntbo.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "6ff1fa4c71ce8845": {
     "id": "6ff1fa4c71ce8845",
@@ -3324,7 +3475,8 @@
       "https://www.mascus.rs/poljoprivreda/traktori/mb-trac-1500/okpvloxu.html",
       "https://www.mascus.si/kmetijstvo/traktorji/mb-trac-1500/paqlmeyk.html",
       "https://www.mascus.hr/poljoprivreda/traktori/mb-trac-1500/ejfubnnt.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "e66ce619b21de975": {
     "id": "e66ce619b21de975",
@@ -3363,7 +3515,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-trac-1300/c9ci75f6.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-trac-1300/jqjzemmn.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-trac-1300/jojxekml.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "0fef368aa6d20b2f": {
     "id": "0fef368aa6d20b2f",
@@ -3394,7 +3547,8 @@
       "https://www.mascus.hu/mezogazdasagi-gepek/traktorok/mb-trac-800/dzes8oco.html",
       "https://www.mascus.ro/utilaje-agricole/tractoare/mb-trac-800/ntomiimi.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800/hyircngn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "0e57f3ea68aea7bc": {
     "id": "0e57f3ea68aea7bc",
@@ -3426,7 +3580,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-trac-1300/c9ci75f6.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-trac-1300/jqjzemmn.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-trac-1300/jojxekml.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "8346edc42ab3d198": {
     "id": "8346edc42ab3d198",
@@ -3459,7 +3614,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-mb-trac-1500/kfbkhffb.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-mb-trac-1500/rwi1owms.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-mb-trac-1500/ruizoumq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "032a941e5ea956e7": {
     "id": "032a941e5ea956e7",
@@ -3492,7 +3648,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1500-tractor-low-hours/idg89j8e.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1500-tractor-low-hours/punpg0fv.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500-tractor-low-hours/psnngyft.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "40973201eca1adec": {
     "id": "40973201eca1adec",
@@ -3523,7 +3680,8 @@
       "https://www.mascus.hu/mezogazdasagi-gepek/egyeb-mezogazdasagi-gepek/mb-trac-sprinter-314-cdi/aqjxkpiq.html",
       "https://www.mascus.ro/utilaje-agricole/utilaje-agricole---altele/mb-trac-sprinter-314-cdi/kktrujsk.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-sprinter-314-cdi/epnwoomp.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "99678da3b1818dbd": {
     "id": "99678da3b1818dbd",
@@ -3556,7 +3714,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-r800-unused-drum-cutter-st19873/hi97kg8b.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-r800-unused-drum-cutter-st19873/ozgorxfs.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-r800-unused-drum-cutter-st19873/oxgmrvfq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7dd87116fc645a81": {
     "id": "7dd87116fc645a81",
@@ -3589,7 +3748,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-gebr-unimog-u1200/ah897kha.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-gebr-unimog-u1200/hyfqe1or.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-gebr-unimog-u1200/hwfoezop.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "a7f0d10bb63a6e38": {
     "id": "a7f0d10bb63a6e38",
@@ -3622,7 +3782,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u90/7hbj876i.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u90/eyi0fodz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u90/ewiyfmdx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "f33cb87e9abe324c": {
     "id": "f33cb87e9abe324c",
@@ -3655,7 +3816,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-u1450/76fa85ei.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-u1450/enmrfmlz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-u1450/elmpfklx.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "8aacdb9366292589": {
     "id": "8aacdb9366292589",
@@ -3688,7 +3850,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-unimog-u318-mit-schild-streuer/gk5f6jj8.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-unimog-u318-mit-schild-streuer/n1cwd0qp.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-unimog-u318-mit-schild-streuer/nzcudyqn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "fea20ae4887ef3f1": {
     "id": "fea20ae4887ef3f1",
@@ -3719,7 +3882,8 @@
       "https://www.mascus.hu/mezogazdasagi-gepek/egyeb-mezogazdasagi-gepek/mb-trac-radlader-reifen-mit-felge-neu-lagernd/m0kpcnfo.html",
       "https://www.mascus.ro/utilaje-agricole/utilaje-agricole---altele/mb-trac-radlader-reifen-mit-felge-neu-lagernd/wuujmhpi.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-radlader-reifen-mit-felge-neu-lagernd/qzoogmjn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "6dce69ed30c63781": {
     "id": "6dce69ed30c63781",
@@ -3752,7 +3916,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-400/9kg89deg.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-400/g1npgulx.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-400/gznngslv.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "4ab807f8bf7f4c7f": {
     "id": "4ab807f8bf7f4c7f",
@@ -3778,7 +3943,8 @@
       "https://www.mascus.cz/zemedelske-stroje/traktory/mb-trac-unimog-u-527/a44t5390.html",
       "https://www.mascus.hu/mezogazdasagi-gepek/traktorok/mb-trac-unimog-u-527/fz9oayev.html",
       "https://www.mascus.ro/utilaje-agricole/tractoare/mb-trac-unimog-u-527/ptjiksop.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "d870e79e2d42b610": {
     "id": "d870e79e2d42b610",
@@ -3811,7 +3977,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1000/ebjgi5eh.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1000/lsqxpmly.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1000/lqqvpklw.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7405a47bf9816fef": {
     "id": "7405a47bf9816fef",
@@ -3844,7 +4011,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-700-k/k7k7ecbi.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-700-k/roroltiz.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-700-k/rmrmlrix.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "f96833a500f329af": {
     "id": "f96833a500f329af",
@@ -3870,7 +4038,8 @@
       "https://www.mascus.cz/zemedelske-stroje/traktory/mb-trac-440/fudza242.html",
       "https://www.mascus.hu/mezogazdasagi-gepek/traktorok/mb-trac-440/kpiufx9x.html",
       "https://www.mascus.ro/utilaje-agricole/tractoare/mb-trac-440/ujsoprjr.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7385b3c859dfa83c": {
     "id": "7385b3c859dfa83c",
@@ -3903,7 +4072,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-1000-32-883km-snow-plow/66c76gi9.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-1000-32-883km-snow-plow/dnjodxpq.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-1000-32-883km-snow-plow/dljmdvpo.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "a8f69cf2bbe94699": {
     "id": "a8f69cf2bbe94699",
@@ -3935,7 +4105,8 @@
       "https://www.mascus.ee/pollumajandus/lumekoristusmasinad/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/5egih8k9.html",
       "https://www.mascus.lv/lauksaimnieciba/sniega-traktori/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/cvnzoprq.html",
       "https://www.mascus.lt/zemes-ukis/sniego-valytuvai/mb-trac-sk-2031-4x4x4-schmidt-cjs9-airport-sweeper-snow-pl/ctnxonro.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "1cbe9e62d37499a5": {
     "id": "1cbe9e62d37499a5",
@@ -3968,7 +4139,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800-nieuwe-toestand-nouvelle-condition/9k6ece8k.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800-nieuwe-toestand-nouvelle-condition/g1dvjvf1.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800-nieuwe-toestand-nouvelle-condition/gzdtjtfz.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "b7ff2d5d6599e5d9": {
     "id": "b7ff2d5d6599e5d9",
@@ -3994,7 +4166,8 @@
       "https://www.mascus.cz/zemedelske-stroje/traktory/mb-trac-1600-turbo/d475h3iy.html",
       "https://www.mascus.hu/mezogazdasagi-gepek/traktorok/mb-trac-1600-turbo/izc0mynt.html",
       "https://www.mascus.ro/utilaje-agricole/tractoare/mb-trac-1600-turbo/stmuwsxn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "ec9db643b55152d6": {
     "id": "ec9db643b55152d6",
@@ -4027,7 +4200,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-900-turbo/ga6dd86b.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-900-turbo/nrdukpds.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-900-turbo/npdskndq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "aa729f3f07ed5b84": {
     "id": "aa729f3f07ed5b84",
@@ -4060,7 +4234,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800-traktor/fjf5kgi7.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800-traktor/m0mmrxpo.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800-traktor/mymkrvpm.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "cbe82600fbd95de5": {
     "id": "cbe82600fbd95de5",
@@ -4077,7 +4252,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "af40bb6fb437c906": {
     "id": "af40bb6fb437c906",
@@ -4102,7 +4278,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-unimog-u-527/cj687ibf.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-unimog-u-527/j0dpeziw.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-unimog-u-527/jydnexiu.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "8e79835ebb775bb4": {
     "id": "8e79835ebb775bb4",
@@ -4127,7 +4304,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-440/h9fech6h.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-440/oqmvjydy.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-440/oomtjwdw.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "2ff863e4e6b4e2b2": {
     "id": "2ff863e4e6b4e2b2",
@@ -4152,7 +4330,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1600-turbo/fj9kjikd.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1600-turbo/m0g1qzru.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1600-turbo/mygzqxrs.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "7a34f6e2c4a9b244": {
     "id": "7a34f6e2c4a9b244",
@@ -4169,7 +4348,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 51.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "6ef9da4a8f7b071f": {
     "id": "6ef9da4a8f7b071f",
@@ -4209,7 +4389,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1500-tractor-low-hours/idg89j8e.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1500-tractor-low-hours/punpg0fv.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500-tractor-low-hours/psnngyft.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "8de540626cde40f1": {
     "id": "8de540626cde40f1",
@@ -4230,7 +4411,8 @@
     "alt_urls": [
       "https://www.mascus.hr/poljoprivreda/poljoprivreda-–-ostalo/mb-trac-r800-unused-drum-cutter-st19873/kvckntbo.html",
       "https://www.mascus.es/agricultura/agricultura---otros/mb-trac-r800-unused-drum-cutter-st19873/hw9lku8p.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "3dda4dd0b7798a9b": {
     "id": "3dda4dd0b7798a9b",
@@ -4251,7 +4433,8 @@
     "alt_urls": [
       "https://www.mascus.hr/poljoprivreda/traktori/mb-trac-1500/ejfubnnt.html",
       "https://www.mascus.es/agricultura/tractores/mb-trac-1500/bkcv8oku.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "3ba8da7f1497e757": {
     "id": "3ba8da7f1497e757",
@@ -4268,7 +4451,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d35039c7be8eadf3": {
     "id": "d35039c7be8eadf3",
@@ -4285,7 +4469,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "124a8913d3459727": {
     "id": "124a8913d3459727",
@@ -4324,7 +4509,8 @@
       "https://www.mascus.ee/pollumajandus/muud-pollumajandusmasinad/mb-trac-r800-unused-drum-cutter-st19873/hi97kg8b.html",
       "https://www.mascus.lv/lauksaimnieciba/lauksaimnieciba--citi/mb-trac-r800-unused-drum-cutter-st19873/ozgorxfs.html",
       "https://www.mascus.lt/zemes-ukis/zemes-ukis---kita/mb-trac-r800-unused-drum-cutter-st19873/oxgmrvfq.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "dc620a4ca7923519": {
     "id": "dc620a4ca7923519",
@@ -4364,7 +4550,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-800/ajbc5898.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-800/h0itcpgp.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-800/hyircngn.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "a7508a7f89d2ef17": {
     "id": "a7508a7f89d2ef17",
@@ -4404,7 +4591,8 @@
       "https://www.mascus.ee/pollumajandus/traktorid/mb-trac-1500/b6ch8akg.html",
       "https://www.mascus.lv/lauksaimnieciba/traktori-lauksaimnieciba/mb-trac-1500/injyfrrx.html",
       "https://www.mascus.lt/zemes-ukis/traktoriai/mb-trac-1500/iljwfprv.html"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "36eddedc441feb30": {
     "id": "36eddedc441feb30",
@@ -4421,7 +4609,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 899.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4e5e9e30756f2b0b": {
     "id": "4e5e9e30756f2b0b",
@@ -4438,7 +4627,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 70.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "eb2377f2d221238b": {
     "id": "eb2377f2d221238b",
@@ -4455,7 +4645,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 800.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "8c25c3310d9d7101": {
     "id": "8c25c3310d9d7101",
@@ -4472,7 +4663,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 1800.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "1cac411f87783322": {
     "id": "1cac411f87783322",
@@ -4489,7 +4681,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 43.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "eae9cad3ed775dde": {
     "id": "eae9cad3ed775dde",
@@ -4506,7 +4699,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 27.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "46bbff7443584f1d": {
     "id": "46bbff7443584f1d",
@@ -4523,7 +4717,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 39999.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "5d023518f5102590": {
     "id": "5d023518f5102590",
@@ -4540,7 +4735,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 30.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "4cffcba825943c1a": {
     "id": "4cffcba825943c1a",
@@ -4557,7 +4753,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 10000.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "a2ac78197a6a0e9b": {
     "id": "a2ac78197a6a0e9b",
@@ -4574,7 +4771,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 27.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "c094eab32d956555": {
     "id": "c094eab32d956555",
@@ -4591,7 +4789,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "df1297ab7971cf36": {
     "id": "df1297ab7971cf36",
@@ -4608,7 +4807,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 120.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "8d1b5422988c01ed": {
     "id": "8d1b5422988c01ed",
@@ -4625,7 +4825,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 90.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a0a97e44bb4e8228": {
     "id": "a0a97e44bb4e8228",
@@ -4642,7 +4843,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "9b24d3a0b38986d6": {
     "id": "9b24d3a0b38986d6",
@@ -4659,7 +4861,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 11.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "3370a09beb389f1b": {
     "id": "3370a09beb389f1b",
@@ -4676,7 +4879,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "6506628f07815648": {
     "id": "6506628f07815648",
@@ -4693,7 +4897,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 250.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "dc314c98690cb653": {
     "id": "dc314c98690cb653",
@@ -4710,7 +4915,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 42.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "41fa0005015ac4c6": {
     "id": "41fa0005015ac4c6",
@@ -4727,7 +4933,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 99.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "060d3bb196675c88": {
     "id": "060d3bb196675c88",
@@ -4744,7 +4951,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 225.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "bfbb547869fbea8d": {
     "id": "bfbb547869fbea8d",
@@ -4761,7 +4969,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 15.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "897c9035f23b4024": {
     "id": "897c9035f23b4024",
@@ -4778,7 +4987,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 55.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "5c1383de7061e6f1": {
     "id": "5c1383de7061e6f1",
@@ -4795,7 +5005,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "deb8c22706d5bd3f": {
     "id": "deb8c22706d5bd3f",
@@ -4812,7 +5023,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "ed079d18b1a25322": {
     "id": "ed079d18b1a25322",
@@ -4829,7 +5041,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 2665.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "012995956a5b3a2b": {
     "id": "012995956a5b3a2b",
@@ -4846,7 +5059,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 12.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "22749fb7ab709c81": {
     "id": "22749fb7ab709c81",
@@ -4863,7 +5077,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 149.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "75a90ec3ffdac865": {
     "id": "75a90ec3ffdac865",
@@ -4880,7 +5095,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "b305bc39e0932cbd": {
     "id": "b305bc39e0932cbd",
@@ -4897,7 +5113,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 2200.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "fe4af62d3e1e70fc": {
     "id": "fe4af62d3e1e70fc",
@@ -4914,7 +5131,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 119999.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "8b21b1f17ea85461": {
     "id": "8b21b1f17ea85461",
@@ -4931,7 +5149,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 45.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a139e5d1ce4d054d": {
     "id": "a139e5d1ce4d054d",
@@ -4948,7 +5167,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 35.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f288532cacabd05e": {
     "id": "f288532cacabd05e",
@@ -4965,7 +5185,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 17.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "cfae7f5523fce495": {
     "id": "cfae7f5523fce495",
@@ -4982,7 +5203,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 395000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "c3054d5d5ab7fe4d": {
     "id": "c3054d5d5ab7fe4d",
@@ -5002,7 +5224,8 @@
     "is_negotiable": false,
     "alt_urls": [
       "https://www.gumtree.co.za/a-machinery-vehicles/memel/mercedes-benz-mb-trac-1000-rear-axle/10011874426301010002420909"
-    ]
+    ],
+    "brand": "mb_trac"
   },
   "4bf4153784377761": {
     "id": "4bf4153784377761",
@@ -5019,7 +5242,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 80.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "b37b817f5e591475": {
     "id": "b37b817f5e591475",
@@ -5036,7 +5260,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "87b0297bac25b32a": {
     "id": "87b0297bac25b32a",
@@ -5053,7 +5278,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 17.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "057077ae1e2134cd": {
     "id": "057077ae1e2134cd",
@@ -5070,7 +5296,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 100.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "a48e6c2f6390682d": {
     "id": "a48e6c2f6390682d",
@@ -5087,7 +5314,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "04a6e92b75e21235": {
     "id": "04a6e92b75e21235",
@@ -5104,7 +5332,8 @@
     "is_active": true,
     "category": "suchgesuch",
     "price_numeric": 1.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "5b5dc8b89ca4a226": {
     "id": "5b5dc8b89ca4a226",
@@ -5121,7 +5350,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 8360.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "fdf7c7505b372a66": {
     "id": "fdf7c7505b372a66",
@@ -5138,7 +5368,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 159.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "309cabbccd8323b0": {
     "id": "309cabbccd8323b0",
@@ -5155,7 +5386,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 60.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "0163f09364645987": {
     "id": "0163f09364645987",
@@ -5172,7 +5404,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 195.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "071b5659c6816679": {
     "id": "071b5659c6816679",
@@ -5189,7 +5422,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 1000.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "1532a6b24bc481a8": {
     "id": "1532a6b24bc481a8",
@@ -5206,7 +5440,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 590.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "82de3e3424981b7f": {
     "id": "82de3e3424981b7f",
@@ -5223,7 +5458,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 18.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "9864bbaac6155abe": {
     "id": "9864bbaac6155abe",
@@ -5240,7 +5476,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "5cdc98836a183745": {
     "id": "5cdc98836a183745",
@@ -5257,7 +5494,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 39.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "748e0807c52995cf": {
     "id": "748e0807c52995cf",
@@ -5274,7 +5512,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 1100.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "1a62dbaa6abc4d03": {
     "id": "1a62dbaa6abc4d03",
@@ -5291,7 +5530,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 4300.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4772635a64349955": {
     "id": "4772635a64349955",
@@ -5308,7 +5548,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 2750.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "4253c6a5f3411cc4": {
     "id": "4253c6a5f3411cc4",
@@ -5325,7 +5566,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 3000.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "3b85d4d5d57850df": {
     "id": "3b85d4d5d57850df",
@@ -5342,7 +5584,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 329.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "700e8e80eadc8c9f": {
     "id": "700e8e80eadc8c9f",
@@ -5359,7 +5602,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 5474.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "8da3d0b57b01def2": {
     "id": "8da3d0b57b01def2",
@@ -5376,7 +5620,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 395.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "d11fe100e2754596": {
     "id": "d11fe100e2754596",
@@ -5393,7 +5638,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 495.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "fb8d780a041fe5a1": {
     "id": "fb8d780a041fe5a1",
@@ -5410,7 +5656,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 175.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "f53ebb771d5f22bb": {
     "id": "f53ebb771d5f22bb",
@@ -5427,7 +5674,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 199999.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "40b4162c315fd12f": {
     "id": "40b4162c315fd12f",
@@ -5444,7 +5692,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 35.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "6929f4e993c7fb1b": {
     "id": "6929f4e993c7fb1b",
@@ -5461,7 +5710,8 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 19500.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "49e190257b67bed3": {
     "id": "49e190257b67bed3",
@@ -5478,7 +5728,8 @@
     "is_active": true,
     "category": "modell",
     "price_numeric": 65.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "87f2bcce5268bf04": {
     "id": "87f2bcce5268bf04",
@@ -5495,7 +5746,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": 155.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   },
   "e0ad7627ce90e192": {
     "id": "e0ad7627ce90e192",
@@ -5512,7 +5764,8 @@
     "is_active": true,
     "category": "ersatzteil",
     "price_numeric": null,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "16f3239d0eef04cd": {
     "id": "16f3239d0eef04cd",
@@ -5529,7 +5782,8 @@
     "is_active": true,
     "category": "sonstiges",
     "price_numeric": 595.0,
-    "is_negotiable": true
+    "is_negotiable": true,
+    "brand": "mb_trac"
   },
   "07e70101b18e7a9d": {
     "id": "07e70101b18e7a9d",
@@ -5546,6 +5800,7 @@
     "is_active": true,
     "category": "fahrzeug",
     "price_numeric": 32500.0,
-    "is_negotiable": false
+    "is_negotiable": false,
+    "brand": "mb_trac"
   }
 }

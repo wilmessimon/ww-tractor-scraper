@@ -1,13 +1,15 @@
 """
-MB-trac Scraper - Filter und Kategorisierung
+Traktor-Scraper - Filter und Kategorisierung
 =============================================
 Intelligente Filterung und Kategorisierung von Inseraten.
+Unterstützt MB-trac und weitere Marken (definiert in brands.py).
 """
 
 import re
 from typing import Optional, Dict, Tuple
 from dataclasses import dataclass
 from enum import Enum
+from brands import get_matching_brand, get_non_mbtrac_brand_spellings
 
 
 class Category(Enum):
@@ -28,6 +30,7 @@ class FilterResult:
     reason: Optional[str] = None   # Grund für Ausschluss (wenn is_valid=False)
     price_numeric: Optional[float] = None  # Extrahierter numerischer Preis
     is_negotiable: bool = False    # Ist der Preis VB/verhandelbar?
+    brand: Optional[str] = None    # Erkannte Marke (z.B. "fendt", "mb_trac")
 
 
 # ============================================================
@@ -46,13 +49,10 @@ BLACKLIST_VEHICLES = [
     'citan',             # Mercedes Citan
     'axor',              # Mercedes Axor LKW
     'lamborghini',       # Lamborghini Traktoren
-    'fendt',             # Fendt (außer mit MB-trac Bezug)
-    'john deere',        # John Deere
+    # HINWEIS: fendt, john deere, new holland, case ih, deutz, claas
+    # wurden aus der Blacklist entfernt — diese werden jetzt über brands.py
+    # mit spezifischen Modellnummern validiert.
     'massey ferguson',   # Massey Ferguson
-    'new holland',       # New Holland
-    'case ih',           # Case IH
-    'deutz',             # Deutz (außer mit MB-trac Bezug)
-    'claas',             # Claas (außer als Anbaugerät)
     'valtra',            # Valtra
     'kubota',            # Kubota
     'zetor',             # Zetor
@@ -314,10 +314,10 @@ def is_blacklisted(title: str) -> Tuple[bool, Optional[str]]:
             return True, f"Generische Seite: {term}"
 
     # Prüfe auf falsche Fahrzeuge
-    # WICHTIG: Nur ausschließen wenn NICHT auch "mb trac" oder "mb-trac" im Titel
-    has_mbtrac = 'mb trac' in title_lower or 'mb-trac' in title_lower or 'mbtrac' in title_lower
+    # WICHTIG: Nur ausschließen wenn KEIN erkanntes Marke+Modell-Paar im Titel
+    matched_brand = get_matching_brand(title)
 
-    if not has_mbtrac:
+    if not matched_brand:
         for term in BLACKLIST_VEHICLES:
             if term in title_lower:
                 return True, f"Falsches Fahrzeug: {term}"
@@ -401,44 +401,14 @@ def filter_listing(title: str, price_str: Optional[str] = None,
             reason=reason
         )
 
-    # 1b. PFLICHT: Muss MB-trac/Unimog/WF-trac Keyword enthalten
-    title_lower = normalize_text(title)
-    valid_keywords = [
-        # Korrekte Schreibweisen
-        'mb-trac', 'mb trac', 'mbtrac',
-        # Häufige Falschschreibungen
-        'mb-track', 'mb track', 'mbtrack',      # Track statt Trac
-        'mb-trak', 'mb trak', 'mbtrak',         # Trak (phonetisch)
-        'mb-trec', 'mb trec',                   # Trec (Tippfehler)
-        'mb-tracc', 'mb tracc',                 # Doppel-c
-        'mb-trax', 'mb trax',                   # X statt C/CK
-        'mb træc',                              # Dänisch
-        # Mit Mercedes ausgeschrieben
-        'mercedes trac', 'mercedes-trac',
-        'mercedes trak', 'mercedes track',
-        'mercedes benz trac', 'mercedes-benz trac',
-        'mercedesbenz trac',
-        # Unimog
-        'unimog',
-        # WF-Trac (Werner Forst)
-        'wf-trac', 'wf trac', 'wftrac',
-        'werner trac',
-        # Baureihen-Nummern
-        'trac 440', 'trac 441', 'trac 442', 'trac 443',
-        'trac 700', 'trac 800', 'trac 900', 'trac 1000',
-        'trac 1100', 'trac 1300', 'trac 1400', 'trac 1500', 'trac 1600',
-        # Zusammengeschrieben mit Modellnummer
-        'mbtrac700', 'mbtrac800', 'mbtrac900',
-        'mbtrac1000', 'mbtrac1100', 'mbtrac1300',
-        'mbtrac1400', 'mbtrac1500', 'mbtrac1600',
-    ]
-    has_valid_keyword = any(kw in title_lower for kw in valid_keywords)
+    # 1b. PFLICHT: Muss erkanntes Marke+Modell-Paar enthalten (via brands.py)
+    matched_brand = get_matching_brand(title)
 
-    if not has_valid_keyword:
+    if not matched_brand:
         return FilterResult(
             is_valid=False,
             category=Category.EXCLUDED,
-            reason="Kein MB-trac/Unimog Keyword gefunden"
+            reason="Kein erkanntes Traktor-Modell gefunden"
         )
 
     # 2. Preis extrahieren
@@ -457,14 +427,16 @@ def filter_listing(title: str, price_str: Optional[str] = None,
                 category=Category.PARTS,  # Wahrscheinlich doch ein Ersatzteil
                 price_numeric=price_numeric,
                 is_negotiable=is_negotiable,
-                reason=f"Preis unter {min_price_vehicle}€, als Ersatzteil kategorisiert"
+                reason=f"Preis unter {min_price_vehicle}€, als Ersatzteil kategorisiert",
+                brand=matched_brand
             )
 
     return FilterResult(
         is_valid=True,
         category=category,
         price_numeric=price_numeric,
-        is_negotiable=is_negotiable
+        is_negotiable=is_negotiable,
+        brand=matched_brand
     )
 
 

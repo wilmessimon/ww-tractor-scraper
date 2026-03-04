@@ -36,7 +36,8 @@ from filters import filter_listing, Category
 from brands import get_matching_brand, get_brand_display_name, BRANDS
 from mascus_scraper import MascusScraper as SpecializedMascusScraper
 from cargr_scraper import CarGrScraper as SpecializedCarGrScraper
-from dashboard_generator import generate_modern_dashboard
+# Dashboard wird nicht mehr bei jedem Scraper-Lauf generiert
+# Es lädt Daten live von GitHub Raw
 
 # Konfiguration
 BASE_DIR = Path(__file__).parent
@@ -1572,7 +1573,8 @@ def main():
         return
 
     if args.dashboard_only:
-        generate_modern_dashboard(db.db_path, BASE_DIR / "dashboard.html")
+        from dashboard_generator import generate_modern_dashboard
+        generate_modern_dashboard(BASE_DIR / "dashboard.html")
         return
 
     # Marken bestimmen
@@ -1594,8 +1596,7 @@ def main():
         brands=enabled_brands
     )
 
-    # Dashboard generieren (modernes Tailwind-Design)
-    generate_modern_dashboard(db.db_path, BASE_DIR / "dashboard.html")
+    # Dashboard lädt Daten live von GitHub Raw - kein Rebuild nötig
 
     print(f"\n✅ Scan abgeschlossen!")
     print(f"   Plattformen gescannt: {stats['platforms_scanned']}")

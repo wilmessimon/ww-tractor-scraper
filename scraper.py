@@ -856,6 +856,230 @@ class DBADkScraper(BaseScraper):
         )
 
 
+class SubitoScraper(BaseScraper):
+    """
+    Spezialisierter Scraper für Subito.it (Italien).
+    Subito ist eine Next.js-App — die Listing-Daten stecken im
+    __NEXT_DATA__ JSON statt im regulären HTML.
+    """
+
+    def scrape(self) -> List[Listing]:
+        listings = []
+        soup = self.fetch_page(self.search_url)
+
+        if not soup:
+            return listings
+
+        now = datetime.now().isoformat()
+
+        # Methode 1: __NEXT_DATA__ JSON extrahieren (primär)
+        next_data_listings = self._extract_from_next_data(soup, now)
+        listings.extend(next_data_listings)
+
+        # Methode 2: Fallback auf article-Elemente (falls vorhanden)
+        if not listings:
+            article_listings = self._extract_from_articles(soup, now)
+            listings.extend(article_listings)
+
+        logger.info(f"{self.name}: {len(listings)} Inserate gefunden")
+        return listings
+
+    def _extract_from_next_data(self, soup, now: str) -> List[Listing]:
+        """Extrahiert Listings aus dem __NEXT_DATA__ Script-Tag"""
+        listings = []
+
+        script = soup.find('script', id='__NEXT_DATA__')
+        if not script or not script.string:
+            logger.debug(f"{self.name}: Kein __NEXT_DATA__ gefunden")
+            return listings
+
+        try:
+            data = json.loads(script.string)
+        except json.JSONDecodeError:
+            logger.debug(f"{self.name}: __NEXT_DATA__ JSON ungültig")
+            return listings
+
+        # Navigiere zur Listing-Liste
+        items = (data.get('props', {})
+                     .get('pageProps', {})
+                     .get('initialState', {})
+                     .get('items', {}))
+
+        item_list = items.get('list', [])
+        if not item_list:
+            # Fallback: items könnte direkt eine Liste sein
+            if isinstance(items, list):
+                item_list = items
+            else:
+                logger.debug(f"{self.name}: Keine Items in __NEXT_DATA__")
+                return listings
+
+        for entry in item_list:
+            try:
+                item = entry.get('item', entry)  # Manchmal direkt, manchmal verschachtelt
+                listing = self._parse_next_data_item(item, now)
+                if listing:
+                    listings.append(listing)
+            except Exception as e:
+                logger.debug(f"{self.name}: Fehler beim Parsen eines Next.js Items: {e}")
+
+        return listings
+
+    def _parse_next_data_item(self, item: dict, now: str) -> Optional[Listing]:
+        """Parst ein einzelnes Item aus dem __NEXT_DATA__ JSON"""
+        # Titel (subject)
+        title = item.get('subject', '')
+        if not title or len(title) < 3:
+            return None
+
+        # Brand+Modell prüfen (Titel + Body kombiniert für besseres Matching)
+        body = item.get('body', '')
+        # Primär den Titel checken
+        matched_brand = get_matching_brand(title)
+        # Falls Titel nicht matcht, auch den Body checken
+        if not matched_brand and body:
+            matched_brand = get_matching_brand(body)
+
+        if not matched_brand:
+            return None
+
+        # URL aus URN bauen
+        urn = item.get('urn', '')
+        # URN Format: "id:ad:uuid:list:ADID"
+        ad_id = urn.split(':')[-1] if urn else ''
+        # Kategorie-URL-Teil
+        category_info = item.get('category', {})
+        friendly_name = category_info.get('friendlyName', 'annunci')
+        # Slug aus dem Titel bauen
+        import re as _re
+        slug = _re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
+        # Geo-Info für URL
+        geo = item.get('geo', {})
+        city = geo.get('city', {}).get('friendlyName', '') if isinstance(geo.get('city'), dict) else ''
+        town = geo.get('town', {}).get('friendlyName', '') if isinstance(geo.get('town'), dict) else ''
+        location_slug = town or city or ''
+
+        if ad_id:
+            url = f"https://www.subito.it/{friendly_name}/{slug}-{location_slug}-{ad_id}.htm"
+        else:
+            # Fallback: URLs direkt aus dem Item
+            urls = item.get('urls', {})
+            url = urls.get('default', urls.get('mobile', ''))
+            if not url:
+                return None
+
+        # Preis
+        price_str = None
+        price_numeric = None
+        features = item.get('features', {})
+        price_feature = features.get('/price', {})
+        price_values = price_feature.get('values', [])
+        if price_values:
+            price_str = price_values[0].get('value', '')
+            try:
+                price_numeric = float(price_values[0].get('key', '0'))
+            except (ValueError, TypeError):
+                pass
+
+        # Filter anwenden
+        filter_result = filter_listing(title, price_str)
+        if not filter_result.is_valid:
+            logger.debug(f"Gefiltert: {title[:50]}... - {filter_result.reason}")
+            return None
+
+        # Bild
+        image_url = None
+        images = item.get('images', [])
+        if images:
+            cdn_url = images[0].get('cdnBaseUrl', '')
+            if cdn_url:
+                image_url = f"{cdn_url}?rule=gallery-small"
+
+        # Ort
+        location = None
+        if geo:
+            city_name = geo.get('city', {}).get('value', '') if isinstance(geo.get('city'), dict) else ''
+            region_name = geo.get('region', {}).get('value', '') if isinstance(geo.get('region'), dict) else ''
+            location = f"{city_name}, {region_name}".strip(', ') if city_name or region_name else None
+
+        return Listing(
+            id=Listing.generate_id(url),
+            platform=self.name,
+            country=self.config.get('country_code', 'IT'),
+            title=title,
+            price=price_str,
+            location=location,
+            url=url,
+            image_url=image_url,
+            description=body[:500] if body else None,
+            first_seen=now,
+            last_seen=now,
+            category=filter_result.category.value,
+            price_numeric=price_numeric or filter_result.price_numeric,
+            is_negotiable=filter_result.is_negotiable,
+            brand=filter_result.brand or matched_brand or "mb_trac"
+        )
+
+    def _extract_from_articles(self, soup, now: str) -> List[Listing]:
+        """Fallback: Extrahiert Listings aus article-HTML-Elementen"""
+        listings = []
+        articles = soup.select('article')
+
+        for article in articles[:50]:
+            try:
+                # Titel
+                title_elem = article.select_one('h2, h3, [class*="title"]')
+                if not title_elem:
+                    continue
+                title = title_elem.get_text(strip=True)
+
+                matched_brand = get_matching_brand(title)
+                if not matched_brand:
+                    continue
+
+                # URL
+                link = article.find('a', href=True)
+                if not link:
+                    continue
+                url = link.get('href', '')
+                if not url.startswith('http'):
+                    url = f"https://www.subito.it{url}"
+
+                # Preis
+                price_elem = article.select_one('[class*="price"]')
+                price_str = price_elem.get_text(strip=True) if price_elem else None
+
+                filter_result = filter_listing(title, price_str)
+                if not filter_result.is_valid:
+                    continue
+
+                # Bild
+                img = article.find('img', src=True)
+                image_url = img.get('src') or img.get('data-src') if img else None
+
+                listings.append(Listing(
+                    id=Listing.generate_id(url),
+                    platform=self.name,
+                    country=self.config.get('country_code', 'IT'),
+                    title=title,
+                    price=price_str,
+                    location=None,
+                    url=url,
+                    image_url=image_url,
+                    description=None,
+                    first_seen=now,
+                    last_seen=now,
+                    category=filter_result.category.value,
+                    price_numeric=filter_result.price_numeric,
+                    is_negotiable=filter_result.is_negotiable,
+                    brand=filter_result.brand or matched_brand or "mb_trac"
+                ))
+            except Exception as e:
+                logger.debug(f"{self.name}: Fehler beim Parsen eines article-Elements: {e}")
+
+        return listings
+
+
 class MBTracScraper:
     """Hauptklasse zum Orchestrieren aller Scraper"""
 
@@ -881,6 +1105,8 @@ class MBTracScraper:
             return FinnNoScraper(config)
         elif 'dba.dk' in name_lower or 'dba' in name_lower:
             return DBADkScraper(config)
+        elif 'subito' in name_lower:
+            return SubitoScraper(config)
         else:
             return GenericScraper(config)
 

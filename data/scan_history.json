@@ -635,5 +635,12 @@
     "new_listings": 40,
     "total_listings": 7019,
     "duration_seconds": 536.5730376243591
+  },
+  {
+    "scan_date": "2026-03-15T18:38:32.700930",
+    "platforms_scanned": 383,
+    "new_listings": 39,
+    "total_listings": 6881,
+    "duration_seconds": 579.1363472938538
   }
 ]

@@ -1,12 +1,5 @@
 [
   {
-    "scan_date": "2026-02-05T15:21:12.327656",
-    "platforms_scanned": 103,
-    "new_listings": 7,
-    "total_listings": 893,
-    "duration_seconds": 98.47002291679382
-  },
-  {
     "scan_date": "2026-02-05T16:00:08.307606",
     "platforms_scanned": 103,
     "new_listings": 6,
@@ -698,5 +691,12 @@
     "new_listings": 5,
     "total_listings": 6808,
     "duration_seconds": 577.124538898468
+  },
+  {
+    "scan_date": "2026-03-19T10:42:15.096872",
+    "platforms_scanned": 383,
+    "new_listings": 35,
+    "total_listings": 6834,
+    "duration_seconds": 566.2292048931122
   }
 ]

@@ -241,6 +241,25 @@
             scanRuns: [],
             selectedScanRunId: null,
         };
+        const STATIC_FALLBACK_BASE = "snapshot-api";
+
+        async function fetchJsonWithFallback(primaryUrl, fallbackUrl) {
+            try {
+                const response = await fetch(primaryUrl);
+                if (response.ok) {
+                    return await response.json();
+                }
+                console.warn(`Primary API returned ${response.status} for ${primaryUrl}`);
+            } catch (error) {
+                console.warn(`Primary API request failed for ${primaryUrl}`, error);
+            }
+
+            const fallbackResponse = await fetch(fallbackUrl);
+            if (!fallbackResponse.ok) {
+                throw new Error(`Weder API noch Fallback erreichbar: ${primaryUrl}`);
+            }
+            return await fallbackResponse.json();
+        }
 
         const BRAND_NAMES = {
             mb_trac: "MB-trac",
@@ -760,12 +779,10 @@
                 return;
             }
 
-            const res = await fetch(`/api/platform-runs?scan_run_id=${state.selectedScanRunId}&limit=300`);
-            if (!res.ok) {
-                throw new Error("Plattform-Runs konnten nicht geladen werden");
-            }
-
-            const payload = await res.json();
+            const payload = await fetchJsonWithFallback(
+                `/api/platform-runs?scan_run_id=${state.selectedScanRunId}&limit=300`,
+                `${STATIC_FALLBACK_BASE}/platform-runs-${state.selectedScanRunId}.json`
+            );
             state.platformRuns = payload.items || [];
             buildPlatformSummary();
             buildPlatformFilterOptions();
@@ -773,19 +790,11 @@
         }
 
         async function loadData() {
-            const [statsRes, listingsRes, scanRunsRes] = await Promise.all([
-                fetch("/api/stats"),
-                fetch("/api/listings?limit=1200"),
-                fetch("/api/scan-runs?limit=10"),
+            const [stats, listings, scanRuns] = await Promise.all([
+                fetchJsonWithFallback("/api/stats", `${STATIC_FALLBACK_BASE}/stats.json`),
+                fetchJsonWithFallback("/api/listings?limit=1200", `${STATIC_FALLBACK_BASE}/listings.json`),
+                fetchJsonWithFallback("/api/scan-runs?limit=10", `${STATIC_FALLBACK_BASE}/scan-runs.json`),
             ]);
-
-            if (!statsRes.ok || !listingsRes.ok || !scanRunsRes.ok) {
-                throw new Error("API konnte nicht geladen werden");
-            }
-
-            const stats = await statsRes.json();
-            const listings = await listingsRes.json();
-            const scanRuns = await scanRunsRes.json();
 
             state.stats = stats;
             state.listings = listings.items || [];

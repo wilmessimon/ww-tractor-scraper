@@ -586,7 +586,10 @@ PLATFORMS = {
                 "search_url": "https://www.leboncoin.fr/recherche?text=mb%20trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "tracteur Mercedes"],
-                "priority": "high"
+                "priority": "high",
+                "firecrawl_enabled": True,
+                "firecrawl_wait_for": 12000,
+                "listing_url_patterns": ["/ad/"],
             },
             {
                 "name": "Agriaffaires FR",
@@ -617,10 +620,13 @@ PLATFORMS = {
             {
                 "name": "MilAnuncios",
                 "url": "https://www.milanuncios.com",
-                "search_url": "https://www.milanuncios.com/anuncios/mb-trac.htm",
+                "search_url": "https://www.milanuncios.com/anuncios/?s=mb%20trac&orden=relevance&fromSearch=1&fromSuggester=0&suggestionUsed=0&hitOrigin=home_search&recentSearchShowed=0&recentSearchUsed=0",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "tractor Mercedes"],
-                "priority": "high"
+                "priority": "high",
+                "firecrawl_enabled": True,
+                "firecrawl_wait_for": 12000,
+                "listing_url_patterns": ["/milanuncios.com/", ".htm"],
             },
             {
                 "name": "Wallapop",
@@ -628,7 +634,14 @@ PLATFORMS = {
                 "search_url": "https://es.wallapop.com/app/search?keywords=mb+trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "firecrawl_enabled": True,
+                "firecrawl_wait_for": 12000,
+                "listing_url_patterns": ["/item/"],
+                "firecrawl_actions": [
+                    {"type": "wait", "milliseconds": 4000},
+                    {"type": "scroll", "direction": "down", "amount": 1200},
+                ],
             },
             {
                 "name": "Mascus.es",
@@ -703,7 +716,13 @@ PLATFORMS = {
                 "search_url": "https://www.car.gr/classifieds/tractors/?category=15420&variant=trac",
                 "type": "fahrzeug_portal",
                 "search_terms": ["MB trac", "τρακτέρ"],
-                "priority": "high"
+                "priority": "high",
+                "firecrawl_force": True,
+                "firecrawl_wait_for": 12000,
+                "firecrawl_actions": [
+                    {"type": "wait", "milliseconds": 5000},
+                    {"type": "scroll", "direction": "down", "amount": 1200},
+                ],
             },
             {
                 "name": "Mascus.gr",
@@ -1002,7 +1021,7 @@ PLATFORMS = {
             {
                 "name": "Bolha.com",
                 "url": "https://www.bolha.com",
-                "search_url": "https://www.bolha.com/iskanje?q=mb+trac",
+                "search_url": "https://www.bolha.com/search/?keywords=mb+trac",
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "traktor"],
                 "priority": "high"
@@ -1162,7 +1181,8 @@ PLATFORMS = {
                 "search_url": "https://www.farmtrader.com.au/search?q=mb+trac",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB trac"],
-                "priority": "high"
+                "priority": "high",
+                "enabled": False
             },
             {
                 "name": "Gumtree.com.au",
@@ -1178,7 +1198,8 @@ PLATFORMS = {
                 "search_url": "https://www.tradefarmingmachinery.com.au/search?q=mb+trac",
                 "type": "agrar_spezialisiert",
                 "search_terms": ["MB trac"],
-                "priority": "medium"
+                "priority": "medium",
+                "enabled": False
             }
         ]
     },

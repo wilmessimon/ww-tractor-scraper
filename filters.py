@@ -110,11 +110,11 @@ WANTED_KEYWORDS = [
 # Keywords die auf SPIELZEUG/MODELLE hindeuten
 MODEL_KEYWORDS = [
     'weise toys', 'weise-toys', 'weisetoys',
-    'siku', 'bruder', 'schuco', 'minichamps',
+    'siku', 'bruder', 'schuco', 'minichamps', 'rolly toys',
     'modellauto', 'modelltraktor', 'modell 1:',
     '1:32', '1:43', '1:50', '1:64', '1:87',
     'scale model', 'diecast', 'die-cast',
-    'spielzeug', 'toy', 'jouet',
+    'spielzeug', 'toy', 'jouet', 'kindertraktor', 'tretfahrzeug',
     'sammlerstück', 'sammler', 'collector',
     'vitrine', 'display',
     'miniatur', 'miniature',
@@ -126,7 +126,7 @@ PARTS_KEYWORDS = [
     'ersatzteil', 'ersatzteile', 'zubehör',
     'motor', 'getriebe', 'achse', 'differential',
     'hydraulik', 'pumpe', 'ventil', 'zylinder',
-    'kabine', 'fahrerhaus', 'sitz', 'lenkrad',
+    'kabine', 'fahrerhaus', 'fuehrerhaus', 'führerhaus', 'cabine', 'sitz', 'lenkrad',
     'reifen', 'felge', 'rad', 'radmutter',
     'bremse', 'bremsscheibe', 'bremsbelag',
     'kupplung', 'clutch', 'kupplungsscheibe',
@@ -149,6 +149,24 @@ PARTS_KEYWORDS = [
     'broschüre', 'prospekt', 'brochure',  # Auch Literatur
     'handbuch', 'manual', 'anleitung',
     'werkstatthandbuch', 'reparaturanleitung',
+    'frontbock', 'hubspindel', 'oberlenkerhalter',
+    'unterlenker', 'feder', 'federn',
+    'zwillingskupplung', 'zwillingskupplungen',
+    'schubrohr', 'gelenkwelle', 'kabinenlager',
+    'motorblock', 'zylinderkopf', 'bremssattel',
+    'hydraulikzylinder', 'bergstütze', 'aufbaurahmen',
+    'luftdüse', 'belüftungsdüse', 'kraftstofftank',
+    'vorderachse', 'hinterachse', 'vorderrad', 'hinterrad',
+    'radsatz', 'pflegeräder', 'pflegeraeder',
+    'startpilotpumpe', 'behälter', 'tankgeber',
+    'lack', 'farbe', 'schneepflug',
+    'tür', 'türen', 'tueren', 'tuere', 'tur',
+    'motorhaube', 'armaturenbrett', 'blinkerglas',
+    'fußmatte', 'fussmatte', 'zugmaul', 'kupplungsset',
+    'kotflügel', 'kotfluegel', 'kompressor', 'frontkraftheber',
+    'heckkraftheber', 'koppelbolzen', 'bremssattel',
+    'hitch', 'pick up hitch', 'pickup hitch', 'pick-up hitch',
+    'drawbar', 'tow hitch', 'attelage',
     # Englische Begriffe
     'spare part', 'parts', 'component',
     'transmission', 'gearbox', 'axle',
@@ -166,6 +184,7 @@ PARTS_KEYWORDS = [
     'pneu', 'pneus',             # Reifen
     'moteur',                    # Motor
     'capot',                     # Haube
+    'portière', 'portiere',      # Tür
     'siège',                     # Sitz
     'volant',                    # Lenkrad
     'phare',                     # Scheinwerfer
@@ -178,6 +197,20 @@ PARTS_KEYWORDS = [
     'dynamo',                   # Lichtmaschine
     # Niederländische Begriffe
     'onderdeel', 'onderdelen',
+    # Polnische Begriffe
+    'część', 'części', 'czesc', 'czesci',
+    'pompa', 'pokrywa', 'koło', 'koła', 'kolo', 'kola',
+    'uchwyt', 'lampa', 'lampy', 'naklejka', 'naklejki',
+    'błotnik', 'blotnik', 'sprzęgła', 'sprzegla',
+    'wąż', 'waz', 'rura', 'osłona', 'oslona',
+    'dywanik', 'zaczep', 'rama zaczepowa',
+    'lakier', 'farba',
+    # Spanische Begriffe
+    'pieza', 'piezas', 'recambio', 'repuesto',
+    'piloto', 'cuadro', 'llanta', 'llantas',
+    'neumático', 'neumatico', 'neumáticos', 'neumaticos',
+    # Italienische Begriffe
+    'ricambio', 'ricambi', 'pezzo', 'pezzi',
 ]
 
 # Keywords die auf ein KOMPLETTES FAHRZEUG hindeuten
@@ -211,6 +244,47 @@ VEHICLE_KEYWORDS = [
     'top zustand', 'sehr guter zustand',
     'fahrbereit', 'einsatzbereit',
     'wenig gelaufen', 'wenig stunden',
+    # Allgemeine Fahrzeugbegriffe in mehreren Sprachen
+    'traktor', 'tractor', 'tracteur', 'trattore',
+    'trecker', 'schlepper',
+    'ciągnik', 'ciagnik',
+    'τρακτέρ',
+]
+
+
+STRONG_PARTS_KEYWORDS = [
+    'ersatzteil', 'ersatzteile', 'spare part', 'spare parts',
+    'zubehör', 'accessoire', 'accessoires',
+    'frontbock', 'hubspindel', 'feder', 'federn',
+    'zwillingskupplung', 'zwillingskupplungen',
+    'schubrohr', 'gelenkwelle', 'kabinenlager',
+    'motorblock', 'zylinderkopf', 'bremssattel',
+    'hydraulikzylinder', 'bergstütze', 'aufbaurahmen',
+    'luftdüse', 'belüftungsdüse', 'kraftstofftank',
+    'vorderachse', 'hinterachse', 'vorderrad', 'hinterrad',
+    'radsatz', 'pflegeräder', 'pflegeraeder',
+    'startpilotpumpe', 'behälter', 'tankgeber',
+    'lack', 'farbe', 'lakier', 'farba',
+    'reifen', 'räder', 'raeder', 'felge', 'felgen',
+    'jante', 'jantes', 'roue', 'roues', 'pneu', 'pneus',
+    'pompa', 'pokrywa', 'koło', 'koła', 'kolo', 'kola',
+    'uchwyt', 'naklejka', 'naklejki', 'blotnik', 'błotnik',
+    'piloto', 'cuadro', 'pieza', 'piezas', 'recambio', 'repuesto',
+    'ricambio', 'ricambi', 'pezzo', 'pezzi',
+    'broschüre', 'prospekt', 'brochure', 'manual', 'handbuch',
+    'tür', 'türen', 'tueren', 'portière', 'portiere',
+    'frontkraftheber', 'heckkraftheber', 'koppelbolzen',
+]
+
+
+STRONG_VEHICLE_KEYWORDS = [
+    'traktor', 'tractor', 'tracteur', 'trattore',
+    'trecker', 'schlepper', 'ciągnik', 'ciagnik',
+    'frontlader', 'allrad', '4x4',
+    'betriebsstunden', 'stunden', 'hours', 'heures',
+    'baujahr', 'bj', 'fahrbereit', 'einsatzbereit',
+    'restauriert', 'restored', 'renoviert',
+    'erstzulassung', 'zulassung', 'tüv', 'hu',
 ]
 
 
@@ -220,8 +294,40 @@ def normalize_text(text: str) -> str:
         return ""
     # Kleinschreibung und mehrfache Leerzeichen entfernen
     text = text.lower().strip()
+    text = re.sub(r'[\u00a0\u2007\u202f]+', ' ', text)
     text = re.sub(r'\s+', ' ', text)
     return text
+
+
+def _keyword_hits(text: str, keywords: list[str]) -> int:
+    """Zählt eindeutige Keyword-Treffer in normalisiertem Text."""
+    hits = 0
+    for keyword in keywords:
+        pattern = re.escape(normalize_text(keyword)).replace(r'\ ', r'\s+')
+        if re.search(rf'(?<!\w){pattern}(?!\w)', text):
+            hits += 1
+    return hits
+
+
+def _has_mb_trac_model_reference(text: str) -> bool:
+    return bool(re.search(r'\b(?:mb[- ]?trac|mercedes(?:[- ]benz)? trac)\s*(?:\d{2,4}(?:/\d{2,4})?|turbo)\b', text))
+
+
+def _looks_like_bare_vehicle_title(text: str) -> bool:
+    cleaned = re.sub(r'[^\w\s/-]', ' ', text)
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    tokens = cleaned.split()
+    if len(tokens) > 6:
+        return False
+
+    if _keyword_hits(cleaned, PARTS_KEYWORDS) > 0 or _keyword_hits(cleaned, STRONG_PARTS_KEYWORDS) > 0:
+        return False
+
+    patterns = [
+        r'^(?:mercedes(?: benz)? )?(?:mb[- ]?trac|mbtrac)(?: \d{2,4}(?:/\d{2,4})?)?(?: turbo)?$',
+        r'^(?:wf[- ]?trac|werner trac)(?: \d{2,4})?$',
+    ]
+    return any(re.match(pattern, cleaned) for pattern in patterns)
 
 
 def extract_price(price_str: Optional[str]) -> Tuple[Optional[float], bool]:
@@ -254,14 +360,20 @@ def extract_price(price_str: Optional[str]) -> Tuple[Optional[float], bool]:
     # Beispiele: "14.990 €", "€ 27.750,00", "49000", "1.400 €"
 
     # Entferne Währungssymbole und Text
-    cleaned = re.sub(r'[€$£]|EUR|USD|GBP|CHF|SEK|NOK|DKK|PLN|CZK|HUF|RON|BGN', '', price_str)
+    cleaned = re.sub(r'[€$£]|EUR|USD|GBP|CHF|SEK|NOK|DKK|PLN|CZK|HUF|RON|BGN', '', price_str, flags=re.IGNORECASE)
+    cleaned = re.sub(r'[\u00a0\u2007\u202f]+', ' ', cleaned)
+    cleaned = cleaned.replace("’", "'")
 
     # Finde Zahlen mit möglichen Tausendertrennzeichen
-    # Pattern für verschiedene Formate: 14.990 / 14,990 / 14990 / 27.750,00
-    matches = re.findall(r'[\d.,]+', cleaned)
+    # Pattern für verschiedene Formate: 14.990 / 14,990 / 14 990 / 14'990 / 14990 / 27.750,00 / 530.-
+    matches = re.findall(r'\d[\d\s.,\']*', cleaned)
 
     for match in matches:
         try:
+            match = re.sub(r'\s+', '', match).replace("'", "").strip('.,-')
+            if not match:
+                continue
+
             # Wenn Komma am Ende (europäisches Format mit Dezimalstellen)
             if ',' in match and '.' in match:
                 # Format: 27.750,00 -> 27750.00
@@ -333,6 +445,7 @@ def categorize_listing(title: str, price_str: Optional[str] = None) -> Category:
         Category Enum
     """
     title_lower = normalize_text(title)
+    matched_brand = get_matching_brand(title)
 
     # 1. Prüfe auf Suchgesuch (höchste Priorität)
     # WICHTIG: Nur wenn "Suche" am ANFANG steht (erste 15 Zeichen)
@@ -347,33 +460,39 @@ def categorize_listing(title: str, price_str: Optional[str] = None) -> Category:
         if keyword in title_lower:
             return Category.MODEL
 
-    # 3. Prüfe auf komplettes Fahrzeug (vor Ersatzteilen!)
-    vehicle_score = 0
-    for keyword in VEHICLE_KEYWORDS:
-        if keyword in title_lower:
-            vehicle_score += 1
+    # 3. Prüfe auf Fahrzeug- und Teile-Signale
+    vehicle_score = 1 if matched_brand else 0
+    if _has_mb_trac_model_reference(title_lower):
+        vehicle_score += 1
+    if _looks_like_bare_vehicle_title(title_lower):
+        vehicle_score += 3
+    vehicle_score += _keyword_hits(title_lower, VEHICLE_KEYWORDS)
+    vehicle_score += 2 * _keyword_hits(title_lower, STRONG_VEHICLE_KEYWORDS)
 
-    # 4. Prüfe auf Ersatzteile
-    parts_score = 0
-    for keyword in PARTS_KEYWORDS:
-        if keyword in title_lower:
-            parts_score += 1
+    parts_score = _keyword_hits(title_lower, PARTS_KEYWORDS)
+    parts_score += 2 * _keyword_hits(title_lower, STRONG_PARTS_KEYWORDS)
 
-    # Entscheidung basierend auf Scores
-    if vehicle_score > 0 and vehicle_score >= parts_score:
+    if parts_score > 0 and vehicle_score == 0:
+        return Category.PARTS
+    if vehicle_score > 0 and parts_score == 0:
         return Category.VEHICLE
-    elif parts_score > 0:
+    if parts_score > 0 and vehicle_score > 0:
+        if vehicle_score >= parts_score + 3:
+            return Category.VEHICLE
         return Category.PARTS
 
     # 5. Fallback: Preis als Indikator
     if price_str:
         price, _ = extract_price(price_str)
-        if price and price > 5000:
+        if price and price > 5000 and (matched_brand or _has_mb_trac_model_reference(title_lower) or _looks_like_bare_vehicle_title(title_lower)):
             # Hoher Preis deutet auf Fahrzeug hin
             return Category.VEHICLE
         elif price and price < 500:
             # Niedriger Preis deutet auf Ersatzteil hin
             return Category.PARTS
+
+    if _looks_like_bare_vehicle_title(title_lower):
+        return Category.VEHICLE
 
     # 6. Default: Als Sonstiges kategorisieren
     return Category.OTHER

@@ -1,6 +1,6 @@
-# MB-trac Scraper - Online Deployment
+# MB-trac Scraper - API Deployment
 
-## Schnellstart (5 Minuten)
+## Schnellstart
 
 ### 1. GitHub Repository erstellen
 
@@ -19,18 +19,19 @@ git branch -M main
 git push -u origin main
 ```
 
-### 2. GitHub Pages aktivieren
+### 2. API starten
 
-1. Gehe zu **Settings** → **Pages**
-2. Source: **GitHub Actions** auswählen
-3. Fertig! Die Seite wird automatisch deployed
+```bash
+pip install -r requirements.txt
+uvicorn app:app --host 0.0.0.0 --port 8000
+```
 
 ### 3. Scraper manuell starten (erster Test)
 
 1. Gehe zu **Actions** → **MB-trac Scraper**
 2. Klick **Run workflow** → **Run workflow**
 3. Warte ca. 5-10 Minuten
-4. Dashboard ist dann live unter: `https://DEIN-USERNAME.github.io/mbtrac-scraper/`
+4. Oberfläche ist dann live unter: `http://SERVER:8000/`
 
 ## Zeitplan
 
@@ -46,15 +47,15 @@ Der Scraper läuft automatisch 4x am Tag:
 ## Architektur
 
 ```
-GitHub Actions (Cron 4x/Tag)
+Scraper / Cron / GitHub Actions
     ↓
 scraper.py (crawlt ~100 Plattformen)
     ↓
-data/mbtrac.json (Datenbank)
+data/mbtrac.db
     ↓
-dashboard_generator.py → docs/index.html
+FastAPI (`app.py`)
     ↓
-GitHub Pages (statische Seite)
+Web-UI + API
 ```
 
 ## Anpassen
@@ -75,5 +76,5 @@ run: python scraper.py --countries DE AT CH
 ## Troubleshooting
 
 - **Actions laufen nicht:** Prüfe ob Actions aktiviert sind (Settings → Actions → General)
-- **Pages zeigt nichts:** Prüfe ob `docs/index.html` existiert
+- **UI zeigt nichts:** Prüfe ob `uvicorn app:app` läuft und `data/mbtrac.db` existiert
 - **Scraper Timeout:** Reduziere Worker: `--workers 2`

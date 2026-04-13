@@ -5,8 +5,8 @@ Ein automatisierter Crawler, der täglich europaweit nach gebrauchten **MB-trac 
 ## 📋 Features
 
 - **100+ Plattformen** in 30+ europäischen Ländern
-- **Automatische Duplikaterkennung** via SQLite-Datenbank
-- **HTML-Dashboard** zur Übersicht aller Inserate
+- **Automatische Duplikaterkennung** via SQLite
+- **API + Web-Oberfläche** zur Übersicht aller Inserate und Plattformläufe
 - **Tägliche Ausführung** via Cron oder manuell
 - **Modulare Architektur** - einfach erweiterbar
 
@@ -61,6 +61,18 @@ python scraper.py --priority high
 
 ```bash
 python scraper.py --dashboard-only
+```
+
+### API und Oberfläche starten
+
+```bash
+uvicorn app:app --reload
+```
+
+Dann im Browser öffnen:
+
+```bash
+http://127.0.0.1:8000
 ```
 
 ### Statistiken anzeigen
@@ -137,8 +149,11 @@ mbtrac-scraper/
 ├── run_daily.sh        # Shell-Skript für Cronjob
 ├── README.md           # Diese Dokumentation
 ├── dashboard.html      # Generiertes Dashboard (nach erstem Run)
+├── app.py              # FastAPI-App für API und UI
 ├── data/
 │   └── mbtrac.db       # SQLite-Datenbank
+├── static/
+│   └── index.html      # API-basierte Web-Oberfläche
 └── logs/
     └── scraper_*.log   # Log-Dateien
 ```
@@ -176,22 +191,22 @@ class MeineScraper(BaseScraper):
         pass
 ```
 
-## 📊 Dashboard
+## 📊 Oberfläche und API
 
-Nach jedem Scan wird automatisch ein `dashboard.html` generiert:
+Die neue Oberfläche lädt Daten direkt über die lokale API:
 
-- Übersicht neuer Inserate
-- Alle aktiven Inserate mit Bildern
-- Statistiken nach Ländern
-- Direkt-Links zu den Inseraten
+- `/api/listings` liefert Inserate
+- `/api/stats` liefert Kennzahlen und den letzten Gesamtlauf
+- `/api/platform-runs/latest` zeigt den letzten Plattformstatus mit Fehlern und leeren Läufen
 
-Öffne die Datei einfach im Browser.
+Die Seite unter `http://127.0.0.1:8000` zeigt diese Daten direkt an.
 
 ## ⚠️ Hinweise
 
 - **Rate Limiting**: Der Scraper wartet zwischen Requests. Erhöhe bei Problemen die Wartezeit in `scraper.py`.
 - **Rechtliche Aspekte**: Beachte die Nutzungsbedingungen der jeweiligen Plattformen.
 - **Ergebnisqualität**: Nicht alle Plattformen haben exakte HTML-Strukturen. Der generische Scraper versucht, die wichtigsten Daten zu extrahieren.
+- **Abhängigkeiten**: Vor dem ersten Lauf müssen die Pakete aus `requirements.txt` installiert sein.
 
 ## 🔍 Suchbegriffe nach Sprache
 

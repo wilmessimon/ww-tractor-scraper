@@ -17,6 +17,7 @@ import sys
 import json
 import time
 import hashlib
+import re
 import sqlite3
 import logging
 import argparse
@@ -32,8 +33,11 @@ from bs4 import BeautifulSoup
 import random
 
 # Lokale Module
+from storage import SQLiteDatabase
+from firecrawl_client import FirecrawlClient
 from filters import filter_listing, Category
 from brands import get_matching_brand, get_brand_display_name, BRANDS
+from platform_parsers import get_platform_parser_config
 from mascus_scraper import MascusScraper as SpecializedMascusScraper
 from cargr_scraper import CarGrScraper as SpecializedCarGrScraper
 # Dashboard wird nicht mehr bei jedem Scraper-Lauf generiert
@@ -44,6 +48,10 @@ BASE_DIR = Path(__file__).parent
 DATA_DIR = BASE_DIR / "data"
 LOGS_DIR = BASE_DIR / "logs"
 DB_PATH = DATA_DIR / "mbtrac.db"
+
+# Das Logging wird bereits beim Import initialisiert.
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Logging einrichten
 logging.basicConfig(
@@ -131,10 +139,14 @@ class Listing:
 class Database:
     """JSON-basierte Datenbank für Inserate (SQLite-Alternative für bessere Portabilität)"""
 
+    SAVE_INTERVAL = 25
+
     def __init__(self, db_path: Path):
         self.db_path = db_path.with_suffix('.json')
         self.history_path = db_path.parent / 'scan_history.json'
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._dirty = False
+        self._pending_writes = 0
         self._load_data()
         self._build_content_index()
 
@@ -183,8 +195,24 @@ class Database:
 
     def _save_data(self):
         """Speichert die Datenbank als JSON"""
-        with open(self.db_path, 'w', encoding='utf-8') as f:
+        tmp_path = self.db_path.with_suffix(f"{self.db_path.suffix}.tmp")
+        with open(tmp_path, 'w', encoding='utf-8') as f:
             json.dump(self.listings, f, ensure_ascii=False, indent=2)
+        tmp_path.replace(self.db_path)
+        self._dirty = False
+        self._pending_writes = 0
+
+    def flush(self):
+        """Schreibt ausstehende Änderungen nur dann auf Platte, wenn nötig."""
+        if self._dirty:
+            self._save_data()
+
+    def _mark_dirty(self):
+        """Bündelt Schreibvorgänge, ohne Änderungen zu lange nur im Speicher zu halten."""
+        self._dirty = True
+        self._pending_writes += 1
+        if self._pending_writes >= self.SAVE_INTERVAL:
+            self._save_data()
 
     def listing_exists(self, listing_id: str) -> bool:
         """Prüft ob ein Inserat bereits existiert"""
@@ -200,7 +228,7 @@ class Database:
             # Bild nachtragen falls fehlend
             if not self.listings[listing.id].get('image_url') and listing.image_url:
                 self.listings[listing.id]['image_url'] = listing.image_url
-            self._save_data()
+            self._mark_dirty()
             return False
 
         # Check 2: Content-Duplikat (gleicher Titel + ähnlicher Preis)?
@@ -221,7 +249,7 @@ class Database:
                     self.listings[existing_id]['alt_urls'] = []
                 if listing.url not in self.listings[existing_id]['alt_urls']:
                     self.listings[existing_id]['alt_urls'].append(listing.url)
-                self._save_data()
+                self._mark_dirty()
                 return False
 
         # Wirklich neues Inserat
@@ -244,7 +272,7 @@ class Database:
         }
         # Content-Index aktualisieren
         self.content_index[content_hash] = listing.id
-        self._save_data()
+        self._mark_dirty()
         return True
 
     def get_new_listings(self, since: str) -> List[Dict]:
@@ -313,9 +341,58 @@ class BaseScraper:
         self.name = platform_config["name"]
         self.search_url = platform_config["search_url"]
         self.search_terms = platform_config.get("search_terms", ["MB-trac"])
+        self.parser_config = get_platform_parser_config(platform_config)
         self.session = requests.Session()
+        self.firecrawl = FirecrawlClient()
+        self.used_firecrawl = False
+        self.last_error: Optional[str] = None
+        for key in (
+            "listing_url_patterns",
+            "firecrawl_enabled",
+            "firecrawl_force",
+            "firecrawl_wait_for",
+            "firecrawl_timeout",
+            "firecrawl_actions",
+            "firecrawl_proxy",
+        ):
+            if key in self.parser_config and key not in self.config:
+                self.config[key] = self.parser_config[key]
         # Zufällige Headers für jeden Scraper
         self.session.headers.update(get_random_headers())
+
+    def _firecrawl_enabled(self) -> bool:
+        return self.firecrawl.is_configured and bool(
+            self.config.get("firecrawl_force") or self.config.get("firecrawl_enabled")
+        )
+
+    def _fetch_page_via_firecrawl(self, url: str, reason: Optional[str] = None) -> Optional[BeautifulSoup]:
+        if not self._firecrawl_enabled():
+            return None
+
+        try:
+            html = self.firecrawl.fetch_html(
+                url=url,
+                country_code=self.config.get("country_code"),
+                wait_for=self.config.get("firecrawl_wait_for", 8000),
+                timeout_ms=self.config.get("firecrawl_timeout", 120000),
+                actions=self.config.get("firecrawl_actions"),
+                proxy=self.config.get("firecrawl_proxy", "auto"),
+                only_main_content=False,
+            )
+            if not html:
+                raise RuntimeError("Firecrawl hat leeres HTML geliefert")
+
+            self.used_firecrawl = True
+            self.last_error = None
+            if reason:
+                logger.info(f"{self.name}: Firecrawl-Fallback erfolgreich nach {reason}")
+            else:
+                logger.info(f"{self.name}: Firecrawl-Fetch erfolgreich")
+            return BeautifulSoup(html, "html.parser")
+        except Exception as e:
+            self.last_error = f"Firecrawl failed: {e}"
+            logger.error(f"{self.name}: Firecrawl-Fetch fehlgeschlagen: {e}")
+            return None
 
     def fetch_page(self, url: str, params: Dict = None, max_retries: int = 2) -> Optional[BeautifulSoup]:
         """
@@ -326,6 +403,14 @@ class BaseScraper:
             params: Query-Parameter
             max_retries: Maximale Anzahl Versuche (default: 2)
         """
+        self.last_error = None
+        self.used_firecrawl = False
+
+        if self.config.get("firecrawl_force"):
+            soup = self._fetch_page_via_firecrawl(url, reason="forced mode")
+            if soup:
+                return soup
+
         for attempt in range(max_retries + 1):
             try:
                 # Zufällige Pause vor dem Request (0.5-2 Sekunden)
@@ -338,7 +423,10 @@ class BaseScraper:
                 response = self.session.get(url, params=params, timeout=30)
 
                 # Bei 403/429 Fehler: Retry mit anderen Headers
-                if response.status_code in [403, 429]:
+                if response.status_code in [403, 405, 406, 429]:
+                    soup = self._fetch_page_via_firecrawl(url, reason=f"HTTP {response.status_code}")
+                    if soup:
+                        return soup
                     if attempt < max_retries:
                         logger.debug(f"{self.name}: Status {response.status_code}, Retry {attempt + 1}...")
                         continue
@@ -350,6 +438,10 @@ class BaseScraper:
 
             except requests.RequestException as e:
                 if attempt == max_retries:
+                    soup = self._fetch_page_via_firecrawl(url, reason=str(e))
+                    if soup:
+                        return soup
+                    self.last_error = str(e)
                     logger.error(f"Fehler beim Laden von {url}: {e}")
                     return None
 
@@ -371,27 +463,63 @@ class GenericScraper(BaseScraper):
     """
 
     def scrape(self) -> List[Listing]:
-        listings = []
         soup = self.fetch_page(self.search_url)
-
         if not soup:
-            return listings
+            return []
 
-        # Versuche verschiedene gängige Selektoren für Listing-Container
-        selectors = [
-            # Häufige Klassen für Listing-Container
-            'article', '[class*="listing"]', '[class*="item"]', '[class*="ad-"]',
-            '[class*="result"]', '[class*="product"]', '[class*="offer"]',
-            '.classified', '.advertisement', '.search-result'
+        listings = self._extract_from_items(soup)
+        if not listings and self.parser_config.get("json_ld_enabled", True):
+            listings = self._extract_from_json_ld(soup)
+        if not listings and self.parser_config.get("link_fallback_enabled", True):
+            listings = self._extract_from_links(soup)
+
+        listings = self._dedupe_listings(listings)
+        logger.info(f"{self.name}: {len(listings)} Inserate gefunden")
+        return listings
+
+    def _dedupe_listings(self, listings: List[Listing]) -> List[Listing]:
+        deduped: List[Listing] = []
+        seen = set()
+        for listing in listings:
+            if listing.id in seen:
+                continue
+            seen.add(listing.id)
+            deduped.append(listing)
+        return deduped
+
+    def _select_items(self, soup: BeautifulSoup):
+        selectors = self.parser_config.get("item_selectors") or [
+            'article',
+            '[class*="listing"]',
+            '[class*="item"]',
+            '[class*="ad-"]',
+            '[class*="result"]',
+            '[class*="product"]',
+            '[class*="offer"]',
+            '.classified',
+            '.advertisement',
+            '.search-result',
         ]
+        best_items = []
+        minimum = int(self.parser_config.get("item_min_count", 1))
 
-        items = []
         for selector in selectors:
-            items = soup.select(selector)
-            if len(items) > 2:  # Mindestens ein paar Ergebnisse
-                break
+            try:
+                items = soup.select(selector)
+            except Exception:
+                continue
+            if len(items) > len(best_items):
+                best_items = items
+            if len(items) >= minimum:
+                return items
 
-        for item in items[:50]:  # Maximal 50 pro Seite
+        return best_items
+
+    def _extract_from_items(self, soup: BeautifulSoup) -> List[Listing]:
+        listings: List[Listing] = []
+        items = self._select_items(soup)
+
+        for item in items[: self.parser_config.get("max_items", 50)]:
             try:
                 listing = self._extract_listing(item)
                 if listing:
@@ -399,71 +527,180 @@ class GenericScraper(BaseScraper):
             except Exception as e:
                 logger.debug(f"Fehler beim Parsen eines Items auf {self.name}: {e}")
 
-        logger.info(f"{self.name}: {len(listings)} Inserate gefunden")
         return listings
 
-    def _extract_listing(self, item) -> Optional[Listing]:
-        """Versucht Listing-Daten aus einem HTML-Element zu extrahieren"""
-        now = datetime.now().isoformat()
+    @staticmethod
+    def _normalize_whitespace(value: Optional[str]) -> Optional[str]:
+        if not value:
+            return None
+        cleaned = re.sub(r'[\u00a0\u2007\u202f]+', ' ', value)
+        cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+        return cleaned or None
 
-        # URL extrahieren
-        link = item.find('a', href=True)
-        if not link:
+    def _extract_value_from_elements(
+        self,
+        root,
+        selectors: List[str],
+        *,
+        attributes: Optional[List[str]] = None,
+        max_length: int = 250,
+    ) -> Optional[str]:
+        for selector in selectors:
+            try:
+                elements = [root] if selector == "self" else root.select(selector)
+            except Exception:
+                continue
+
+            for elem in elements[:5]:
+                if attributes:
+                    for attr in attributes:
+                        value = elem.get(attr) if hasattr(elem, "get") else None
+                        if isinstance(value, list):
+                            value = " ".join(str(v) for v in value if v)
+                        value = self._normalize_whitespace(value)
+                        if value:
+                            return value[:max_length]
+
+                text = self._normalize_whitespace(elem.get_text(" ", strip=True))
+                if text:
+                    return text[:max_length]
+
+        return None
+
+    def _resolve_url(self, href: str) -> str:
+        return href if href.startswith("http") else urljoin(self.search_url, href)
+
+    def _find_best_link(self, item):
+        patterns = self.config.get("listing_url_patterns", [])
+        selectors = self.parser_config.get("link_selectors") or ['a[href]']
+        candidates = []
+
+        for selector in selectors:
+            try:
+                candidates.extend(item.select(selector))
+            except Exception:
+                continue
+
+        for candidate in candidates:
+            href = candidate.get("href", "")
+            if not href:
+                continue
+            if patterns and not any(pattern in href for pattern in patterns):
+                continue
+            return candidate
+
+        for candidate in candidates:
+            href = candidate.get("href", "")
+            if href:
+                return candidate
+
+        return None
+
+    def _clean_title(self, title: Optional[str]) -> Optional[str]:
+        title = self._normalize_whitespace(title)
+        if not title:
             return None
 
-        url = link.get('href', '')
-        if not url.startswith('http'):
-            # Relative URL auflösen
-            base = urlparse(self.search_url)
-            url = f"{base.scheme}://{base.netloc}{url}"
+        title = re.split(
+            r"\s+(?:\d[\d\s.,]*\s?(?:€|eur|chf|fr\.|kr|pln)|sofort kaufen|mon,|mo,|di,|mi,|do,|fr,|sa,|so,)\b",
+            title,
+            maxsplit=1,
+            flags=re.IGNORECASE,
+        )[0].strip()
+        return title[:250] if title else None
 
-        # Titel extrahieren
-        title_selectors = ['h2', 'h3', '.title', '[class*="title"]', 'a']
-        title = None
-        for sel in title_selectors:
-            elem = item.select_one(sel)
-            if elem and elem.get_text(strip=True):
-                title = elem.get_text(strip=True)[:200]
-                break
+    def _extract_price_from_text(self, text: Optional[str]) -> Optional[str]:
+        if not text:
+            return None
 
+        patterns = [
+            r"(?<![:/\d])(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?\.-)",
+            r"(?<![:/\d])(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?)\s*(?=(?:\(\d+\s*gebote\)|sofort kaufen|oder preis vorschlagen|heute|morgen|mo,|di,|mi,|do,|fr,|sa,|so,))",
+            r"Prix:\s*(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?)\s?(€|eur|chf|fr\.|kr|pln)",
+            r"(?<![:/\d])(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?)\s?(?:€|eur|chf|fr\.|kr|pln)",
+            r"(?:kr\.?\s*)(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?)",
+            r"(?<![:/\d])(\d{1,3}(?:[\s'.]\d{3})*(?:[.,]\d{2})?)\s?(?:lei|ron)",
+        ]
+        for pattern in patterns:
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            if not matches:
+                continue
+
+            match = matches[-1]
+            if isinstance(match, tuple):
+                if len(match) >= 2 and any(str(part).lower() in {"€", "eur", "chf", "fr.", "kr", "pln"} for part in match[1:]):
+                    value = " ".join(str(part) for part in match if part).strip()
+                else:
+                    value = next((str(part) for part in reversed(match) if part), "")
+            else:
+                value = str(match)
+
+            value = self._normalize_whitespace(value)
+            if value:
+                return value
+        return None
+
+    def _extract_location_from_text(self, text: Optional[str]) -> Optional[str]:
+        if not text:
+            return None
+        if self.name == "Leboncoin":
+            match = re.search(r"Située à\s+([^\.]+)", text, re.IGNORECASE)
+            if match:
+                return self._normalize_whitespace(match.group(1))
+        return None
+
+    def _extract_image(self, item) -> Optional[str]:
+        selectors = self.parser_config.get("image_selectors") or ['img[src]', 'img[data-src]']
+        for selector in selectors:
+            try:
+                images = item.select(selector)
+            except Exception:
+                continue
+
+            for img in images[:3]:
+                for attr in ("src", "data-src", "data-original", "srcset"):
+                    value = img.get(attr)
+                    if not value:
+                        continue
+                    if attr == "srcset":
+                        value = value.split(",")[0].strip().split(" ")[0]
+                    return value
+        return None
+
+    def _build_listing(
+        self,
+        *,
+        url: str,
+        title: Optional[str],
+        price: Optional[str],
+        location: Optional[str],
+        image: Optional[str],
+        description: Optional[str] = None,
+    ) -> Optional[Listing]:
+        title = self._clean_title(title)
         if not title or len(title) < 3:
             return None
 
-        # Prüfen ob relevante Marke+Modell Kombination (via brands.py)
+        required_terms = self.parser_config.get("required_terms_any") or []
+        if required_terms:
+            haystack = " ".join(filter(None, [title, description]))
+            haystack_normalized = self._normalize_whitespace(haystack.lower()) or ""
+            if not any(term.lower() in haystack_normalized for term in required_terms):
+                return None
+
         matched_brand = get_matching_brand(title)
+        description = self._normalize_whitespace(description)
+        if not matched_brand and description:
+            matched_brand = get_matching_brand(description)
         if not matched_brand:
             return None
 
-        # Preis extrahieren
-        price = None
-        price_selectors = ['[class*="price"]', '[class*="cost"]', '.price']
-        for sel in price_selectors:
-            elem = item.select_one(sel)
-            if elem:
-                price = elem.get_text(strip=True)[:50]
-                break
-
-        # Filter anwenden
         filter_result = filter_listing(title, price)
         if not filter_result.is_valid:
             logger.debug(f"Gefiltert: {title[:50]}... - {filter_result.reason}")
             return None
 
-        # Bild extrahieren
-        image = None
-        img = item.find('img', src=True)
-        if img:
-            image = img.get('src') or img.get('data-src')
-
-        # Location extrahieren
-        location = None
-        loc_selectors = ['[class*="location"]', '[class*="city"]', '[class*="region"]']
-        for sel in loc_selectors:
-            elem = item.select_one(sel)
-            if elem:
-                location = elem.get_text(strip=True)[:100]
-                break
-
+        now = datetime.now().isoformat()
         return Listing(
             id=Listing.generate_id(url),
             platform=self.name,
@@ -473,14 +710,262 @@ class GenericScraper(BaseScraper):
             location=location,
             url=url,
             image_url=image,
-            description=None,
+            description=description,
             first_seen=now,
             last_seen=now,
             category=filter_result.category.value,
             price_numeric=filter_result.price_numeric,
             is_negotiable=filter_result.is_negotiable,
-            brand=filter_result.brand or matched_brand or "mb_trac"
+            brand=filter_result.brand or matched_brand or "mb_trac",
         )
+
+    def _extract_listing(self, item) -> Optional[Listing]:
+        """Extrahiert ein Inserat aus einem konfigurierten HTML-Container."""
+        link = self._find_best_link(item)
+        if not link:
+            return None
+
+        url = self._resolve_url(link.get('href', ''))
+        title = (
+            self._extract_value_from_elements(item, self.parser_config.get("title_selectors") or ['h2', 'h3', 'a'])
+            or self._extract_value_from_elements(link, ["self"], attributes=["title", "aria-label"], max_length=250)
+        )
+        price = self._extract_value_from_elements(
+            item,
+            self.parser_config.get("price_selectors") or ['[class*="price"]', '.price'],
+            max_length=80,
+        )
+        full_text = self._normalize_whitespace(item.get_text(" ", strip=True))
+        if not price:
+            price = self._extract_price_from_text(full_text)
+
+        location = self._extract_value_from_elements(
+            item,
+            self.parser_config.get("location_selectors") or ['[class*="location"]', '[class*="city"]'],
+            max_length=120,
+        )
+        if not location:
+            location = self._extract_location_from_text(full_text)
+
+        image = self._extract_image(item)
+        description = self._extract_value_from_elements(
+            item,
+            self.parser_config.get("description_selectors") or ['[class*="description"]'],
+            max_length=500,
+        )
+
+        return self._build_listing(
+            url=url,
+            title=title,
+            price=price,
+            location=location,
+            image=image,
+            description=description or full_text,
+        )
+
+    def _extract_from_links(self, soup: BeautifulSoup) -> List[Listing]:
+        """Fallback für JS-lastige Plattformen: extrahiert direkt aus Detail-Links."""
+        listings: List[Listing] = []
+        seen_urls = set()
+        patterns = self.config.get("listing_url_patterns", [])
+        if not patterns:
+            return listings
+
+        for link in soup.find_all("a", href=True):
+            href = link.get("href", "")
+            if not href or not any(pattern in href for pattern in patterns):
+                continue
+            link_text = self._normalize_whitespace(link.get_text(" ", strip=True))
+            if link_text and re.fullmatch(r"\d+", link_text) and not (link.get("title") or link.get("aria-label")):
+                continue
+
+            url = href if href.startswith("http") else urljoin(self.search_url, href)
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
+
+            try:
+                listing = self._extract_listing_from_link(link, url)
+                if listing:
+                    listings.append(listing)
+            except Exception as e:
+                logger.debug(f"Fehler beim Link-Fallback auf {self.name}: {e}")
+
+            if len(listings) >= 50:
+                break
+
+        return listings
+
+    def _extract_listing_from_link(self, link, url: str) -> Optional[Listing]:
+        """Parst ein Listing aus einem einzelnen Detail-Link."""
+        if self.parser_config.get("link_container_mode") == "link":
+            container = link
+        else:
+            container = link.find_parent(self.parser_config.get("container_tags") or ["article", "li", "div"]) or link
+        heading = container.find(["h1", "h2", "h3", "h4"])
+        img = container.find("img")
+        image = self._extract_image(container)
+        full_text = container.get_text(" ", strip=True)
+
+        hidden_title = None
+        if self.name == "Leboncoin":
+            hidden_title_elem = link.find("span", title=True)
+            if hidden_title_elem:
+                hidden_title = hidden_title_elem.get("title", "")
+                hidden_title = re.sub(r"^Voir l[’']annonce:\s*", "", hidden_title, flags=re.IGNORECASE).strip()
+
+        aria_label = link.get("aria-label")
+        if aria_label and aria_label.strip().lower() in {
+            "voir l’annonce",
+            "voir l'annonce",
+            "anzeige ansehen",
+            "view ad",
+            "open ad",
+        }:
+            aria_label = None
+
+        link_text = link.get_text(" ", strip=True)
+        title_candidates = []
+        if self.parser_config.get("prefer_anchor_text"):
+            title_candidates.extend([
+                link_text,
+                link.get("title"),
+                aria_label,
+                hidden_title,
+                heading.get_text(" ", strip=True) if heading else None,
+                img.get("alt") if img and img.get("alt") else None,
+                full_text,
+            ])
+        else:
+            title_candidates.extend([
+                heading.get_text(" ", strip=True) if heading else None,
+                img.get("alt") if img and img.get("alt") else None,
+                hidden_title,
+                aria_label,
+                link.get("title"),
+                link_text,
+                full_text,
+            ])
+        title = next((candidate for candidate in title_candidates if candidate), None)
+        title = self._clean_title(title)
+        if not title:
+            return None
+
+        price = None
+        price_selectors = self.parser_config.get("price_selectors") or ["[class*='price']", "[class*='amount']", "[class*='cost']", ".price"]
+        for selector in price_selectors:
+            elem = container.select_one(selector)
+            if elem and elem.get_text(strip=True):
+                price = elem.get_text(" ", strip=True)[:80]
+                break
+
+        if not price:
+            price_source_text = " ".join(filter(None, [link_text, full_text]))
+            if self.name == "Leboncoin":
+                price_match = re.search(r"Prix:\s*(\d[\d\s'.,]*)\s?(€|eur|chf|fr\.|kr)", price_source_text, re.IGNORECASE)
+                if price_match:
+                    price = f"{price_match.group(1).strip()} {price_match.group(2)}".strip()
+            if not price:
+                price = self._extract_price_from_text(price_source_text)
+
+        location = None
+        loc_selectors = self.parser_config.get("location_selectors") or ["[class*='location']", "[class*='city']", "[class*='region']", "[class*='postal']"]
+        for selector in loc_selectors:
+            elem = container.select_one(selector)
+            if elem and elem.get_text(strip=True):
+                location = elem.get_text(" ", strip=True)[:100]
+                break
+
+        if not location:
+            location = self._extract_location_from_text(full_text)
+
+        return self._build_listing(
+            url=url,
+            title=title,
+            price=price,
+            location=location,
+            image=image,
+            description=full_text,
+        )
+
+    def _iter_json_candidates(self, node):
+        if isinstance(node, list):
+            for item in node:
+                yield from self._iter_json_candidates(item)
+            return
+
+        if not isinstance(node, dict):
+            return
+
+        if isinstance(node.get("itemListElement"), list):
+            yield from self._iter_json_candidates(node["itemListElement"])
+
+        if isinstance(node.get("item"), dict):
+            yield from self._iter_json_candidates(node["item"])
+
+        if isinstance(node.get("mainEntity"), dict):
+            yield from self._iter_json_candidates(node["mainEntity"])
+
+        if any(key in node for key in ("name", "headline", "title")) and any(key in node for key in ("url", "@id", "offers", "image")):
+            yield node
+
+        for value in node.values():
+            if isinstance(value, (dict, list)):
+                yield from self._iter_json_candidates(value)
+
+    def _extract_from_json_ld(self, soup: BeautifulSoup) -> List[Listing]:
+        listings: List[Listing] = []
+        for script in soup.find_all("script", attrs={"type": lambda v: v and "ld+json" in v}):
+            raw = script.string or script.get_text(strip=True)
+            if not raw:
+                continue
+            try:
+                data = json.loads(raw)
+            except Exception:
+                continue
+
+            for candidate in self._iter_json_candidates(data):
+                title = candidate.get("name") or candidate.get("headline") or candidate.get("title")
+                url = candidate.get("url") or candidate.get("@id")
+                if isinstance(url, dict):
+                    url = url.get("@id") or url.get("url")
+                if not title or not url or not str(url).startswith(("http", "/")):
+                    continue
+
+                price = candidate.get("price")
+                offers = candidate.get("offers")
+                if isinstance(offers, dict):
+                    price = price or offers.get("price") or offers.get("lowPrice")
+                    currency = offers.get("priceCurrency")
+                    if price and currency:
+                        price = f"{price} {currency}"
+
+                image = candidate.get("image")
+                if isinstance(image, list):
+                    image = image[0] if image else None
+                if isinstance(image, dict):
+                    image = image.get("url") or image.get("contentUrl")
+
+                description = candidate.get("description")
+                location = None
+                area = candidate.get("areaServed")
+                if isinstance(area, dict):
+                    location = area.get("name")
+                address = candidate.get("address")
+                if isinstance(address, dict):
+                    location = address.get("addressLocality") or address.get("addressRegion") or location
+
+                listing = self._build_listing(
+                    url=self._resolve_url(str(url)),
+                    title=str(title),
+                    price=str(price) if price else None,
+                    location=location,
+                    image=str(image) if image else None,
+                    description=description,
+                )
+                if listing:
+                    listings.append(listing)
+        return listings
 
 
 # Spezialisierte Scraper für wichtige Plattformen
@@ -1144,23 +1629,38 @@ class MBTracScraper:
             return CarGrScraperIntegrated(config)
         elif 'traktorpool' in name_lower or 'technikboerse' in name_lower:
             return TraktorpoolScraper(config)
-        elif 'finn.no' in name_lower or 'finn' in name_lower:
-            return FinnNoScraper(config)
-        elif 'dba.dk' in name_lower or 'dba' in name_lower:
-            return DBADkScraper(config)
         elif 'subito' in name_lower:
             return SubitoScraper(config)
         else:
             return GenericScraper(config)
 
-    def scrape_platform(self, country_code: str, platform_config: Dict) -> List[Listing]:
-        """Scrapt eine einzelne Plattform"""
+    def scrape_platform(self, country_code: str, platform_config: Dict) -> Dict[str, Any]:
+        """Scrapt eine einzelne Plattform und liefert Metadaten für das Run-Tracking."""
         scraper = self.get_scraper_for_platform(platform_config, country_code)
+        started_at = time.time()
         try:
-            return scraper.scrape()
+            listings = scraper.scrape()
+            duration = round(time.time() - started_at, 2)
+            if getattr(scraper, 'last_error', None):
+                status = 'error'
+            elif listings:
+                status = 'success'
+            else:
+                status = 'empty'
+            return {
+                'listings': listings,
+                'status': status,
+                'error_message': getattr(scraper, 'last_error', None),
+                'duration_seconds': duration,
+            }
         except Exception as e:
             logger.error(f"Fehler beim Scrapen von {platform_config['name']}: {e}")
-            return []
+            return {
+                'listings': [],
+                'status': 'error',
+                'error_message': str(e),
+                'duration_seconds': round(time.time() - started_at, 2),
+            }
 
     def run(self, countries: List[str] = None, priority: str = None,
             max_workers: int = 5, brands: List[str] = None) -> Dict:
@@ -1180,6 +1680,9 @@ class MBTracScraper:
         total_new = 0
         total_listings = 0
         platforms_scanned = 0
+        platforms_success = 0
+        platforms_empty = 0
+        platforms_error = 0
 
         # Plattformen sammeln (Haupt-URLs für MB-trac)
         tasks = []
@@ -1188,6 +1691,9 @@ class MBTracScraper:
                 continue
 
             for platform in country_data['platforms']:
+                if platform.get('enabled', True) is False:
+                    logger.info(f"Überspringe deaktivierte Plattform: {platform['name']}")
+                    continue
                 if priority and platform.get('priority') != priority:
                     continue
                 # Haupt-URL (MB-trac) immer mit aufnehmen
@@ -1204,6 +1710,7 @@ class MBTracScraper:
                             tasks.append((country_code, brand_config))
 
         logger.info(f"Starte Scan von {len(tasks)} Plattformen...")
+        scan_run_id = self.db.start_scan_run(len(tasks))
 
         # Parallel ausführen
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -1215,36 +1722,89 @@ class MBTracScraper:
             for future in as_completed(future_to_task):
                 country_code, platform = future_to_task[future]
                 try:
-                    listings = future.result()
+                    result = future.result()
+                    listings = result['listings']
                     platforms_scanned += 1
+                    new_for_platform = 0
 
                     for listing in listings:
                         is_new = self.db.add_listing(listing)
                         if is_new:
                             total_new += 1
+                            new_for_platform += 1
                         total_listings += 1
+
+                    if result['status'] == 'success':
+                        platforms_success += 1
+                    elif result['status'] == 'empty':
+                        platforms_empty += 1
+                    else:
+                        platforms_error += 1
+
+                    self.db.log_platform_run(
+                        scan_run_id=scan_run_id,
+                        country_code=country_code,
+                        platform_name=platform['name'],
+                        search_url=platform['search_url'],
+                        status=result['status'],
+                        error_message=result['error_message'],
+                        listings_found=len(listings),
+                        new_listings=new_for_platform,
+                        duration_seconds=result['duration_seconds'],
+                    )
+
+                    logger.info(
+                        f"{platform['name']}: status={result['status']} "
+                        f"listings={len(listings)} new={new_for_platform} "
+                        f"duration={result['duration_seconds']}s"
+                    )
 
                 except Exception as e:
                     logger.error(f"Fehler bei {platform['name']}: {e}")
+                    platforms_error += 1
+                    self.db.log_platform_run(
+                        scan_run_id=scan_run_id,
+                        country_code=country_code,
+                        platform_name=platform['name'],
+                        search_url=platform['search_url'],
+                        status='error',
+                        error_message=str(e),
+                        listings_found=0,
+                        new_listings=0,
+                        duration_seconds=0,
+                    )
 
                 # Zufällige Pause zwischen Requests (0.3-1.5 Sekunden)
                 time.sleep(random.uniform(0.3, 1.5))
 
         duration = time.time() - start_time
-        self.db.log_scan(platforms_scanned, total_new, total_listings, duration)
+        self.db.flush()
+        self.db.finish_scan_run(
+            scan_run_id,
+            platforms_scanned=platforms_scanned,
+            new_listings=total_new,
+            total_listings=total_listings,
+            duration_seconds=round(duration, 2),
+            platforms_success=platforms_success,
+            platforms_empty=platforms_empty,
+            platforms_error=platforms_error,
+        )
 
         stats = {
             'platforms_scanned': platforms_scanned,
             'new_listings': total_new,
             'total_listings': total_listings,
-            'duration_seconds': round(duration, 2)
+            'duration_seconds': round(duration, 2),
+            'platforms_success': platforms_success,
+            'platforms_empty': platforms_empty,
+            'platforms_error': platforms_error,
         }
 
         logger.info(f"Scan abgeschlossen: {stats}")
         return stats
 
 
-def generate_dashboard(db: Database, output_path: Path):
+def generate_dashboard(db, output_path: Path):
     """Generiert ein HTML-Dashboard mit Kategorie-Filtern"""
     stats = db.get_stats()
     listings = db.get_all_active()
@@ -1600,7 +2160,7 @@ def main():
     LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Datenbank initialisieren
-    db = Database(DB_PATH)
+    db = SQLiteDatabase(DB_PATH)
 
     if args.stats:
         stats = db.get_stats()
@@ -1642,9 +2202,12 @@ def main():
 
     print(f"\n✅ Scan abgeschlossen!")
     print(f"   Plattformen gescannt: {stats['platforms_scanned']}")
+    print(f"   Erfolgreich: {stats['platforms_success']}")
+    print(f"   Leer: {stats['platforms_empty']}")
+    print(f"   Fehler: {stats['platforms_error']}")
     print(f"   Neue Inserate: {stats['new_listings']}")
     print(f"   Dauer: {stats['duration_seconds']}s")
-    print(f"\n📊 Dashboard: {BASE_DIR / 'dashboard.html'}")
+    print(f"\n🌐 API/UI: Starte mit 'uvicorn app:app --reload'")
 
 
 if __name__ == "__main__":

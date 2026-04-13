@@ -296,7 +296,7 @@ HOST_OVERRIDES: Dict[str, Dict[str, Any]] = {
             'article',
             'div[class*="ads__unit"]',
         ],
-        "listing_url_patterns": ['/ad.html?finnkode='],
+        "listing_url_patterns": ['/mobility/item/', '/recommerce/forsale/item/', '/ad.html?finnkode='],
         "firecrawl_force": True,
         "firecrawl_enabled": True,
         "firecrawl_wait_for": 12000,

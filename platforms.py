@@ -399,7 +399,10 @@ PLATFORMS = {
             {
                 "name": "Finn.no",
                 "url": "https://www.finn.no",
-                "search_url": "https://www.finn.no/bap/forsale/search.html?q=mb+trac",
+                "search_url": "https://www.finn.no/mobility/search/b2b/agriculturetractor?q=mb+trac",
+                "additional_search_urls": [
+                    "https://www.finn.no/bap/forsale/search.html?q=mb+trac",
+                ],
                 "type": "kleinanzeigen",
                 "search_terms": ["MB trac", "MB-trac", "traktor"],
                 "priority": "high"

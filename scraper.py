@@ -1636,21 +1636,38 @@ class MBTracScraper:
 
     def scrape_platform(self, country_code: str, platform_config: Dict) -> Dict[str, Any]:
         """Scrapt eine einzelne Plattform und liefert Metadaten für das Run-Tracking."""
-        scraper = self.get_scraper_for_platform(platform_config, country_code)
         started_at = time.time()
+        search_urls = [platform_config["search_url"], *(platform_config.get("additional_search_urls") or [])]
+        all_listings: List[Listing] = []
+        seen_ids = set()
+        error_messages: List[str] = []
+
         try:
-            listings = scraper.scrape()
+            for search_url in search_urls:
+                config = {**platform_config, "search_url": search_url}
+                scraper = self.get_scraper_for_platform(config, country_code)
+                listings = scraper.scrape()
+
+                for listing in listings:
+                    if listing.id in seen_ids:
+                        continue
+                    seen_ids.add(listing.id)
+                    all_listings.append(listing)
+
+                if getattr(scraper, "last_error", None):
+                    error_messages.append(f"{search_url}: {scraper.last_error}")
+
             duration = round(time.time() - started_at, 2)
-            if getattr(scraper, 'last_error', None):
+            if error_messages and not all_listings:
                 status = 'error'
-            elif listings:
+            elif all_listings:
                 status = 'success'
             else:
                 status = 'empty'
             return {
-                'listings': listings,
+                'listings': all_listings,
                 'status': status,
-                'error_message': getattr(scraper, 'last_error', None),
+                'error_message': " | ".join(error_messages) if error_messages else None,
                 'duration_seconds': duration,
             }
         except Exception as e:

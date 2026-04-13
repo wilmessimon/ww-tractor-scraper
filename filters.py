@@ -205,6 +205,11 @@ PARTS_KEYWORDS = [
     'wąż', 'waz', 'rura', 'osłona', 'oslona',
     'dywanik', 'zaczep', 'rama zaczepowa',
     'lakier', 'farba',
+    # Polnische Flexions-/Stammformen für Teile
+    'naklej*', 'lamp*', 'sprzęg*', 'sprzeg*',
+    'akcesori*', 'podstaw*', 'wzmacniacz*',
+    'pokryw*', 'płyt*', 'plyt*',
+    'osłon*', 'oslon*', 'nadwozi*',
     # Spanische Begriffe
     'pieza', 'piezas', 'recambio', 'repuesto',
     'piloto', 'cuadro', 'llanta', 'llantas',
@@ -269,6 +274,8 @@ STRONG_PARTS_KEYWORDS = [
     'jante', 'jantes', 'roue', 'roues', 'pneu', 'pneus',
     'pompa', 'pokrywa', 'koło', 'koła', 'kolo', 'kola',
     'uchwyt', 'naklejka', 'naklejki', 'blotnik', 'błotnik',
+    'zestaw naklej*', 'podstawa lamp*', 'wzmacniacz sprzęg*',
+    'akcesoria nadwozi*', 'osłona nadwozi*', 'plyta pokryw*', 'płyta pokryw*',
     'piloto', 'cuadro', 'pieza', 'piezas', 'recambio', 'repuesto',
     'ricambio', 'ricambi', 'pezzo', 'pezzi',
     'broschüre', 'prospekt', 'brochure', 'manual', 'handbuch',
@@ -303,7 +310,8 @@ def _keyword_hits(text: str, keywords: list[str]) -> int:
     """Zählt eindeutige Keyword-Treffer in normalisiertem Text."""
     hits = 0
     for keyword in keywords:
-        pattern = re.escape(normalize_text(keyword)).replace(r'\ ', r'\s+')
+        pattern = re.escape(normalize_text(keyword))
+        pattern = pattern.replace(r'\*', r'\w*').replace(r'\ ', r'\s+')
         if re.search(rf'(?<!\w){pattern}(?!\w)', text):
             hits += 1
     return hits

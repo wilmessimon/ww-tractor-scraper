@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traktor Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        * {
+            font-family: "Inter", sans-serif;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(22, 163, 74, 0.18), transparent 35%),
+                radial-gradient(circle at top right, rgba(14, 165, 233, 0.15), transparent 30%),
+                linear-gradient(180deg, #07111f 0%, #0f172a 100%);
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(16px);
+        }
+
+        .listing-card {
+            transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 50px rgba(2, 6, 23, 0.45);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            border-radius: 9999px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .platform-card {
+            transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 34px rgba(2, 6, 23, 0.35);
+        }
+
+        .metric-bar-track {
+            overflow: hidden;
+            border-radius: 9999px;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .metric-bar-fill {
+            height: 0.5rem;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.85), rgba(56, 189, 248, 0.9));
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-100">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <header class="glass sticky top-4 z-30 mb-8 rounded-3xl border border-emerald-500/20 px-6 py-5 shadow-2xl shadow-slate-950/40">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-[0.32em] text-emerald-300">Traktor Finder API</p>
+                    <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Inserate und Plattformstatus in einer Oberfläche</h1>
+                    <p class="mt-2 max-w-3xl text-sm text-slate-300 sm:text-base">
+                        Die Seite lädt Listings direkt über die API und zeigt zusätzlich den letzten Plattformlauf mit Erfolgen, leeren Ergebnissen und Fehlern.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="rounded-2xl border border-slate-700 bg-slate-900/70 px-4 py-3 text-right">
+                        <div class="text-xs uppercase tracking-[0.24em] text-slate-400">Letzter Lauf</div>
+                        <div id="last-run" class="mt-1 text-sm font-semibold text-white">lade...</div>
+                    </div>
+                    <button id="reload-btn" class="rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-emerald-400">
+                        Neu laden
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section id="stats-grid" class="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-6"></section>
+
+        <section class="glass mb-8 rounded-3xl border border-slate-800 p-5">
+            <div class="grid gap-4 lg:grid-cols-[1.4fr_repeat(4,minmax(0,1fr))]">
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Suche</span>
+                    <input id="search-input" type="text" placeholder="Titel durchsuchen" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-400">
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Kategorie</span>
+                    <select id="category-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="fahrzeug">fahrzeug</option>
+                        <option value="all">Alle</option>
+                    </select>
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Land</span>
+                    <select id="country-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="all">Alle</option>
+                    </select>
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Marke</span>
+                    <select id="brand-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="all">Alle</option>
+                    </select>
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Sortierung</span>
+                    <select id="sort-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="newest">Neueste zuerst</option>
+                        <option value="price_desc">Preis absteigend</option>
+                        <option value="price_asc">Preis aufsteigend</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <div class="mb-4 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Listings</p>
+                    <h2 class="text-2xl font-bold text-white">Aktive Inserate</h2>
+                </div>
+                <div id="results-count" class="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">0 Ergebnisse</div>
+            </div>
+            <div id="listings-grid" class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"></div>
+            <div id="empty-listings" class="hidden rounded-3xl border border-dashed border-slate-700 bg-slate-900/60 p-10 text-center text-slate-400">
+                Keine Inserate mit den aktuellen Filtern gefunden.
+            </div>
+        </section>
+
+        <section class="glass rounded-3xl border border-slate-800 p-5">
+            <div class="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Monitoring</p>
+                    <h2 class="text-2xl font-bold text-white">Plattformlauf im Detail</h2>
+                </div>
+                <p class="max-w-2xl text-sm text-slate-400">
+                    Hier siehst du direkt, welche Plattformen Treffer liefern, welche leer laufen und welche aktuell blockieren oder kaputt sind. Du kannst zwischen den letzten Runs wechseln.
+                </p>
+            </div>
+
+            <div id="platform-summary-grid" class="mb-6 grid grid-cols-2 gap-4 xl:grid-cols-6"></div>
+
+            <div class="mb-6">
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Run auswählen</span>
+                    <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
+                        <select id="platform-run-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400"></select>
+                        <div id="platform-run-meta" class="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 text-sm text-slate-300">
+                            Lade Run-Metadaten...
+                        </div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="mb-6 grid gap-4 lg:grid-cols-[1.3fr_repeat(3,minmax(0,1fr))]">
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Plattformsuche</span>
+                    <input id="platform-search-input" type="text" placeholder="z. B. Ricardo, Traktorpool, Willhaben" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none transition focus:border-emerald-400">
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Status</span>
+                    <select id="platform-status-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="all">Alle</option>
+                        <option value="success">Nur OK</option>
+                        <option value="empty">Nur leer</option>
+                        <option value="error">Nur Fehler</option>
+                    </select>
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Land</span>
+                    <select id="platform-country-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="all">Alle</option>
+                    </select>
+                </label>
+                <label class="block">
+                    <span class="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Sortierung</span>
+                    <select id="platform-sort-filter" class="w-full rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-3 text-sm text-white outline-none focus:border-emerald-400">
+                        <option value="status">Status zuerst</option>
+                        <option value="listings_desc">Meiste Treffer</option>
+                        <option value="new_desc">Meiste neue Treffer</option>
+                        <option value="duration_desc">Langsamste zuerst</option>
+                        <option value="name_asc">Name A-Z</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="mb-6 grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+                <div class="rounded-3xl border border-slate-800 bg-slate-950/60 p-5">
+                    <div class="mb-4 flex items-center justify-between gap-3">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Plattformen</p>
+                            <h3 class="text-xl font-bold text-white">Ergebnisübersicht</h3>
+                        </div>
+                        <div id="platform-visible-count" class="rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">0 Plattformen</div>
+                    </div>
+                    <div id="platform-cards-grid" class="grid grid-cols-1 gap-4 xl:grid-cols-2"></div>
+                    <div id="platform-empty-state" class="hidden rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-8 text-center text-slate-400">
+                        Keine Plattformen mit diesen Filtern gefunden.
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="rounded-3xl border border-slate-800 bg-slate-950/60 p-5">
+                        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Fehlercluster</p>
+                        <div id="platform-error-clusters" class="space-y-3"></div>
+                    </div>
+                    <div class="rounded-3xl border border-slate-800 bg-slate-950/60 p-5">
+                        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Top Treffer</p>
+                        <div id="platform-top-performers" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const state = {
+            listings: [],
+            filtered: [],
+            stats: null,
+            platformRuns: [],
+            filteredPlatformRuns: [],
+            scanRuns: [],
+            selectedScanRunId: null,
+        };
+
+        const BRAND_NAMES = {
+            mb_trac: "MB-trac",
+            fendt: "Fendt",
+            john_deere: "John Deere",
+            deutz: "Deutz",
+            ihc: "IHC",
+            case_ih: "Case IH",
+            fiat: "Fiat",
+            new_holland: "New Holland",
+            claas_xerion: "Claas Xerion",
+        };
+
+        const VEHICLE_ONLY_EXCLUDE_TERMS = [
+            "hubspindel", "frontbock", "kupplung", "zwillingskupplung",
+            "reifen", "räder", "raeder", "felgen", "felge",
+            "kotflügel", "kotfluegel", "gelenkwelle", "schubrohr",
+            "vorderachse", "hinterachse", "vorderrad", "hinterrad",
+            "radsatz", "tankgeber", "kraftstofftank", "motorblock",
+            "zylinderkopf", "bremssattel", "kühler", "wärmetauscher",
+            "verkleidung", "kabinenlager", "aufbaurahmen",
+            "frontkraftheber", "heckkraftheber", "fronthydraulik",
+            "schutzrohr", "unterlenker", "oberlenkerhalter",
+            "prospekt", "broschüre", "brochure", "handbuch",
+            "modell", "weise toys", "rolly toys", "siku",
+            "kindertraktor", "tretfahrzeug", "pompa", "pokrywa",
+            "uchwyt", "naklejka", "naklejki", "błotnik", "blotnik",
+            "rura wydechowa", "wąż", "waz", "dywanik", "zaczep",
+            "schneepflug", "cabine", "führerhaus", "fuehrerhaus",
+            "türen", "tueren", "tür", "door", "doors"
+        ];
+
+        const VEHICLE_ONLY_CONFIRM_TERMS = [
+            "traktor", "tractor", "tracteur", "trattore",
+            "trecker", "schlepper", "ciągnik", "ciagnik",
+            "allrad", "frontlader", "betriebsstunden", "baujahr",
+            "restauriert", "fahrbereit", "einsatzbereit"
+        ];
+
+        function formatNumber(value) {
+            return new Intl.NumberFormat("de-DE").format(value || 0);
+        }
+
+        function formatDate(value) {
+            if (!value) return "unbekannt";
+            try {
+                return new Date(value).toLocaleString("de-DE");
+            } catch {
+                return value;
+            }
+        }
+
+        function looksLikeBareVehicleTitle(title) {
+            const normalized = (title || "").toLowerCase().replace(/[^\w\s/-]+/g, " ").replace(/\s+/g, " ").trim();
+            if (!normalized) return false;
+            if (normalized.split(" ").length > 6) return false;
+            if (VEHICLE_ONLY_EXCLUDE_TERMS.some((term) => normalized.includes(term))) return false;
+            return [
+                /^(?:mercedes(?: benz)? )?(?:mb[- ]?trac|mbtrac)(?: \d{2,4}(?:\/\d{2,4})?)?(?: turbo)?$/,
+                /^(?:wf[- ]?trac|werner trac)(?: \d{2,4})?$/,
+                /^(?:john deere|fendt|deutz|case ih|ihc|new holland|claas xerion) [\w.-]+$/,
+            ].some((pattern) => pattern.test(normalized));
+        }
+
+        function passesVehicleQualityGate(listing) {
+            const title = (listing.title || "").toLowerCase();
+            if (!title) return false;
+
+            const hasExcludeTerm = VEHICLE_ONLY_EXCLUDE_TERMS.some((term) => title.includes(term));
+            const hasConfirmTerm = VEHICLE_ONLY_CONFIRM_TERMS.some((term) => title.includes(term));
+            const hasStrongPrice = Number(listing.price_numeric || 0) >= 5000;
+
+            if (looksLikeBareVehicleTitle(title)) {
+                return true;
+            }
+
+            if (hasExcludeTerm) {
+                return false;
+            }
+
+            if (hasConfirmTerm) {
+                return true;
+            }
+
+            return hasStrongPrice;
+        }
+
+        function statusMarkup(status) {
+            if (status === "error") {
+                return '<span class="status-pill bg-rose-500/20 text-rose-300">Fehler</span>';
+            }
+            if (status === "empty") {
+                return '<span class="status-pill bg-amber-500/20 text-amber-300">Leer</span>';
+            }
+            return '<span class="status-pill bg-emerald-500/20 text-emerald-300">OK</span>';
+        }
+
+        function statusLabel(status) {
+            if (status === "error") return "Fehler";
+            if (status === "empty") return "Leer";
+            return "OK";
+        }
+
+        function platformCardClasses(status) {
+            if (status === "error") return "border-rose-500/30 bg-rose-500/5";
+            if (status === "empty") return "border-amber-500/30 bg-amber-500/5";
+            return "border-emerald-500/20 bg-emerald-500/5";
+        }
+
+        function buildStats() {
+            const latest = state.stats?.latest_scan || {};
+            const cards = [
+                ["Aktive Inserate", state.stats?.active || 0, "text-white"],
+                ["Neu heute", state.stats?.new_today || 0, "text-emerald-300"],
+                ["Länder", Object.keys(state.stats?.by_country || {}).length, "text-sky-300"],
+                ["Marken", Object.keys(state.stats?.by_brand || {}).length, "text-cyan-300"],
+                ["Plattformen OK", latest.platforms_success || 0, "text-emerald-300"],
+                ["Plattformen Fehler", latest.platforms_error || 0, "text-rose-300"],
+            ];
+
+            document.getElementById("stats-grid").innerHTML = cards.map(([label, value, color]) => `
+                <div class="glass rounded-3xl border border-slate-800 p-5">
+                    <div class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">${label}</div>
+                    <div class="mt-3 text-3xl font-extrabold ${color}">${formatNumber(value)}</div>
+                </div>
+            `).join("");
+
+            document.getElementById("last-run").textContent = latest.finished_at
+                ? formatDate(latest.finished_at)
+                : "noch kein Lauf";
+        }
+
+        function buildPlatformSummary() {
+            const runs = state.platformRuns || [];
+            const totalListings = runs.reduce((sum, run) => sum + (run.listings_found || 0), 0);
+            const totalNew = runs.reduce((sum, run) => sum + (run.new_listings || 0), 0);
+            const avgDuration = runs.length
+                ? (runs.reduce((sum, run) => sum + (run.duration_seconds || 0), 0) / runs.length).toFixed(2)
+                : "0.00";
+            const summary = [
+                ["Plattformen", runs.length, "text-white"],
+                ["OK", runs.filter((run) => run.status === "success").length, "text-emerald-300"],
+                ["Leer", runs.filter((run) => run.status === "empty").length, "text-amber-300"],
+                ["Fehler", runs.filter((run) => run.status === "error").length, "text-rose-300"],
+                ["Treffer gesamt", totalListings, "text-sky-300"],
+                ["Neue Treffer", totalNew, "text-cyan-300"],
+            ];
+
+            document.getElementById("platform-summary-grid").innerHTML = summary.map(([label, value, color]) => `
+                <div class="rounded-3xl border border-slate-800 bg-slate-950/60 p-5">
+                    <div class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">${label}</div>
+                    <div class="mt-3 text-3xl font-extrabold ${color}">${formatNumber(value)}</div>
+                </div>
+            `).join("");
+
+            document.getElementById("platform-summary-grid").innerHTML += `
+                <div class="rounded-3xl border border-slate-800 bg-slate-950/60 p-5">
+                    <div class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Ø Dauer</div>
+                    <div class="mt-3 text-3xl font-extrabold text-slate-100">${avgDuration}s</div>
+                </div>
+            `;
+        }
+
+        function preferredScanRunId() {
+            if (!state.scanRuns.length) return null;
+            const preferred = state.scanRuns.find((run) => (run.platforms_total || 0) >= 50);
+            return (preferred || state.scanRuns[0]).id;
+        }
+
+        function buildScanRunOptions() {
+            const select = document.getElementById("platform-run-filter");
+            if (!state.scanRuns.length) {
+                select.innerHTML = '<option value="">Keine Runs vorhanden</option>';
+                state.selectedScanRunId = null;
+                updateSelectedRunMeta();
+                return;
+            }
+
+            select.innerHTML = state.scanRuns.map((run) => {
+                const label = `Run #${run.id} · ${run.platforms_total} Plattformen · ${run.platforms_error} Fehler · ${run.finished_at ? formatDate(run.finished_at) : "läuft noch"}`;
+                return `<option value="${run.id}">${label}</option>`;
+            }).join("");
+
+            const selectedExists = state.scanRuns.some((run) => run.id === state.selectedScanRunId);
+            if (state.selectedScanRunId == null || !selectedExists) {
+                state.selectedScanRunId = preferredScanRunId();
+            }
+
+            if (state.selectedScanRunId != null) {
+                select.value = String(state.selectedScanRunId);
+            }
+
+            updateSelectedRunMeta();
+        }
+
+        function updateSelectedRunMeta() {
+            const metaEl = document.getElementById("platform-run-meta");
+            const run = state.scanRuns.find((entry) => entry.id === state.selectedScanRunId);
+            if (!run) {
+                metaEl.textContent = "Kein Run ausgewählt.";
+                return;
+            }
+
+            metaEl.textContent = `Run #${run.id} · ${run.platforms_success} OK · ${run.platforms_empty} leer · ${run.platforms_error} Fehler · ${run.duration_seconds || 0}s`;
+        }
+
+        function buildPlatformFilterOptions() {
+            const countrySelect = document.getElementById("platform-country-filter");
+            const counts = new Map();
+            state.platformRuns.forEach((run) => {
+                const code = run.country_code || "XX";
+                counts.set(code, (counts.get(code) || 0) + 1);
+            });
+
+            countrySelect.innerHTML = '<option value="all">Alle</option>' + [...counts.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .map(([code, count]) => `<option value="${code}">${code} (${count})</option>`)
+                .join("");
+        }
+
+        function buildSelectOptions() {
+            const currentCategory = document.getElementById("category-filter").value || "fahrzeug";
+            const currentCountry = document.getElementById("country-filter").value || "all";
+            const currentBrand = document.getElementById("brand-filter").value || "all";
+            const categories = new Map();
+            const countries = new Map();
+            const brands = new Map();
+
+            state.listings.forEach((listing) => {
+                categories.set(listing.category || "sonstiges", (categories.get(listing.category || "sonstiges") || 0) + 1);
+                countries.set(listing.country || "XX", (countries.get(listing.country || "XX") || 0) + 1);
+                brands.set(listing.brand || "mb_trac", (brands.get(listing.brand || "mb_trac") || 0) + 1);
+            });
+
+            const categorySelect = document.getElementById("category-filter");
+            const countrySelect = document.getElementById("country-filter");
+            const brandSelect = document.getElementById("brand-filter");
+
+            categorySelect.innerHTML = '<option value="fahrzeug">Nur Fahrzeuge</option><option value="all">Alle</option>' + [...categories.entries()]
+                .filter(([value]) => !["fahrzeug"].includes(value))
+                .sort((a, b) => b[1] - a[1])
+                .map(([value, count]) => `<option value="${value}">${value} (${count})</option>`)
+                .join("");
+
+            countrySelect.innerHTML = '<option value="all">Alle</option>' + [...countries.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .map(([value, count]) => `<option value="${value}">${value} (${count})</option>`)
+                .join("");
+
+            brandSelect.innerHTML = '<option value="all">Alle</option>' + [...brands.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .map(([value, count]) => `<option value="${value}">${BRAND_NAMES[value] || value} (${count})</option>`)
+                .join("");
+
+            categorySelect.value = [...categorySelect.options].some((option) => option.value === currentCategory)
+                ? currentCategory
+                : "fahrzeug";
+            countrySelect.value = [...countrySelect.options].some((option) => option.value === currentCountry)
+                ? currentCountry
+                : "all";
+            brandSelect.value = [...brandSelect.options].some((option) => option.value === currentBrand)
+                ? currentBrand
+                : "all";
+        }
+
+        function applyFilters() {
+            const q = document.getElementById("search-input").value.trim().toLowerCase();
+            const category = document.getElementById("category-filter").value;
+            const country = document.getElementById("country-filter").value;
+            const brand = document.getElementById("brand-filter").value;
+            const sort = document.getElementById("sort-filter").value;
+
+            let items = [...state.listings].filter((listing) => {
+                if (category !== "all" && (listing.category || "sonstiges") !== category) return false;
+                if (country !== "all" && (listing.country || "XX") !== country) return false;
+                if (brand !== "all" && (listing.brand || "mb_trac") !== brand) return false;
+                if (q && !(listing.title || "").toLowerCase().includes(q)) return false;
+                if (category === "fahrzeug" && !passesVehicleQualityGate(listing)) return false;
+                return true;
+            });
+
+            if (sort === "price_desc") {
+                items.sort((a, b) => (b.price_numeric || 0) - (a.price_numeric || 0));
+            } else if (sort === "price_asc") {
+                items.sort((a, b) => (a.price_numeric || 0) - (b.price_numeric || 0));
+            } else {
+                items.sort((a, b) => (b.first_seen || "").localeCompare(a.first_seen || ""));
+            }
+
+            state.filtered = items;
+            renderListings();
+        }
+
+        function renderListings() {
+            const grid = document.getElementById("listings-grid");
+            const empty = document.getElementById("empty-listings");
+            const items = state.filtered.slice(0, 300);
+
+            document.getElementById("results-count").textContent = `${formatNumber(state.filtered.length)} Ergebnisse`;
+
+            if (!items.length) {
+                grid.innerHTML = "";
+                empty.classList.remove("hidden");
+                return;
+            }
+
+            empty.classList.add("hidden");
+            grid.innerHTML = items.map((listing) => {
+                const brandName = BRAND_NAMES[listing.brand] || listing.brand || "Unbekannt";
+                const price = listing.price_numeric
+                    ? `${formatNumber(Math.round(listing.price_numeric))} €`
+                    : (listing.price || "Preis auf Anfrage");
+                const image = listing.image_url
+                    ? `<img src="${listing.image_url}" alt="" class="h-56 w-full object-cover" loading="lazy" referrerpolicy="no-referrer">`
+                    : '<div class="flex h-56 w-full items-center justify-center bg-gradient-to-br from-slate-800 to-slate-950 text-5xl">🚜</div>';
+                const badge = (listing.first_seen || "").slice(0, 10) === new Date().toISOString().slice(0, 10)
+                    ? '<span class="absolute left-3 top-3 rounded-full bg-emerald-400 px-3 py-1 text-xs font-extrabold text-slate-950">NEU</span>'
+                    : "";
+
+                return `
+                    <article class="listing-card overflow-hidden rounded-3xl border border-slate-800 bg-slate-950/70">
+                        <div class="relative">
+                            ${image}
+                            ${badge}
+                            <div class="absolute bottom-3 left-3 rounded-full bg-slate-950/85 px-3 py-1 text-xs font-bold text-white">${brandName}</div>
+                        </div>
+                        <div class="p-5">
+                            <div class="mb-3 flex items-start justify-between gap-3">
+                                <h3 class="text-lg font-bold text-white">${listing.title || "Ohne Titel"}</h3>
+                                <div class="rounded-full bg-emerald-500/15 px-3 py-1 text-sm font-bold text-emerald-300">${price}</div>
+                            </div>
+                            <div class="mb-3 flex flex-wrap gap-2 text-xs text-slate-400">
+                                <span class="rounded-full border border-slate-700 px-2 py-1">${listing.country || "XX"}</span>
+                                <span class="rounded-full border border-slate-700 px-2 py-1">${listing.platform || "Unbekannt"}</span>
+                                <span class="rounded-full border border-slate-700 px-2 py-1">${listing.category || "sonstiges"}</span>
+                            </div>
+                            <p class="mb-4 text-sm text-slate-300">${listing.location || "Standort nicht verfügbar"}</p>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-slate-500">gesehen: ${formatDate(listing.first_seen)}</span>
+                                <a href="${listing.url}" target="_blank" rel="noopener" class="rounded-full bg-sky-500/15 px-4 py-2 font-bold text-sky-300 transition hover:bg-sky-500/25">
+                                    Zum Inserat
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        function classifyError(errorMessage) {
+            const msg = (errorMessage || "").toLowerCase();
+            if (!msg) return null;
+            if (msg.includes("403")) return "403 / Bot-Abwehr";
+            if (msg.includes("404")) return "404 / Pfad kaputt";
+            if (msg.includes("405")) return "405 / Falscher Endpoint";
+            if (msg.includes("406")) return "406 / Request nicht akzeptiert";
+            if (msg.includes("failed to resolve") || msg.includes("nameresolutionerror")) return "DNS / Domain tot";
+            return "Sonstiger Fehler";
+        }
+
+        function sortPlatformRuns(items, sortBy) {
+            const runs = [...items];
+            if (sortBy === "listings_desc") {
+                runs.sort((a, b) => (b.listings_found || 0) - (a.listings_found || 0) || a.platform_name.localeCompare(b.platform_name));
+            } else if (sortBy === "new_desc") {
+                runs.sort((a, b) => (b.new_listings || 0) - (a.new_listings || 0) || a.platform_name.localeCompare(b.platform_name));
+            } else if (sortBy === "duration_desc") {
+                runs.sort((a, b) => (b.duration_seconds || 0) - (a.duration_seconds || 0) || a.platform_name.localeCompare(b.platform_name));
+            } else if (sortBy === "name_asc") {
+                runs.sort((a, b) => a.platform_name.localeCompare(b.platform_name));
+            } else {
+                const rank = { error: 0, empty: 1, success: 2 };
+                runs.sort((a, b) => {
+                    const delta = (rank[a.status] ?? 99) - (rank[b.status] ?? 99);
+                    if (delta !== 0) return delta;
+                    return (b.listings_found || 0) - (a.listings_found || 0) || a.platform_name.localeCompare(b.platform_name);
+                });
+            }
+            return runs;
+        }
+
+        function applyPlatformFilters() {
+            const query = document.getElementById("platform-search-input").value.trim().toLowerCase();
+            const status = document.getElementById("platform-status-filter").value;
+            const country = document.getElementById("platform-country-filter").value;
+            const sortBy = document.getElementById("platform-sort-filter").value;
+
+            const items = state.platformRuns.filter((run) => {
+                if (status !== "all" && run.status !== status) return false;
+                if (country !== "all" && (run.country_code || "XX") !== country) return false;
+                if (query && !`${run.platform_name} ${run.error_message || ""}`.toLowerCase().includes(query)) return false;
+                return true;
+            });
+
+            state.filteredPlatformRuns = sortPlatformRuns(items, sortBy);
+            renderPlatformRuns();
+        }
+
+        function renderPlatformRuns() {
+            const runs = state.filteredPlatformRuns || [];
+            const container = document.getElementById("platform-cards-grid");
+            const empty = document.getElementById("platform-empty-state");
+            const count = document.getElementById("platform-visible-count");
+            const maxListings = Math.max(...runs.map((run) => run.listings_found || 0), 1);
+
+            count.textContent = `${formatNumber(runs.length)} Plattformen`;
+
+            if (!runs.length) {
+                container.innerHTML = "";
+                empty.classList.remove("hidden");
+            } else {
+                empty.classList.add("hidden");
+                container.innerHTML = runs.map((run) => {
+                    const width = Math.max(6, Math.round(((run.listings_found || 0) / maxListings) * 100));
+                    const errorHtml = run.error_message
+                        ? `<div class="rounded-2xl border border-rose-500/20 bg-rose-500/10 px-3 py-3 text-xs leading-relaxed text-rose-200">${run.error_message}</div>`
+                        : '<div class="rounded-2xl border border-slate-800 bg-slate-900/70 px-3 py-3 text-xs text-slate-400">Kein Fehlertext vorhanden.</div>';
+
+                    return `
+                        <article class="platform-card rounded-3xl border ${platformCardClasses(run.status)} p-5">
+                            <div class="mb-4 flex items-start justify-between gap-3">
+                                <div>
+                                    <div class="mb-2">${statusMarkup(run.status)}</div>
+                                    <h3 class="text-lg font-bold text-white">${run.platform_name}</h3>
+                                    <p class="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">${run.country_code || "XX"} · ${statusLabel(run.status)}</p>
+                                </div>
+                                <a href="${run.search_url}" target="_blank" rel="noopener" class="rounded-full border border-slate-700 px-3 py-2 text-xs font-bold text-sky-300 transition hover:border-sky-400 hover:text-sky-200">
+                                    Suche öffnen
+                                </a>
+                            </div>
+
+                            <div class="mb-4 grid grid-cols-3 gap-3">
+                                <div class="rounded-2xl bg-slate-900/75 p-3">
+                                    <div class="text-[11px] uppercase tracking-[0.18em] text-slate-500">Gefunden</div>
+                                    <div class="mt-2 text-2xl font-extrabold text-white">${formatNumber(run.listings_found)}</div>
+                                </div>
+                                <div class="rounded-2xl bg-slate-900/75 p-3">
+                                    <div class="text-[11px] uppercase tracking-[0.18em] text-slate-500">Neu</div>
+                                    <div class="mt-2 text-2xl font-extrabold text-emerald-300">${formatNumber(run.new_listings)}</div>
+                                </div>
+                                <div class="rounded-2xl bg-slate-900/75 p-3">
+                                    <div class="text-[11px] uppercase tracking-[0.18em] text-slate-500">Dauer</div>
+                                    <div class="mt-2 text-2xl font-extrabold text-slate-200">${(run.duration_seconds || 0).toFixed(2)}s</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="mb-2 flex items-center justify-between text-xs uppercase tracking-[0.18em] text-slate-400">
+                                    <span>Treffer relativ</span>
+                                    <span>${formatNumber(run.listings_found)}</span>
+                                </div>
+                                <div class="metric-bar-track">
+                                    <div class="metric-bar-fill" style="width: ${width}%"></div>
+                                </div>
+                            </div>
+
+                            ${run.status === "error" ? errorHtml : ""}
+                        </article>
+                    `;
+                }).join("");
+            }
+
+            renderPlatformSidebars();
+        }
+
+        function renderPlatformSidebars() {
+            const runs = state.filteredPlatformRuns || [];
+
+            const clusterCounts = new Map();
+            runs.filter((run) => run.status === "error").forEach((run) => {
+                const label = classifyError(run.error_message);
+                if (!label) return;
+                clusterCounts.set(label, (clusterCounts.get(label) || 0) + 1);
+            });
+
+            const errorClusterEl = document.getElementById("platform-error-clusters");
+            const clusters = [...clusterCounts.entries()].sort((a, b) => b[1] - a[1]);
+            errorClusterEl.innerHTML = clusters.length
+                ? clusters.map(([label, count]) => `
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-sm font-semibold text-white">${label}</span>
+                            <span class="rounded-full bg-rose-500/15 px-3 py-1 text-xs font-bold text-rose-300">${count}</span>
+                        </div>
+                    </div>
+                `).join("")
+                : '<div class="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-4 text-sm text-slate-400">Keine Fehler im aktuellen Filter.</div>';
+
+            const topPerformersEl = document.getElementById("platform-top-performers");
+            const topPerformers = [...runs]
+                .filter((run) => (run.listings_found || 0) > 0)
+                .sort((a, b) => (b.listings_found || 0) - (a.listings_found || 0) || a.platform_name.localeCompare(b.platform_name))
+                .slice(0, 6);
+
+            topPerformersEl.innerHTML = topPerformers.length
+                ? topPerformers.map((run, index) => `
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <div class="text-[11px] uppercase tracking-[0.2em] text-slate-500">#${index + 1} · ${run.country_code}</div>
+                                <div class="mt-1 text-sm font-semibold text-white">${run.platform_name}</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-lg font-extrabold text-emerald-300">${formatNumber(run.listings_found)}</div>
+                                <div class="text-[11px] uppercase tracking-[0.18em] text-slate-500">Treffer</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join("")
+                : '<div class="rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-4 text-sm text-slate-400">Keine Treffer im aktuellen Filter.</div>';
+        }
+
+        async function loadPlatformRunsForSelectedScan() {
+            if (state.selectedScanRunId == null) {
+                state.platformRuns = [];
+                state.filteredPlatformRuns = [];
+                return;
+            }
+
+            const res = await fetch(`/api/platform-runs?scan_run_id=${state.selectedScanRunId}&limit=300`);
+            if (!res.ok) {
+                throw new Error("Plattform-Runs konnten nicht geladen werden");
+            }
+
+            const payload = await res.json();
+            state.platformRuns = payload.items || [];
+            buildPlatformSummary();
+            buildPlatformFilterOptions();
+            updateSelectedRunMeta();
+        }
+
+        async function loadData() {
+            const [statsRes, listingsRes, scanRunsRes] = await Promise.all([
+                fetch("/api/stats"),
+                fetch("/api/listings?limit=1200"),
+                fetch("/api/scan-runs?limit=10"),
+            ]);
+
+            if (!statsRes.ok || !listingsRes.ok || !scanRunsRes.ok) {
+                throw new Error("API konnte nicht geladen werden");
+            }
+
+            const stats = await statsRes.json();
+            const listings = await listingsRes.json();
+            const scanRuns = await scanRunsRes.json();
+
+            state.stats = stats;
+            state.listings = listings.items || [];
+            state.scanRuns = scanRuns.items || [];
+
+            buildStats();
+            buildSelectOptions();
+            buildScanRunOptions();
+            await loadPlatformRunsForSelectedScan();
+            applyFilters();
+            applyPlatformFilters();
+        }
+
+        document.getElementById("reload-btn").addEventListener("click", () => {
+            loadData().catch((error) => {
+                console.error(error);
+                alert("Fehler beim Laden der API-Daten.");
+            });
+        });
+
+        ["search-input", "category-filter", "country-filter", "brand-filter", "sort-filter"].forEach((id) => {
+            document.getElementById(id).addEventListener("input", applyFilters);
+            document.getElementById(id).addEventListener("change", applyFilters);
+        });
+
+        ["platform-search-input", "platform-status-filter", "platform-country-filter", "platform-sort-filter"].forEach((id) => {
+            document.getElementById(id).addEventListener("input", applyPlatformFilters);
+            document.getElementById(id).addEventListener("change", applyPlatformFilters);
+        });
+
+        document.getElementById("platform-run-filter").addEventListener("change", async function () {
+            state.selectedScanRunId = Number(this.value);
+            await loadPlatformRunsForSelectedScan();
+            applyPlatformFilters();
+        });
+
+        loadData().catch((error) => {
+            console.error(error);
+            document.getElementById("listings-grid").innerHTML = `
+                <div class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-6 text-rose-200">
+                    API-Daten konnten nicht geladen werden. Prüfe, ob der Server läuft und die Datenbank erreichbar ist.
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
